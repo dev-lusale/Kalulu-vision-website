@@ -1,0 +1,24 @@
+[
+  {
+    "id": "ac44304d-6baf-40bd-b58d-432fc405d564",
+    "enrollmentId": "KV-2026-01001",
+    "fullName": "Mr Davoid",
+    "whatsapp": "+260972079994",
+    "email": "bernardlusale20@gmail.com",
+    "course": "ai-ml",
+    "plan": "weekly",
+    "learningMode": "online",
+    "createdAt": "2026-09-22T13:35:11.853Z"
+  },
+  {
+    "id": "b58ce385-8888-4587-b017-47f49ff0df96",
+    "enrollmentId": "KV-2026-01001",
+    "fullName": "Bernard Lusale",
+    "whatsapp": "+260972079994",
+    "email": "bernardlusale20@gmail.com",
+    "course": "programming",
+    "plan": "monthly",
+    "learningMode": "online",
+    "createdAt": "2026-09-22T14:27:44.625Z"
+  }
+]

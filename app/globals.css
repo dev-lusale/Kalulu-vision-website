@@ -1,0 +1,301 @@
+@import "tailwindcss";
+
+/* ═══════════════════════════════════════════════════════════
+   KALULU VISION — Dark Tech Theme
+   Inspired by softspheretechnologies.org
+   ─────────────────────────────────────────────────────────── */
+
+/* ── Design tokens ────────────────────────────────────────── */
+:root {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  /* Dark backgrounds (navy → near-black) */
+  --bg-base:    #070b14;
+  --bg-deep:    #04070e;
+  --bg-card:    rgba(255,255,255,0.04);
+  --bg-card-hover: rgba(255,255,255,0.07);
+
+  /* Electric blue accent */
+  --blue:       #0ea5e9;
+  --blue-bright:#38bdf8;
+  --blue-glow:  rgba(14,165,233,0.35);
+  --blue-dim:   rgba(14,165,233,0.12);
+
+  /* Cyan highlight (headline accent) */
+  --cyan:       #22d3ee;
+
+  /* Borders */
+  --border:     rgba(255,255,255,0.08);
+  --border-blue: rgba(14,165,233,0.35);
+
+  /* Text */
+  --text-primary:   #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted:     #475569;
+
+  /* Nav */
+  --nav-h: 68px;
+}
+
+/* ── Base ─────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-sans);
+  background: var(--bg-base);
+  color: var(--text-primary);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+section[id] { scroll-margin-top: var(--nav-h); }
+
+/* ── Scrollbar ────────────────────────────────────────────── */
+::-webkit-scrollbar         { width: 4px; }
+::-webkit-scrollbar-track   { background: var(--bg-deep); }
+::-webkit-scrollbar-thumb   { background: var(--blue-dim); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: var(--blue); }
+
+/* ── Focus ────────────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* ══════════════════════════════════════════
+   PARTICLE DOT BACKGROUND
+   ══════════════════════════════════════════ */
+.dot-bg {
+  position: relative;
+}
+.dot-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(255,255,255,0.12) 1px, transparent 1px);
+  background-size: 32px 32px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ══════════════════════════════════════════
+   GLASSMORPHISM CARD
+   ══════════════════════════════════════════ */
+.glass {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.glass-hover {
+  transition: background 0.25s, border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+}
+.glass-hover:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--border-blue);
+  transform: translateY(-3px);
+  box-shadow: 0 0 30px var(--blue-dim), 0 8px 32px rgba(0,0,0,0.4);
+}
+
+/* ── Alias for form use ───────────────────────────────────── */
+.card        { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; backdrop-filter: blur(12px); }
+.card-hover  { transition: background .25s, border-color .25s, transform .25s, box-shadow .25s; }
+.card-hover:hover { background: var(--bg-card-hover); border-color: var(--border-blue); transform: translateY(-3px); box-shadow: 0 0 30px var(--blue-dim), 0 8px 32px rgba(0,0,0,0.4); }
+
+/* ══════════════════════════════════════════
+   GLOW BUTTON — solid blue with radial glow
+   ══════════════════════════════════════════ */
+.btn-glow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: var(--blue);
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.9375rem;
+  padding: 0.85rem 2rem;
+  border-radius: 9999px;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
+  box-shadow: 0 0 24px var(--blue-glow), 0 0 6px var(--blue-glow);
+  text-decoration: none;
+}
+.btn-glow:hover {
+  background: var(--blue-bright);
+  box-shadow: 0 0 40px var(--blue-glow), 0 0 12px var(--blue-glow);
+  transform: translateY(-1px);
+}
+.btn-glow::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.5s;
+}
+.btn-glow:hover::before { transform: translateX(100%); }
+
+/* ── Ghost button (outline, dark) ─────────────────────────── */
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: transparent;
+  color: var(--blue-bright);
+  font-weight: 600;
+  font-size: 0.9375rem;
+  padding: 0.85rem 2rem;
+  border-radius: 9999px;
+  border: 1px solid var(--border-blue);
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
+  text-decoration: none;
+}
+.btn-ghost:hover {
+  background: var(--blue-dim);
+  border-color: var(--blue);
+  box-shadow: 0 0 16px var(--blue-dim);
+}
+
+/* ══════════════════════════════════════════
+   DARK INPUTS
+   ══════════════════════════════════════════ */
+.input-base {
+  width: 100%;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.7rem 1rem;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+}
+.input-base::placeholder { color: var(--text-muted); }
+.input-base:hover  { border-color: rgba(255,255,255,0.15); background: rgba(255,255,255,0.07); }
+.input-base:focus  {
+  outline: none;
+  border-color: var(--blue);
+  background: rgba(14,165,233,0.06);
+  box-shadow: 0 0 0 3px rgba(14,165,233,0.15);
+}
+.input-error {
+  border-color: #f87171 !important;
+  box-shadow: 0 0 0 3px rgba(248,113,113,0.15) !important;
+}
+
+/* ══════════════════════════════════════════
+   SECTION LABEL PILL (cyan/blue on dark)
+   ══════════════════════════════════════════ */
+.section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--blue-bright);
+  background: rgba(14,165,233,0.1);
+  border: 1px solid rgba(14,165,233,0.25);
+  padding: 0.3rem 0.85rem;
+  border-radius: 99px;
+  margin-bottom: 1.1rem;
+}
+.section-label::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--cyan);
+  box-shadow: 0 0 8px var(--cyan);
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+@keyframes pulse-dot {
+  0%,100% { opacity: 1; }
+  50%      { opacity: 0.3; }
+}
+
+/* ══════════════════════════════════════════
+   RADIAL GLOW BACKGROUNDS (section accents)
+   ══════════════════════════════════════════ */
+.glow-top-right {
+  position: absolute;
+  top: -200px;
+  right: -200px;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(14,165,233,0.15) 0%, transparent 70%);
+  pointer-events: none;
+  border-radius: 50%;
+}
+.glow-bottom-left {
+  position: absolute;
+  bottom: -200px;
+  left: -200px;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(34,211,238,0.1) 0%, transparent 70%);
+  pointer-events: none;
+  border-radius: 50%;
+}
+
+/* ── Typing cursor blink ──────────────────────────────────── */
+@keyframes blink {
+  0%,100% { opacity: 1; }
+  50%      { opacity: 0; }
+}
+.cursor-blink {
+  display: inline-block;
+  width: 3px;
+  height: 1em;
+  background: var(--cyan);
+  margin-left: 4px;
+  vertical-align: text-bottom;
+  animation: blink 1s step-end infinite;
+}
+
+/* ── Gradient text ────────────────────────────────────────── */
+.text-gradient {
+  background: linear-gradient(135deg, var(--blue-bright) 0%, var(--cyan) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Orbit ring animation ─────────────────────────────────── */
+@keyframes spin-slow  { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes spin-reverse { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
+.orbit      { animation: spin-slow 12s linear infinite; }
+.orbit-rev  { animation: spin-reverse 18s linear infinite; }
+
+/* ── Float animation ──────────────────────────────────────── */
+@keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-14px); } }
+.float { animation: float 5s ease-in-out infinite; }
+
+/* ── Shimmer line ─────────────────────────────────────────── */
+.shimmer-line {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--blue), var(--cyan), transparent);
+  opacity: 0.4;
+}
+
+/* ── Status badges ────────────────────────────────────────── */
+.pill-pending  { background: rgba(251,191,36,0.12); color:#fbbf24; border:1px solid rgba(251,191,36,0.25); }
+.pill-verified { background: rgba(34,197,94,0.12);  color:#22c55e; border:1px solid rgba(34,197,94,0.25); }
+.pill-rejected { background: rgba(239,68,68,0.12);  color:#ef4444; border:1px solid rgba(239,68,68,0.25); }
+.pill-active   { background: rgba(14,165,233,0.12); color:#0ea5e9; border:1px solid rgba(14,165,233,0.25); }
+.pill-disabled { background: rgba(100,116,139,0.12);color:#64748b; border:1px solid rgba(100,116,139,0.25); }
+.pill-expired  { background: rgba(100,116,139,0.12);color:#64748b; border:1px solid rgba(100,116,139,0.25); }
+.pill-base     { display:inline-flex; align-items:center; padding:0.2rem 0.65rem; border-radius:99px; font-size:0.7rem; font-weight:700; }

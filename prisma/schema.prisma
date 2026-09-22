@@ -1,0 +1,72 @@
+// ============================================================
+// Kalulu Vision — Prisma Schema
+// Database: PostgreSQL
+// ============================================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ── Enrollment ─────────────────────────────────────────────
+model Enrollment {
+  id           String   @id @default(cuid())
+  enrollmentId String   @unique
+  fullName     String
+  whatsapp     String
+  email        String
+  course       String
+  plan         String
+  learningMode String
+  subTopic     String?
+  createdAt    DateTime @default(now())
+
+  payment      Payment?
+  subscription Subscription?
+
+  @@index([email, course])
+  @@map("enrollments")
+}
+
+// ── Payment ────────────────────────────────────────────────
+model Payment {
+  id           String    @id @default(cuid())
+  enrollmentId String    @unique
+  amount       Float
+  paymentMethod String   @default("manual")
+  status       String    @default("PENDING_VERIFICATION")
+  submittedAt  DateTime  @default(now())
+  verifiedAt   DateTime?
+
+  enrollment   Enrollment @relation(fields: [enrollmentId], references: [enrollmentId], onDelete: Cascade)
+
+  @@map("payments")
+}
+
+// ── Subscription ───────────────────────────────────────────
+model Subscription {
+  id           String    @id @default(cuid())
+  enrollmentId String    @unique
+  plan         String
+  status       String    @default("PENDING")
+  startDate    DateTime?
+  expiryDate   DateTime?
+
+  enrollment   Enrollment @relation(fields: [enrollmentId], references: [enrollmentId], onDelete: Cascade)
+
+  @@map("subscriptions")
+}
+
+// ── Admin ──────────────────────────────────────────────────
+model Admin {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+
+  @@map("admins")
+}
