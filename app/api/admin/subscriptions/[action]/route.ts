@@ -1,3 +1,5 @@
+export const runtime = "nodejs";
+
 import { NextRequest } from "next/server";
 import { isAdminAuthenticated } from "@/lib/auth";
 import {

@@ -1,3 +1,5 @@
+export const runtime = "nodejs";
+
 import { isAdminAuthenticated } from "@/lib/auth";
 import { getAllEnrollmentRecords } from "@/lib/db";
 

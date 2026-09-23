@@ -1,3 +1,5 @@
+export const runtime = "nodejs";
+
 import { NextRequest } from "next/server";
 import {
   getEnrollmentByEnrollmentId,
@@ -19,7 +21,7 @@ export async function POST(request: NextRequest) {
     const enrollment = await getEnrollmentByEnrollmentId(enrollmentId);
     if (!enrollment)   return err("Enrollment not found.", 404);
 
-    // Idempotency
+    // Idempotent — return existing if already submitted
     const existing = await getPaymentByEnrollmentId(enrollmentId);
     if (existing) return ok(existing, 200);
 
@@ -27,13 +29,13 @@ export async function POST(request: NextRequest) {
       id:            generateId(),
       enrollmentId,
       amount:        getPlanPrice(enrollment.plan),
-      paymentMethod: "manual",
+      paymentMethod: sanitizeString(body.paymentMethod) || "manual",
       status:        "PENDING_VERIFICATION",
       submittedAt:   new Date().toISOString(),
     };
     await savePayment(payment);
 
-    // Create pending subscription if not already there
+    // Create pending subscription record
     const existingSub = await getSubscriptionByEnrollmentId(enrollmentId);
     if (!existingSub) {
       const subscription: Subscription = {

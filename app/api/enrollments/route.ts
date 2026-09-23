@@ -1,3 +1,5 @@
+export const runtime = "nodejs";
+
 import { NextRequest } from "next/server";
 import { getEnrollments, saveEnrollment } from "@/lib/db";
 import type { Enrollment } from "@/lib/types";

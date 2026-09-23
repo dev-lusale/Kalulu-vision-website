@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 
@@ -23,14 +23,24 @@ export const metadata: Metadata = {
   },
 };
 
+// Proper viewport for mobile — prevents zoom on input focus on iOS
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  themeColor: "#070b14",
+};
+
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
       className={`${inter.variable} h-full scroll-smooth`}
     >
-      <body className="min-h-full flex flex-col antialiased"
-        style={{ background: "var(--bg-base)", color: "var(--text-primary)" }}
+      <body
+        className="min-h-full flex flex-col antialiased"
+        style={{ background: "#070b14", color: "#f1f5f9" }}
       >
         {children}
       </body>

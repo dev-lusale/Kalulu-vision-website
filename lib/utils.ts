@@ -2,12 +2,10 @@ import { PLANS } from "./config";
 import type { PlanId } from "./config";
 
 // ── Enrollment ID generator ───────────────────────────────────
-let counter = 1000;
-
 export function generateEnrollmentId(): string {
   const year = new Date().getFullYear();
-  counter += 1;
-  const seq = String(counter).padStart(5, "0");
+  // Use last 5 digits of timestamp + random 2 digits for uniqueness across restarts
+  const seq = String(Date.now()).slice(-5) + String(Math.floor(Math.random() * 90) + 10);
   return `KV-${year}-${seq}`;
 }
 

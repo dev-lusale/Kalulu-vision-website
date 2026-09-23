@@ -22,14 +22,22 @@ export function MainContent() {
     setSelectedCourse(courseId);
     setSelectedSubTopic(subTopicId ?? null);
     setTimeout(() => {
-      document.getElementById("enroll")?.scrollIntoView({ behavior: "smooth" });
+      const el = document.getElementById("enroll");
+      if (el) {
+        const top = el.getBoundingClientRect().top + window.scrollY - 72;
+        window.scrollTo({ top, behavior: "smooth" });
+      }
     }, 50);
   }
 
   function handleSelectPlan(planId: PlanId) {
     setSelectedPlan(planId);
     setTimeout(() => {
-      document.getElementById("enroll")?.scrollIntoView({ behavior: "smooth" });
+      const el = document.getElementById("enroll");
+      if (el) {
+        const top = el.getBoundingClientRect().top + window.scrollY - 72;
+        window.scrollTo({ top, behavior: "smooth" });
+      }
     }, 50);
   }
 

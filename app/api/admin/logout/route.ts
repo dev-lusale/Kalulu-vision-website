@@ -1,3 +1,5 @@
+export const runtime = "nodejs";
+
 import { destroyAdminSession } from "@/lib/auth";
 
 export async function POST() {
