@@ -17,7 +17,10 @@ import type {
 } from "./types";
 
 const IS_PROD = process.env.NODE_ENV === "production";
-const HAS_DB  = !!process.env.DATABASE_URL;
+const HAS_DB = !!(
+  process.env.kaluluvision_POSTGRES_PRISMA_URL ||
+  process.env.DATABASE_URL
+);
 
 // ─────────────────────────────────────────────────────────────
 //  PRISMA PATH  (PostgreSQL)
