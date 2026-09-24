@@ -18,8 +18,11 @@ import type {
 
 const IS_PROD = process.env.NODE_ENV === "production";
 const HAS_DB = !!(
+  process.env.DATABASE_URL                     ||
   process.env.kaluluvision_POSTGRES_PRISMA_URL ||
-  process.env.DATABASE_URL
+  process.env.kaluluvision_DATABASE_URL        ||
+  process.env.POSTGRES_PRISMA_URL              ||
+  process.env.POSTGRES_URL
 );
 
 // ─────────────────────────────────────────────────────────────

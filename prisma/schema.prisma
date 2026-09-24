@@ -1,6 +1,6 @@
 // ============================================================
 // Kalulu Vision — Prisma Schema
-// Database: PostgreSQL
+// Database: PostgreSQL (Neon via Vercel Storage)
 // ============================================================
 
 generator client {
@@ -8,8 +8,11 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  // Pooled connection for runtime queries
+  url       = env("DATABASE_URL")
+  // Direct (unpooled) connection for migrations/db push
+  directUrl = env("DATABASE_URL_UNPOOLED")
 }
 
 // ── Enrollment ─────────────────────────────────────────────
@@ -34,15 +37,15 @@ model Enrollment {
 
 // ── Payment ────────────────────────────────────────────────
 model Payment {
-  id           String    @id @default(cuid())
-  enrollmentId String    @unique
-  amount       Float
-  paymentMethod String   @default("manual")
-  status       String    @default("PENDING_VERIFICATION")
-  submittedAt  DateTime  @default(now())
-  verifiedAt   DateTime?
+  id            String    @id @default(cuid())
+  enrollmentId  String    @unique
+  amount        Float
+  paymentMethod String    @default("manual")
+  status        String    @default("PENDING_VERIFICATION")
+  submittedAt   DateTime  @default(now())
+  verifiedAt    DateTime?
 
-  enrollment   Enrollment @relation(fields: [enrollmentId], references: [enrollmentId], onDelete: Cascade)
+  enrollment Enrollment @relation(fields: [enrollmentId], references: [enrollmentId], onDelete: Cascade)
 
   @@map("payments")
 }
@@ -56,7 +59,7 @@ model Subscription {
   startDate    DateTime?
   expiryDate   DateTime?
 
-  enrollment   Enrollment @relation(fields: [enrollmentId], references: [enrollmentId], onDelete: Cascade)
+  enrollment Enrollment @relation(fields: [enrollmentId], references: [enrollmentId], onDelete: Cascade)
 
   @@map("subscriptions")
 }
