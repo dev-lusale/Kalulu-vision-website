@@ -308,7 +308,7 @@ function PaymentStage({ enrollment, planObj, courseObj, loading, onSubmitPayment
         </div>
         <h2 className="text-[17px] font-bold mb-1" style={{ color: "#10182B" }}>Enrollment Confirmed!</h2>
         <p className="text-[13px] mb-4" style={{ color: "#4a5568" }}>
-          Save your Enrollment ID — you&apos;ll need it for payment.
+          Save your Enrollment ID you&apos;ll need it for payment.
         </p>
         <div className="inline-block px-6 py-3 rounded-2xl mb-5"
           style={{ background: "#E9FFA3", border: "1.5px solid #c8e86a" }}>
@@ -334,27 +334,47 @@ function PaymentStage({ enrollment, planObj, courseObj, loading, onSubmitPayment
           Send <span className="font-bold" style={{ color: "#063F3A" }}>K{planObj.price}</span> using your preferred method, then tap &ldquo;I&apos;ve Paid&rdquo;.
         </p>
 
-        {/* Method tabs — labels "MTN MoMo" / "Zanaco Bank" frozen */}
+        {/* Method tabs — logo images */}
         <div className="grid grid-cols-2 gap-2 mb-4">
-          {([["momo", "📱", "MTN MoMo"], ["bank", "🏦", "Zanaco Bank"]] as [PayTab, string, string][]).map(([tab, icon, label]) => (
-            <button key={tab} type="button" onClick={() => setActiveTab(tab)}
-              className="flex items-center justify-center gap-2 py-2.5 rounded-xl text-[13px] font-semibold transition-all cursor-pointer"
-              style={{
-                background:   activeTab === tab ? "#E9FFA3" : "#F5F6F2",
-                border:       activeTab === tab ? "1.5px solid #c8e86a" : "1.5px solid #E5E7DF",
-                color:        activeTab === tab ? "#063F3A" : "#7a8394",
-                touchAction:  "manipulation",
-                WebkitTapHighlightColor: "transparent",
-              } as React.CSSProperties}>
-              <span>{icon}</span>{label}
-            </button>
-          ))}
+          {/* MTN MoMo tab */}
+          <button type="button" onClick={() => setActiveTab("momo")}
+            className="flex items-center justify-center gap-2 py-2.5 rounded-xl text-[13px] font-semibold transition-all cursor-pointer"
+            style={{
+              background:   activeTab === "momo" ? "#E9FFA3" : "#F5F6F2",
+              border:       activeTab === "momo" ? "1.5px solid #c8e86a" : "1.5px solid #E5E7DF",
+              color:        activeTab === "momo" ? "#063F3A" : "#7a8394",
+              touchAction:  "manipulation",
+              WebkitTapHighlightColor: "transparent",
+            } as React.CSSProperties}>
+            <img src="/mtn.png" alt="MTN" style={{ height: "20px", width: "auto", objectFit: "contain" }}
+              onError={e => { (e.currentTarget as HTMLImageElement).style.display = "none"; }} />
+            MTN MoMo
+          </button>
+
+          {/* Zanaco Bank tab */}
+          <button type="button" onClick={() => setActiveTab("bank")}
+            className="flex items-center justify-center gap-2 py-2.5 rounded-xl text-[13px] font-semibold transition-all cursor-pointer"
+            style={{
+              background:   activeTab === "bank" ? "#E9FFA3" : "#F5F6F2",
+              border:       activeTab === "bank" ? "1.5px solid #c8e86a" : "1.5px solid #E5E7DF",
+              color:        activeTab === "bank" ? "#063F3A" : "#7a8394",
+              touchAction:  "manipulation",
+              WebkitTapHighlightColor: "transparent",
+            } as React.CSSProperties}>
+            <img src="/zanaco.png" alt="Zanaco" style={{ height: "20px", width: "auto", objectFit: "contain" }}
+              onError={e => { (e.currentTarget as HTMLImageElement).style.display = "none"; }} />
+            Zanaco Bank
+          </button>
         </div>
 
         {/* MTN MoMo details — all values from config, frozen */}
         {activeTab === "momo" && (
           <div className="rounded-xl p-4 mb-4" style={{ background: "#FEFCE8", border: "1.5px solid #FDE047" }}>
-            <p className="font-bold text-[13.5px] mb-3" style={{ color: "#10182B" }}>📱 MTN Mobile Money</p>
+            <p className="font-bold text-[13.5px] mb-3 flex items-center gap-2" style={{ color: "#10182B" }}>
+              <img src="/mtn.png" alt="MTN" style={{ height: "18px", width: "auto", objectFit: "contain" }}
+                onError={e => { (e.currentTarget as HTMLImageElement).style.display = "none"; }} />
+              MTN Mobile Money
+            </p>
             <dl className="space-y-2">
               <DR label="Send To"   value={PAYMENT_DETAILS.momo.number} highlight />
               <DR label="Name"      value={PAYMENT_DETAILS.momo.name} />
@@ -369,7 +389,11 @@ function PaymentStage({ enrollment, planObj, courseObj, loading, onSubmitPayment
         {/* Bank details — all values from config, frozen */}
         {activeTab === "bank" && (
           <div className="rounded-xl p-4 mb-4" style={{ background: "#F0FDF4", border: "1.5px solid #86EFAC" }}>
-            <p className="font-bold text-[13.5px] mb-3" style={{ color: "#10182B" }}>🏦 Zanaco Bank Transfer</p>
+            <p className="font-bold text-[13.5px] mb-3 flex items-center gap-2" style={{ color: "#10182B" }}>
+              <img src="/zanaco.png" alt="Zanaco" style={{ height: "18px", width: "auto", objectFit: "contain" }}
+                onError={e => { (e.currentTarget as HTMLImageElement).style.display = "none"; }} />
+              Zanaco Bank Transfer
+            </p>
             <dl className="space-y-2">
               <DR label="Bank"         value={PAYMENT_DETAILS.bank.bankName} />
               <DR label="Account Name" value={PAYMENT_DETAILS.bank.accountName} />
