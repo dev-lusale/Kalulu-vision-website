@@ -4,10 +4,11 @@ import Image from "next/image";
 import { SITE_CONFIG } from "@/lib/config";
 import { buildWhatsAppUrl, buildEnquiryWhatsAppMessage } from "@/lib/utils";
 
+/* Navigation links — content frozen */
 const LINKS = [
   { label: "Courses",  href: "#courses" },
-  { label: "Plans",    href: "#plans" },
-  { label: "Enroll",   href: "#enroll" },
+  { label: "Plans",    href: "#plans"   },
+  { label: "Enroll",   href: "#enroll"  },
   { label: "Contact",  href: "#contact" },
 ];
 
@@ -21,53 +22,47 @@ export function Footer() {
   const waUrl = buildWhatsAppUrl(SITE_CONFIG.whatsappNumber, buildEnquiryWhatsAppMessage());
 
   return (
-    <footer
-      className="relative"
-      style={{
-        background: "var(--bg-deep)",
-        borderTop: "1px solid rgba(14,165,233,0.12)",
-      }}
-    >
-      <div className="shimmer-line absolute top-0 inset-x-0" />
+    <footer style={{ background: "#10182B", color: "rgba(255,255,255,0.7)" }}>
+      {/* Lime top accent */}
+      <div style={{ height: "3px", background: "linear-gradient(90deg, #063F3A, #E9FFA3, #c8e86a, #063F3A)" }} />
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-14 pb-8">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-10">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
 
-          {/* Brand */}
+          {/* Brand — content frozen */}
           <div className="col-span-2 md:col-span-1">
             <div className="mb-4">
-              <div className="rounded-xl overflow-hidden w-fit">
+              <div className="rounded-xl overflow-hidden w-fit"
+                style={{ background: "#1a2540", padding: "6px 10px" }}>
                 <Image
                   src="/logo.png"
                   alt="Kalulu Vision"
-                  width={140}
-                  height={46}
-                  className="h-11 w-auto object-contain"
-                  style={{ mixBlendMode: "screen" }}
+                  width={120}
+                  height={40}
+                  className="h-10 w-auto object-contain"
                 />
               </div>
             </div>
-            <p className="text-[13px] leading-relaxed mb-2" style={{ color: "var(--text-muted)" }}>
+            {/* Content frozen: */}
+            <p className="text-[13px] leading-relaxed mb-2" style={{ color: "rgba(255,255,255,0.5)" }}>
               AI &amp; Software Solutions · Technology Education · Innovation
             </p>
-            <p className="text-[11.5px] italic" style={{ color: "rgba(71,85,105,0.8)" }}>
+            <p className="text-[12px] italic" style={{ color: "rgba(233,255,163,0.6)" }}>
               {SITE_CONFIG.tagline}
             </p>
           </div>
 
-          {/* Navigation */}
+          {/* Navigation — labels frozen */}
           <div>
-            <p className="text-[10px] font-black uppercase tracking-[0.18em] mb-4" style={{ color: "var(--text-muted)" }}>
+            <p className="text-[10px] font-black uppercase tracking-[0.18em] mb-4" style={{ color: "#E9FFA3" }}>
               Navigation
             </p>
             <ul className="space-y-2.5">
-              {LINKS.map((l) => (
+              {LINKS.map(l => (
                 <li key={l.href}>
-                  <a
-                    href={l.href}
-                    className="text-[13px] transition-colors duration-150 hover:text-[#38bdf8]"
-                    style={{ color: "rgba(148,163,184,0.7)" }}
-                  >
+                  <a href={l.href}
+                    className="text-[13px] transition-colors duration-150 hover:text-white"
+                    style={{ color: "rgba(255,255,255,0.55)" }}>
                     {l.label}
                   </a>
                 </li>
@@ -75,67 +70,56 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Contact */}
+          {/* Contact — all details frozen */}
           <div>
-            <p className="text-[10px] font-black uppercase tracking-[0.18em] mb-4" style={{ color: "var(--text-muted)" }}>
+            <p className="text-[10px] font-black uppercase tracking-[0.18em] mb-4" style={{ color: "#E9FFA3" }}>
               Contact
             </p>
             <ul className="space-y-2.5">
               <li>
-                <a
-                  href={`mailto:${SITE_CONFIG.email}`}
-                  className="text-[13px] transition-colors duration-150 hover:text-[#38bdf8] break-all"
-                  style={{ color: "rgba(148,163,184,0.7)" }}
-                >
+                <a href={`mailto:${SITE_CONFIG.email}`}
+                  className="text-[13px] transition-colors hover:text-white break-all"
+                  style={{ color: "rgba(255,255,255,0.55)" }}>
                   {SITE_CONFIG.email}
                 </a>
               </li>
               <li>
-                <a
-                  href={waUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[13px] transition-colors duration-150 hover:text-[#25D366]"
-                  style={{ color: "rgba(148,163,184,0.7)" }}
-                >
+                <a href={waUrl} target="_blank" rel="noopener noreferrer"
+                  className="text-[13px] transition-colors hover:text-[#25D366]"
+                  style={{ color: "rgba(255,255,255,0.55)" }}>
                   WhatsApp
                 </a>
               </li>
               <li>
-                <a
-                  href="/admin"
-                  className="text-[13px] transition-colors duration-150 hover:text-white"
-                  style={{ color: "rgba(148,163,184,0.7)" }}
-                >
+                <a href="/admin"
+                  className="text-[13px] transition-colors hover:text-white"
+                  style={{ color: "rgba(255,255,255,0.55)" }}>
                   Admin Portal
                 </a>
               </li>
             </ul>
           </div>
 
-          {/* Connect */}
+          {/* Connect — content frozen */}
           <div>
-            <p className="text-[10px] font-black uppercase tracking-[0.18em] mb-4" style={{ color: "var(--text-muted)" }}>
+            <p className="text-[10px] font-black uppercase tracking-[0.18em] mb-4" style={{ color: "#E9FFA3" }}>
               Connect
             </p>
-            <a
-              href={waUrl}
-              target="_blank"
-              rel="noopener noreferrer"
+            <a href={waUrl} target="_blank" rel="noopener noreferrer"
               className="inline-flex items-center gap-2 font-semibold text-[12.5px] px-4 py-2.5 rounded-xl transition-opacity hover:opacity-90 text-white"
-              style={{ background: "#25D366", boxShadow: "0 0 14px rgba(37,211,102,0.25)" }}
-            >
+              style={{ background: "#25D366" }}>
               {WA_SVG}
               Chat on WhatsApp
             </a>
           </div>
         </div>
 
-        {/* Bottom bar */}
-        <div
-          className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-[12px]"
-          style={{ borderTop: "1px solid rgba(255,255,255,0.05)", color: "var(--text-muted)" }}
-        >
+        {/* Divider */}
+        <div style={{ height: "1px", background: "rgba(255,255,255,0.08)", marginBottom: "20px" }} />
+
+        {/* Bottom bar — content frozen */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-[12px]"
+          style={{ color: "rgba(255,255,255,0.35)" }}>
           <p>© {SITE_CONFIG.year} Kalulu Vision. All rights reserved.</p>
           <p>AI &amp; Software Solutions · Technology Education · Zambia</p>
         </div>

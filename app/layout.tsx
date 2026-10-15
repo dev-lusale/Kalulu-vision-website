@@ -1,13 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
-
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-  display: "swap",
-  weight: ["300", "400", "500", "600", "700", "800", "900"],
-});
 
 export const metadata: Metadata = {
   title: "Kalulu Vision — Technology Training Platform",
@@ -23,24 +15,24 @@ export const metadata: Metadata = {
   },
 };
 
-// Proper viewport for mobile — prevents zoom on input focus on iOS
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
   userScalable: false,
-  themeColor: "#070b14",
+  themeColor: "#10182B",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html
-      lang="en"
-      className={`${inter.variable} h-full scroll-smooth`}
-    >
+    <html lang="en" className="h-full scroll-smooth">
       <body
         className="min-h-full flex flex-col antialiased"
-        style={{ background: "#070b14", color: "#f1f5f9" }}
+        style={{
+          background: "#FFFFFF",
+          color: "#10182B",
+          fontFamily: '"Times New Roman", Times, Georgia, serif',
+        }}
       >
         {children}
       </body>

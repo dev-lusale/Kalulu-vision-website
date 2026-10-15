@@ -17,7 +17,11 @@ import type {
 } from "./types";
 
 const IS_PROD = process.env.NODE_ENV === "production";
-const HAS_DB = !!(
+
+// Only use Prisma in production with a real DATABASE_URL.
+// In development always use local JSON files — avoids connection
+// timeouts to remote Neon databases and keeps the dev loop fast.
+const HAS_DB = IS_PROD && !!(
   process.env.DATABASE_URL                     ||
   process.env.kaluluvision_POSTGRES_PRISMA_URL ||
   process.env.kaluluvision_DATABASE_URL        ||

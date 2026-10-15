@@ -125,63 +125,44 @@ export function AdminDashboard({ initialRecords }: { initialRecords: EnrollmentR
 
   return (
     <div
-      className="min-h-screen dot-bg"
-      style={{ background: "var(--bg-base)" }}
+      className="min-h-screen"
+      style={{ background: "#F5F6F2" }}
     >
       {/* ── Top navbar ──────────────────────────────────────── */}
       <header
         className="sticky top-0 z-30"
         style={{
-          background: "rgba(7,11,20,0.92)",
-          backdropFilter: "blur(16px)",
-          WebkitBackdropFilter: "blur(16px)",
-          borderBottom: "1px solid rgba(14,165,233,0.12)",
+          background: "#10182B",
+          borderBottom: "1px solid rgba(233,255,163,0.15)",
         }}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-4">
           {/* Logo + breadcrumb */}
           <div className="flex items-center gap-3">
-            <div className="rounded-xl overflow-hidden">
-              <Image
-                src="/logo.png"
-                alt="Kalulu Vision"
-                width={110}
-                height={36}
-                className="h-9 w-auto object-contain"
-                style={{ mixBlendMode: "screen" }}
-              />
+            <div className="rounded-xl overflow-hidden" style={{ background: "#1a2540", padding: "4px 8px" }}>
+              <Image src="/logo.png" alt="Kalulu Vision" width={100} height={34}
+                className="h-9 w-auto object-contain" />
             </div>
             <span className="hidden sm:block text-[11px] font-semibold px-2 py-0.5 rounded-md"
-              style={{ background: "rgba(14,165,233,0.1)", color: "var(--blue-bright)", border: "1px solid rgba(14,165,233,0.2)" }}>
+              style={{ background: "rgba(233,255,163,0.15)", color: "#E9FFA3", border: "1px solid rgba(233,255,163,0.25)" }}>
               Admin
             </span>
           </div>
 
           {/* Right actions */}
           <div className="flex items-center gap-3">
-            <a
-              href="/"
-              className="hidden sm:block text-[13px] transition-colors"
-              style={{ color: "var(--text-muted)" }}
+            <a href="/" className="hidden sm:block text-[13px] transition-colors"
+              style={{ color: "rgba(255,255,255,0.5)" }}
+              onMouseEnter={e => (e.currentTarget.style.color = "#E9FFA3")}
+              onMouseLeave={e => (e.currentTarget.style.color = "rgba(255,255,255,0.5)")}
             >
               ← Website
             </a>
-            <button
-              type="button"
-              onClick={handleLogout}
-              className="inline-flex items-center gap-1.5 text-[13px] font-medium px-3 py-1.5 rounded-lg transition-all cursor-pointer"
-              style={{
-                color: "rgba(241,245,249,0.7)",
-                border: "1px solid rgba(255,255,255,0.08)",
-              }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.color = "#f87171";
-                (e.currentTarget as HTMLElement).style.borderColor = "rgba(248,113,113,0.3)";
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.color = "rgba(241,245,249,0.7)";
-                (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.08)";
-              }}
+            <button type="button" onClick={handleLogout}
+              className="inline-flex items-center gap-1.5 text-[13px] font-semibold px-3 py-1.5 rounded-lg transition-all cursor-pointer"
+              style={{ color: "#E9FFA3", border: "1px solid rgba(233,255,163,0.25)", background: "transparent" }}
+              onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = "rgba(233,255,163,0.1)"; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = "transparent"; }}
             >
               Sign Out
             </button>
@@ -205,23 +186,17 @@ export function AdminDashboard({ initialRecords }: { initialRecords: EnrollmentR
             <div
               key={s.label}
               className="glass p-5 transition-all duration-200"
-              style={{ transition: "border-color .2s, box-shadow .2s" }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.borderColor = "rgba(14,165,233,0.3)";
-                (e.currentTarget as HTMLElement).style.boxShadow = "0 0 20px rgba(14,165,233,0.08)";
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.08)";
-                (e.currentTarget as HTMLElement).style.boxShadow = "none";
-              }}
+              style={{ borderColor: "#E5E7DF", boxShadow: "0 4px 16px rgba(16,24,43,0.06)" }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "#c8e86a"; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = "#E5E7DF"; }}
             >
               <div className="flex items-center justify-between mb-3">
-                <p className="text-[11px] font-bold uppercase tracking-[0.14em]" style={{ color: "var(--text-muted)" }}>
+                <p className="text-[11px] font-bold uppercase tracking-[0.14em]" style={{ color: "#7a8394" }}>
                   {s.label}
                 </p>
                 <span className="text-lg">{s.icon}</span>
               </div>
-              <p className="text-3xl font-black text-white tracking-tight">{s.value}</p>
+              <p className="text-3xl font-extrabold tracking-tight" style={{ color: "#10182B" }}>{s.value}</p>
             </div>
           ))}
         </div>
@@ -258,16 +233,8 @@ export function AdminDashboard({ initialRecords }: { initialRecords: EnrollmentR
                 className="px-3.5 py-1.5 rounded-xl text-[12px] font-bold transition-all cursor-pointer"
                 style={
                   filter === f.key
-                    ? {
-                        background: "var(--blue)",
-                        color: "#fff",
-                        boxShadow: "0 0 14px rgba(14,165,233,0.4)",
-                      }
-                    : {
-                        background: "rgba(255,255,255,0.04)",
-                        color: "var(--text-secondary)",
-                        border: "1px solid rgba(255,255,255,0.08)",
-                      }
+                    ? { background: "#10182B", color: "#E9FFA3", border: "1px solid #10182B" }
+                    : { background: "#fff", color: "#4a5568", border: "1px solid #E5E7DF" }
                 }
               >
                 {f.label}
@@ -286,7 +253,7 @@ export function AdminDashboard({ initialRecords }: { initialRecords: EnrollmentR
                     <th
                       key={h}
                       className="text-left text-[10.5px] font-black uppercase tracking-[0.14em] px-4 py-3.5 whitespace-nowrap"
-                      style={{ color: "var(--text-muted)", background: "rgba(255,255,255,0.02)" }}
+                      style={{ color: "#7a8394", background: "rgba(16,24,43,0.03)" }}
                     >
                       {h}
                     </th>
