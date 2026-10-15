@@ -1,7 +1,7 @@
 {
-  "buildCommand": "npm run build",
-  "installCommand": "npm install",
   "framework": "nextjs",
+  "installCommand": "npm install",
+  "buildCommand": "npx prisma generate && npx next build",
   "functions": {
     "app/api/**": {
       "runtime": "nodejs20.x"
