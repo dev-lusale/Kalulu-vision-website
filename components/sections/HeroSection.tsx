@@ -12,98 +12,6 @@ const CHECK_ITEMS = [
   "Certificate on Completion",
 ];
 
-/* ── AI network visual (right column) ── */
-function AIVisual() {
-  return (
-    <div className="relative w-full h-full min-h-[380px] flex items-center justify-center select-none">
-      {/* Lime background block */}
-      <div
-        className="absolute inset-[8%] rounded-[28px]"
-        style={{ background: "#E9FFA3" }}
-      />
-
-      {/* Floating globe from existing asset — repurposed with new colors */}
-      <div className="relative z-10 float w-64 h-64 sm:w-80 sm:h-80">
-        {/* Outer ring */}
-        <div
-          className="orbit absolute inset-[4%] rounded-full"
-          style={{ border: "1.5px solid rgba(6,63,58,0.2)" }}
-        >
-          <div
-            className="absolute w-3.5 h-3.5 rounded-full -top-1.5 left-1/2 -translate-x-1/2"
-            style={{ background: "#063F3A", boxShadow: "0 0 10px rgba(6,63,58,0.5)" }}
-          />
-        </div>
-
-        {/* Inner ring */}
-        <div
-          className="orbit-rev absolute inset-[18%] rounded-full"
-          style={{ border: "1.5px dashed rgba(6,63,58,0.25)" }}
-        >
-          <div
-            className="absolute w-2.5 h-2.5 rounded-full top-0 right-[20%]"
-            style={{ background: "#0d7068" }}
-          />
-        </div>
-
-        {/* Core sphere */}
-        <div
-          className="absolute inset-[28%] rounded-full"
-          style={{
-            background: "radial-gradient(circle at 35% 35%, #0a5a52 0%, #063F3A 100%)",
-            boxShadow: "0 0 30px rgba(6,63,58,0.3), inset 0 0 20px rgba(233,255,163,0.15)",
-          }}
-        >
-          <svg className="absolute inset-0 w-full h-full opacity-20" viewBox="0 0 100 100">
-            <ellipse cx="50" cy="50" rx="46" ry="18" fill="none" stroke="#E9FFA3" strokeWidth="0.8" />
-            <ellipse cx="50" cy="50" rx="46" ry="34" fill="none" stroke="#E9FFA3" strokeWidth="0.8" />
-            <line x1="4"  y1="50" x2="96" y2="50" stroke="#E9FFA3" strokeWidth="0.6" />
-            <line x1="50" y1="4"  x2="50" y2="96" stroke="#E9FFA3" strokeWidth="0.6" />
-          </svg>
-          {/* Lime node */}
-          <div className="absolute w-2.5 h-2.5 rounded-full"
-            style={{ top: "28%", left: "62%", background: "#E9FFA3", boxShadow: "0 0 10px #E9FFA3" }} />
-          <div className="absolute w-2 h-2 rounded-full"
-            style={{ top: "64%", left: "32%", background: "#c8e86a" }} />
-        </div>
-
-        {/* Connection lines */}
-        <svg className="absolute inset-0 w-full h-full opacity-15 pointer-events-none" viewBox="0 0 320 320">
-          <line x1="260" y1="60"  x2="160" y2="160" stroke="#063F3A" strokeWidth="1" strokeDasharray="4 4" />
-          <line x1="60"  y1="260" x2="160" y2="160" stroke="#063F3A" strokeWidth="1" strokeDasharray="4 4" />
-          <circle cx="260" cy="60"  r="4" fill="#063F3A" />
-          <circle cx="60"  cy="260" r="3" fill="#063F3A" />
-        </svg>
-      </div>
-
-      {/* Decorative geometric shapes (like reference screenshot) */}
-      {/* Triangle */}
-      <svg
-        className="absolute top-[12%] right-[8%] opacity-70"
-        width="32" height="28" viewBox="0 0 32 28" fill="none"
-      >
-        <path d="M16 2L30 26H2L16 2Z" stroke="#063F3A" strokeWidth="2.5" strokeLinejoin="round" />
-      </svg>
-
-      {/* Circle ring */}
-      <svg
-        className="absolute bottom-[14%] left-[6%] opacity-60"
-        width="44" height="44" viewBox="0 0 44 44" fill="none"
-      >
-        <circle cx="22" cy="22" r="18" stroke="#063F3A" strokeWidth="2.5" />
-        <circle cx="22" cy="22" r="10" stroke="#063F3A" strokeWidth="1.5" />
-        <circle cx="22" cy="22" r="3" fill="#063F3A" />
-      </svg>
-
-      {/* Mini lime rectangle */}
-      <div
-        className="absolute top-[18%] left-[10%] rounded-lg opacity-80"
-        style={{ width: "18px", height: "18px", background: "#063F3A", transform: "rotate(15deg)" }}
-      />
-    </div>
-  );
-}
-
 export function HeroSection() {
   const [wordIndex, setWordIndex] = useState(0);
   const [displayed, setDisplayed] = useState("");
@@ -128,28 +36,48 @@ export function HeroSection() {
   return (
     <section
       id="hero"
-      className="relative overflow-hidden bg-white dot-bg"
-      style={{ paddingTop: "calc(44px + 64px)" }}
+      className="relative overflow-hidden"
+      style={{ paddingTop: "64px", minHeight: "100vh" }}
       aria-label="Hero"
     >
-      {/* Soft lime wash top-right */}
+      {/* ── Full background image ── */}
+      <div className="absolute inset-0 z-0">
+        <Image
+          src="/background.png"
+          alt=""
+          fill
+          priority
+          quality={90}
+          style={{ objectFit: "cover", objectPosition: "center top" }}
+          sizes="100vw"
+        />
+        {/* Overlay so text stays readable */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background: "linear-gradient(105deg, rgba(255,255,255,0.97) 0%, rgba(255,255,255,0.92) 45%, rgba(255,255,255,0.55) 72%, rgba(255,255,255,0.15) 100%)",
+          }}
+        />
+      </div>
+
+      {/* Subtle lime wash at top */}
       <div
-        className="absolute top-0 right-0 pointer-events-none"
+        className="absolute top-0 left-0 right-0 pointer-events-none z-0"
         style={{
-          width: "52vw", height: "70vh",
-          background: "radial-gradient(ellipse at top right, rgba(233,255,163,0.45) 0%, transparent 65%)",
+          height: "55%",
+          background: "radial-gradient(ellipse at 20% 0%, rgba(233,255,163,0.35) 0%, transparent 60%)",
         }}
       />
 
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-24 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
 
           {/* ── Left: text ── */}
           <div>
             {/* Eyebrow */}
             <span className="section-label">Technology Training Platform · Zambia</span>
 
-            {/* Headline — preserve exact words, just new styling */}
+            {/* Headline */}
             <h1
               className="font-extrabold leading-[1.05] tracking-tight mb-5"
               style={{
@@ -165,13 +93,13 @@ export function HeroSection() {
               <span className="cursor-blink" aria-hidden="true" />
             </h1>
 
-            {/* Sub-copy — content frozen */}
+            {/* Sub-copy */}
             <p className="text-base sm:text-lg leading-relaxed mb-8 max-w-lg" style={{ color: "#4a5568" }}>
               Practical technology training designed to help you develop
               real-world digital skills and build solutions for the future.
             </p>
 
-            {/* CTAs — exact labels preserved */}
+            {/* CTAs */}
             <div className="flex flex-col sm:flex-row gap-3 mb-10">
               <a href="#enroll" className="btn-lime">
                 Enroll Now
@@ -187,7 +115,7 @@ export function HeroSection() {
               </a>
             </div>
 
-            {/* Feature checklist — content frozen */}
+            {/* Checklist */}
             <ul className="space-y-2.5">
               {CHECK_ITEMS.map((item) => (
                 <li key={item} className="flex items-center gap-3">
@@ -205,16 +133,81 @@ export function HeroSection() {
             </ul>
           </div>
 
-          {/* ── Right: visual ── */}
-          <div className="hidden lg:block">
-            <AIVisual />
+          {/* ── Right: person photo ── */}
+          <div className="hidden lg:flex items-center justify-end">
+            <div
+              className="relative"
+              style={{ width: "420px", height: "480px" }}
+            >
+              {/* Lime background block behind the image */}
+              <div
+                className="absolute"
+                style={{
+                  top: "24px", right: "0",
+                  width: "88%", height: "100%",
+                  background: "#E9FFA3",
+                  borderRadius: "28px",
+                  zIndex: 0,
+                }}
+              />
+
+              {/* Decorative teal circle */}
+              <div
+                className="absolute"
+                style={{
+                  top: "0", left: "0",
+                  width: "80px", height: "80px",
+                  borderRadius: "50%",
+                  border: "3px solid #063F3A",
+                  zIndex: 1,
+                  opacity: 0.4,
+                }}
+              />
+
+              {/* Small lime square decoration */}
+              <div
+                className="absolute"
+                style={{
+                  bottom: "16px", right: "-12px",
+                  width: "48px", height: "48px",
+                  background: "#063F3A",
+                  borderRadius: "10px",
+                  zIndex: 1,
+                  opacity: 0.7,
+                  transform: "rotate(18deg)",
+                }}
+              />
+
+              {/* Main person image */}
+              <div
+                className="absolute overflow-hidden"
+                style={{
+                  top: "0", left: "0",
+                  width: "88%", height: "100%",
+                  borderRadius: "28px",
+                  zIndex: 2,
+                  boxShadow: "0 20px 60px rgba(16,24,43,0.18)",
+                }}
+              >
+                <Image
+                  src="/background.png"
+                  alt="Student learning technology at Kalulu Vision"
+                  fill
+                  quality={90}
+                  style={{ objectFit: "cover", objectPosition: "center top" }}
+                  sizes="420px"
+                  priority
+                />
+              </div>
+            </div>
           </div>
+
         </div>
 
-        {/* ── Stats bar — content frozen ── */}
+        {/* ── Stats bar ── */}
         <div
           className="mt-16 sm:mt-20 pt-8 grid grid-cols-2 sm:grid-cols-4 gap-6"
-          style={{ borderTop: "1.5px solid #E5E7DF" }}
+          style={{ borderTop: "1.5px solid rgba(16,24,43,0.1)" }}
         >
           {[
             { value: "7+",   label: "Courses"   },
@@ -237,7 +230,7 @@ export function HeroSection() {
       {/* Scroll indicator */}
       <a
         href="#courses"
-        className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 opacity-40 hover:opacity-70 transition-opacity"
+        className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 opacity-40 hover:opacity-70 transition-opacity z-10"
         aria-label="Scroll to courses"
       >
         <svg className="w-5 h-5 animate-bounce" fill="none" viewBox="0 0 24 24" stroke="#10182B" strokeWidth={2}>
