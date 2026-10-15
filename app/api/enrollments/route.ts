@@ -30,12 +30,22 @@ export async function POST(request: NextRequest) {
     if (!VALID_PLAN_IDS.has(plan))                             return err("Invalid plan selection.", 400);
     if (!VALID_MODES.has(learningMode))                        return err("Invalid learning mode.", 400);
 
-    // Idempotency — same email + course returns existing enrollment
+    // Idempotency — block exact duplicate: same email + same course + same plan
+    // (same email can enroll in different courses or different plans)
     const all      = await getEnrollments();
     const existing = all.find(
-      (e) => e.email.toLowerCase() === email.toLowerCase() && e.course === course
+      (e) =>
+        e.email.toLowerCase() === email.toLowerCase() &&
+        e.course === course &&
+        e.plan   === plan
     );
-    if (existing) return ok(existing, 200);
+    if (existing) {
+      return err(
+        `You are already enrolled in this course with this plan. ` +
+        `Your Enrollment ID is: ${existing.enrollmentId}`,
+        409
+      );
+    }
 
     const enrollment: Enrollment = {
       id:           generateId(),

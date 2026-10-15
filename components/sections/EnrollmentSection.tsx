@@ -90,7 +90,13 @@ export function EnrollmentSection({ selectedCourse, selectedPlan, selectedSubTop
         body: JSON.stringify({ ...values, subTopic: subTopicId ?? undefined }),
       });
       const json = await res.json();
-      if (!res.ok || !json.success) throw new Error(json.error ?? "Enrollment failed.");
+      if (!res.ok || !json.success) {
+        // 409 = already enrolled in exact same course + plan
+        if (res.status === 409) {
+          throw new Error(json.error ?? "You are already enrolled in this course and plan.");
+        }
+        throw new Error(json.error ?? "Enrollment failed.");
+      }
       setEnrollment(json.data as Enrollment);
       setStage("payment");
       setTimeout(() => {
