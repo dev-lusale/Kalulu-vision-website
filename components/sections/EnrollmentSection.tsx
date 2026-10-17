@@ -382,12 +382,12 @@ function PaymentStage({ enrollment, planObj, courseObj, loading, onSubmitPayment
               MTN Mobile Money
             </p>
             <dl className="space-y-2">
-              <DR label="Send To"   value={PAYMENT_DETAILS.momo.number} highlight />
+              <DR label="Send To"   value={PAYMENT_DETAILS.momo.number} highlight copyable />
               <DR label="Name"      value={PAYMENT_DETAILS.momo.name} />
               <DR label="Reference" value="Kalulu Vision — Enroll" />
             </dl>
             <p className="mt-3 text-[11.5px] font-medium" style={{ color: "#a16207" }}>
-              Dial *303# → Send Money → Enter number above → Amount: K{planObj.price}
+              Dial *115# → Send Money → Enter number above → Amount: K{planObj.price}
             </p>
           </div>
         )}
@@ -403,7 +403,7 @@ function PaymentStage({ enrollment, planObj, courseObj, loading, onSubmitPayment
             <dl className="space-y-2">
               <DR label="Bank"         value={PAYMENT_DETAILS.bank.bankName} />
               <DR label="Account Name" value={PAYMENT_DETAILS.bank.accountName} />
-              <DR label="Account No."  value={PAYMENT_DETAILS.bank.accountNumber} highlight />
+              <DR label="Account No."  value={PAYMENT_DETAILS.bank.accountNumber} highlight copyable />
               <DR label="Branch"       value={PAYMENT_DETAILS.bank.branch} />
               <DR label="Amount"       value={`K${planObj.price}`} highlight />
               <DR label="Reference"    value={enrollment.enrollmentId} />
@@ -439,11 +439,56 @@ function PaymentStage({ enrollment, planObj, courseObj, loading, onSubmitPayment
 }
 
 /* ── Detail row helper ── */
-function DR({ label, value, highlight }: { label: string; value: string; highlight?: boolean }) {
+function DR({ label, value, highlight, copyable }: {
+  label: string; value: string; highlight?: boolean; copyable?: boolean;
+}) {
+  const [copied, setCopied] = useState(false);
+
+  function handleCopy() {
+    navigator.clipboard?.writeText(value).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  }
+
   return (
-    <div className="flex gap-2 text-[12.5px]">
+    <div className="flex items-center gap-2 text-[12.5px]">
       <dt className="w-28 shrink-0 font-medium" style={{ color: "#7a8394" }}>{label}</dt>
-      <dd className="font-bold font-mono break-all" style={{ color: highlight ? "#063F3A" : "#10182B" }}>{value}</dd>
+      <dd className="font-bold font-mono break-all flex-1" style={{ color: highlight ? "#063F3A" : "#10182B" }}>
+        {value}
+      </dd>
+      {copyable && (
+        <button
+          type="button"
+          onClick={handleCopy}
+          className="shrink-0 flex items-center gap-1 text-[10.5px] font-bold px-2 py-0.5 rounded-lg cursor-pointer transition-all"
+          style={{
+            background: copied ? "#DCFCE7" : "#E9FFA3",
+            color:      copied ? "#15803d" : "#063F3A",
+            border:     `1px solid ${copied ? "#86EFAC" : "#c8e86a"}`,
+            whiteSpace: "nowrap",
+            touchAction: "manipulation",
+            WebkitTapHighlightColor: "transparent",
+          } as React.CSSProperties}
+        >
+          {copied ? (
+            <>
+              <svg width="10" height="10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+              Copied!
+            </>
+          ) : (
+            <>
+              <svg width="10" height="10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <rect x="9" y="9" width="13" height="13" rx="2" />
+                <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" />
+              </svg>
+              Copy
+            </>
+          )}
+        </button>
+      )}
     </div>
   );
 }
