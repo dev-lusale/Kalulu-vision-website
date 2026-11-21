@@ -4,10 +4,13 @@
  * - Admin accounts live in the "admins" table (bcrypt password hashes).
  * - Sessions are stateless, HMAC-SHA256-signed cookies: "<adminId>.<email>.<expiry>.<sig>".
  *   The signing key is SESSION_SECRET, which is never sent to the browser.
- * - First-run bootstrap: while the admins table is empty, signing in with
- *   ADMIN_EMAIL + ADMIN_PASSWORD (environment variables) creates the first admin.
+ * - Owner sign-in: the ADMIN_PASSWORD environment variable always works together with
+ *   the owner email (ADMIN_EMAIL, or the company email from Company info when ADMIN_EMAIL
+ *   is not set). It creates or refreshes that admin account, so the owner can never be
+ *   locked out of payment verification.
  * - Without a database (local development only), ADMIN_PASSWORD alone signs you in.
- * - In production, logins are refused unless SESSION_SECRET is set (≥ 32 chars).
+ * - In production, logins are refused unless SESSION_SECRET is set. A short secret is
+ *   strengthened by hashing it together with the (secret) database URL.
  */
 import "server-only";
 import crypto from "node:crypto";
@@ -24,13 +27,29 @@ export interface AdminSession { adminId: string; email: string; exp: number }
 function secret(): string | null {
   const s = process.env.SESSION_SECRET ?? "";
   if (s.length >= 32) return s;
-  if (!IS_PROD) return s || "development-only-session-secret-not-for-production";
+  if (s) {
+    // Older deployments used shorter secrets: derive a strong key from it plus the database URL.
+    const extra = process.env.DATABASE_URL ?? process.env.kaluluvision_DATABASE_URL ?? "";
+    return crypto.createHash("sha256").update(`kv-session|${s}|${extra}`).digest("hex");
+  }
+  if (!IS_PROD) return "development-only-session-secret-not-for-production";
   return null;
 }
 
 export function authConfigError(): string | null {
-  if (!secret()) return "SESSION_SECRET must be set (at least 32 characters) before admins can sign in.";
+  if (!secret()) return "SESSION_SECRET must be set in the hosting environment before admins can sign in.";
   return null;
+}
+
+/** The owner's sign-in email: ADMIN_EMAIL, else the company email saved in Company info. */
+async function ownerEmail(): Promise<string> {
+  const env = (process.env.ADMIN_EMAIL || "").trim().toLowerCase();
+  if (env) return env;
+  try {
+    const r = await queryOne<{ email: string | null }>(`SELECT value->>'email' AS email FROM kv_settings WHERE key = 'company'`);
+    if (r?.email) return r.email.trim().toLowerCase();
+  } catch { /* settings table may not exist yet */ }
+  return "bernardlusale20@gmail.com";
 }
 
 function sign(payload: string, key: string): string {
@@ -98,6 +117,18 @@ export async function verifyAdminCredentials(
     return { ok: true, adminId: "dev-admin", email: email || "dev@localhost" };
   }
 
+  // Owner sign-in with the ADMIN_PASSWORD set in the hosting environment.
+  const envPass = process.env.ADMIN_PASSWORD || "";
+  if (envPass && safeEqual(password, envPass) && email === (await ownerEmail())) {
+    const hash = await bcrypt.hash(envPass, 12);
+    const existing = await queryOne<{ id: string }>(`SELECT "id" FROM "admins" WHERE lower("email") = $1`, [email]);
+    const id = existing?.id ?? crypto.randomUUID();
+    if (existing) await query(`UPDATE "admins" SET "passwordHash" = $1 WHERE "id" = $2`, [hash, id]);
+    else await query(`INSERT INTO "admins" ("id","email","passwordHash") VALUES ($1,$2,$3)`, [id, email, hash]);
+    clearFailures(clientKey);
+    return { ok: true, adminId: id, email };
+  }
+
   const row = await queryOne<{ id: string; email: string; passwordHash: string }>(
     `SELECT "id","email","passwordHash" FROM "admins" WHERE lower("email") = $1`, [email]
   );
@@ -105,17 +136,6 @@ export async function verifyAdminCredentials(
     if (!(await bcrypt.compare(password, row.passwordHash))) return fail();
     clearFailures(clientKey);
     return { ok: true, adminId: row.id, email: row.email };
-  }
-
-  // Bootstrap the first admin from environment variables.
-  const count = Number((await queryOne<{ n: string }>(`SELECT count(*)::text AS n FROM "admins"`))?.n ?? "0");
-  const envEmail = (process.env.ADMIN_EMAIL || "").trim().toLowerCase();
-  const envPass = process.env.ADMIN_PASSWORD || "";
-  if (count === 0 && envEmail && envPass.length >= 10 && email === envEmail && safeEqual(password, envPass)) {
-    const id = crypto.randomUUID();
-    await query(`INSERT INTO "admins" ("id","email","passwordHash") VALUES ($1,$2,$3)`, [id, envEmail, await bcrypt.hash(envPass, 12)]);
-    clearFailures(clientKey);
-    return { ok: true, adminId: id, email: envEmail };
   }
   return fail();
 }

@@ -55,7 +55,7 @@ Copy `.env.example` to `.env.local` for local development. On Vercel, set these 
 |---|---|---|
 | `DATABASE_URL` | Yes (production) | Pooled Postgres URL. Vercel's Neon integration provides `kaluluvision_POSTGRES_PRISMA_URL`, which is also accepted. |
 | `DATABASE_URL_UNPOOLED` | Recommended | Direct URL used for migrations (`kaluluvision_POSTGRES_URL_NON_POOLING` is also accepted). |
-| `SESSION_SECRET` | **Yes** | At least 32 random characters, used to sign admin sessions. Without it, admins cannot sign in in production. Generate one with `node -e "console.log(require('crypto').randomBytes(48).toString('base64url'))"` |
+| `SESSION_SECRET` | **Yes** | Used to sign admin sessions. 32+ random characters is recommended; shorter existing secrets are strengthened automatically. Without it, admins cannot sign in in production. Generate one with `node -e "console.log(require('crypto').randomBytes(48).toString('base64url'))"` |
 | `ADMIN_EMAIL` / `ADMIN_PASSWORD` | First run | Used once to create the first admin (see below). The password must be at least 10 characters. |
 | `NEXT_PUBLIC_SITE_URL` | Recommended | Canonical site URL for sitemaps and social previews, e.g. `https://kalulu-vision-website.vercel.app` |
 
@@ -77,7 +77,7 @@ Copy `.env.example` to `.env.local` for local development. On Vercel, set these 
 
 Use either option:
 
-- **Environment bootstrap:** set `ADMIN_EMAIL` and `ADMIN_PASSWORD`, deploy, then sign in at `/admin` with them. That first sign-in creates the account, with the password stored as a bcrypt hash. Afterwards you can remove `ADMIN_PASSWORD` from the environment.
+- **Owner sign-in:** sign in at `/admin` with the owner email and the `ADMIN_PASSWORD` set in Vercel. The owner email is `ADMIN_EMAIL` if set, otherwise the company email in **Company info**. This always works (it creates or refreshes the owner's account), so the owner can't be locked out. Remove `ADMIN_PASSWORD` from Vercel if you prefer to rely only on the password stored in the admin.
 - **Command line:** `npm run admin:create -- you@example.com 'a-long-password'` (this also resets the password of an existing admin).
 
 Change your password at any time under **Admin → Account**. Sessions last 8 hours. Repeated failed sign-ins are rate-limited.
