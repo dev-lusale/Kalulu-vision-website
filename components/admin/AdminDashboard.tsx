@@ -3,6 +3,7 @@
 import { useState, useTransition, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
 import type { EnrollmentRecord } from "@/lib/types";
 import { COURSES, PLANS } from "@/lib/config";
 
@@ -129,7 +130,7 @@ function exportCSV(records: EnrollmentRecord[]) {
 /* ═══════════════════════════════════════════════════════════
    MAIN DASHBOARD
    ═══════════════════════════════════════════════════════════ */
-export function AdminDashboard({ initialRecords }: { initialRecords: EnrollmentRecord[] }) {
+export function AdminDashboard({ initialRecords, embedded = false }: { initialRecords: EnrollmentRecord[]; embedded?: boolean }) {
   const router = useRouter();
   const [, startTransition]               = useTransition();
   const [records, setRecords]             = useState(initialRecords);
@@ -257,9 +258,10 @@ export function AdminDashboard({ initialRecords }: { initialRecords: EnrollmentR
   ];
 
   return (
-    <div className="min-h-screen" style={{ background: "#F5F6F2" }}>
+    <div className={embedded ? "kv-legacy" : "kv-legacy min-h-screen"} style={{ background: "#F5F6F2" }}>
 
-      {/* ── Navbar ── */}
+      {/* ── Navbar (hidden when embedded in the admin shell) ── */}
+      {!embedded && (
       <header className="sticky top-0 z-30" style={{ background: "#10182B", borderBottom: "1px solid rgba(233,255,163,0.15)" }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
@@ -289,8 +291,8 @@ export function AdminDashboard({ initialRecords }: { initialRecords: EnrollmentR
               <Icon d={I.download} size={14} stroke="#E9FFA3" />
               Export
             </button>
-            <a href="/" className="hidden sm:block text-[12px] font-medium px-2.5 py-1.5 rounded-lg"
-              style={{ color: "rgba(255,255,255,0.4)" }}>← Site</a>
+            <Link href="/" className="hidden sm:block text-[12px] font-medium px-2.5 py-1.5 rounded-lg"
+              style={{ color: "rgba(255,255,255,0.4)" }}>← Site</Link>
             <button type="button" onClick={handleLogout}
               className="flex items-center gap-1.5 text-[12px] font-semibold px-2.5 py-1.5 rounded-lg cursor-pointer"
               style={{ color: "#E9FFA3", border: "1px solid rgba(233,255,163,0.25)", background: "transparent" }}>
@@ -300,6 +302,7 @@ export function AdminDashboard({ initialRecords }: { initialRecords: EnrollmentR
           </div>
         </div>
       </header>
+      )}
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-7">
 

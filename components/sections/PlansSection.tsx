@@ -11,7 +11,7 @@ export function PlansSection({ onSelectPlan }: PlansSectionProps) {
   return (
     <section
       id="plans"
-      className="py-20 sm:py-28 bg-white"
+      className="py-20 sm:py-28"
       aria-labelledby="plans-heading"
     >
       <div className="max-w-5xl mx-auto px-4 sm:px-6">
@@ -22,11 +22,11 @@ export function PlansSection({ onSelectPlan }: PlansSectionProps) {
           <h2
             id="plans-heading"
             className="text-3xl sm:text-4xl font-extrabold tracking-tight mb-4"
-            style={{ color: "#10182B" }}
+            style={{ color: "#FFFFFF" }}
           >
             Subscription Plans
           </h2>
-          <p className="max-w-md mx-auto text-[15px] leading-relaxed" style={{ color: "#4a5568" }}>
+          <p className="max-w-md mx-auto text-[15px] leading-relaxed" style={{ color: "#A7B0C0" }}>
             Choose a plan that fits your schedule. All plans include course
             materials and WhatsApp support.
           </p>
@@ -50,7 +50,7 @@ export function PlansSection({ onSelectPlan }: PlansSectionProps) {
                 <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
                   <span
                     className="text-[10px] font-black uppercase tracking-[0.15em] px-4 py-1.5 rounded-full"
-                    style={{ background: "#10182B", color: "#E9FFA3" }}
+                    style={{ background: "#FF8A00", color: "#070B18" }}
                   >
                     Most Popular
                   </span>
@@ -60,7 +60,7 @@ export function PlansSection({ onSelectPlan }: PlansSectionProps) {
               {/* Plan label — frozen */}
               <p
                 className="text-[11px] font-black uppercase tracking-[0.18em] mb-4"
-                style={{ color: plan.highlighted ? "#063F3A" : "#7a8394" }}
+                style={{ color: plan.highlighted ? "#FFB52E" : "#A7B0C0" }}
               >
                 {plan.label}
               </p>
@@ -69,12 +69,12 @@ export function PlansSection({ onSelectPlan }: PlansSectionProps) {
               <div className="mb-1">
                 <span
                   className="text-5xl font-extrabold tracking-tight"
-                  style={{ color: plan.highlighted ? "#10182B" : "#10182B" }}
+                  style={{ color: plan.highlighted ? "#FF8A00" : "#FFFFFF" }}
                 >
                   K{plan.price}
                 </span>
               </div>
-              <p className="text-[13px] mb-7" style={{ color: plan.highlighted ? "#1a2540" : "#7a8394" }}>
+              <p className="text-[13px] mb-7" style={{ color: plan.highlighted ? "#C9D1DE" : "#A7B0C0" }}>
                 {plan.description}
               </p>
 
@@ -85,21 +85,21 @@ export function PlansSection({ onSelectPlan }: PlansSectionProps) {
                     <div
                       className="w-4 h-4 rounded-full shrink-0 mt-0.5 flex items-center justify-center"
                       style={{
-                        background: plan.highlighted ? "#10182B" : "#E9FFA3",
-                        border: plan.highlighted ? "none" : "1.5px solid #c8e86a",
+                        background: plan.highlighted ? "#FF8A00" : "#FF8A00",
+                        border: "none",
                       }}
                     >
                       <svg
                         className="w-2.5 h-2.5"
                         fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}
-                        style={{ color: plan.highlighted ? "#E9FFA3" : "#063F3A" }}
+                        style={{ color: "#070B18" }}
                       >
                         <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                       </svg>
                     </div>
                     <span
                       className="text-[13px] leading-snug"
-                      style={{ color: plan.highlighted ? "#1a2540" : "#4a5568" }}
+                      style={{ color: plan.highlighted ? "#C9D1DE" : "#A7B0C0" }}
                     >
                       {feature}
                     </span>
@@ -113,18 +113,17 @@ export function PlansSection({ onSelectPlan }: PlansSectionProps) {
                 onClick={() => onSelectPlan?.(plan.id)}
                 className="w-full text-[13.5px] font-bold py-3 rounded-xl transition-all cursor-pointer"
                 style={{
-                  background:  plan.highlighted ? "#10182B" : "#E9FFA3",
-                  color:       plan.highlighted ? "#E9FFA3" : "#10182B",
-                  border:      plan.highlighted ? "none" : "1.5px solid #c8e86a",
+                  background:  "#FF8A00",
+                  color:       "#070B18",
+                  border:      "none",
                   touchAction: "manipulation",
                   WebkitTapHighlightColor: "transparent",
                 } as React.CSSProperties}
                 onMouseEnter={e => {
-                  if (plan.highlighted) (e.currentTarget as HTMLButtonElement).style.background = "#063F3A";
-                  else (e.currentTarget as HTMLButtonElement).style.background = "#d4f070";
+                  (e.currentTarget as HTMLButtonElement).style.background = "#FFB52E";
                 }}
                 onMouseLeave={e => {
-                  (e.currentTarget as HTMLButtonElement).style.background = plan.highlighted ? "#10182B" : "#E9FFA3";
+                  (e.currentTarget as HTMLButtonElement).style.background = "#FF8A00";
                 }}
               >
                 Get Started →
@@ -134,7 +133,7 @@ export function PlansSection({ onSelectPlan }: PlansSectionProps) {
         </div>
 
         {/* Footer note — content frozen */}
-        <p className="text-center text-xs mt-8" style={{ color: "#7a8394" }}>
+        <p className="text-center text-xs mt-8" style={{ color: "#A7B0C0" }}>
           All prices in Zambian Kwacha (ZMW) · Payment verified manually via WhatsApp
         </p>
       </div>

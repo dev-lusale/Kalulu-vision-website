@@ -59,7 +59,7 @@ export async function POST(request: NextRequest) {
       createdAt:    new Date().toISOString(),
     };
 
-    await saveEnrollment(enrollment);
+    await saveEnrollment({ ...enrollment, subTopic: subTopic || undefined });
     return ok(enrollment, 201);
   } catch (e) {
     console.error("[POST /api/enrollments]", e);

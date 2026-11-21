@@ -2,38 +2,8 @@ export const runtime = "nodejs";
 
 import { NextRequest } from "next/server";
 import { isAdminAuthenticated } from "@/lib/auth";
-import { getEnrollmentByEnrollmentId } from "@/lib/db";
+import { deleteEnrollmentRecord, getEnrollmentByEnrollmentId } from "@/lib/db";
 import { sanitizeString } from "@/lib/utils";
-
-// ── Lazy-load db write helpers ────────────────────────────────
-async function deleteEnrollmentRecord(enrollmentId: string): Promise<void> {
-  const HAS_DB = !!(
-    process.env.DATABASE_URL                     ||
-    process.env.kaluluvision_POSTGRES_PRISMA_URL ||
-    process.env.kaluluvision_DATABASE_URL
-  );
-
-  if (HAS_DB) {
-    const { prisma } = await import("@/lib/prisma");
-    // Cascade deletes payment + subscription via schema relations
-    await prisma.enrollment.delete({ where: { enrollmentId } });
-    return;
-  }
-
-  // File-based fallback
-  const fs   = require("fs")   as typeof import("fs");
-  const path = require("path") as typeof import("path");
-  const dir  = path.join(process.cwd(), "data");
-
-  const files = ["enrollments.json", "payments.json", "subscriptions.json"];
-  for (const file of files) {
-    const fp = path.join(dir, file);
-    if (!fs.existsSync(fp)) continue;
-    const data = JSON.parse(fs.readFileSync(fp, "utf8")) as { enrollmentId?: string }[];
-    const filtered = data.filter((r) => r.enrollmentId !== enrollmentId);
-    fs.writeFileSync(fp, JSON.stringify(filtered, null, 2), "utf8");
-  }
-}
 
 export async function DELETE(
   request: NextRequest,

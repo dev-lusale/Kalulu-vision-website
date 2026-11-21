@@ -1,14 +1,17 @@
 /**
- * Database access layer.
+ * Training-platform data access (enrollments, payments, subscriptions).
  *
- * DEV  (no DATABASE_URL) → JSON files in /data on local disk
- * PROD (DATABASE_URL set) → PostgreSQL via Prisma
+ * PRODUCTION with a database → PostgreSQL via node-postgres (lib/server/pool.ts)
+ * DEVELOPMENT without a database → JSON files in /data on local disk
+ * PRODUCTION without a database → in-memory (resets on cold start; for test deploys only)
  *
- * On Vercel without a database, data won't persist between requests.
- * Add DATABASE_URL in Vercel → Settings → Environment Variables to enable
- * full persistence.
+ * Previously used Prisma; the tables and columns are unchanged (see db/migrations/001).
  */
 
+import "server-only";
+import fs from "node:fs";
+import path from "node:path";
+import { hasDatabase, query, queryOne } from "./server/pool";
 import type {
   Enrollment,
   Payment,
@@ -18,55 +21,42 @@ import type {
 
 const IS_PROD = process.env.NODE_ENV === "production";
 
-// Only use Prisma in production with a real DATABASE_URL.
-// In development always use local JSON files — avoids connection
-// timeouts to remote Neon databases and keeps the dev loop fast.
-const HAS_DB = IS_PROD && !!(
-  process.env.DATABASE_URL                     ||
-  process.env.kaluluvision_POSTGRES_PRISMA_URL ||
-  process.env.kaluluvision_DATABASE_URL        ||
-  process.env.POSTGRES_PRISMA_URL              ||
-  process.env.POSTGRES_URL
-);
-
-// ─────────────────────────────────────────────────────────────
-//  PRISMA PATH  (PostgreSQL)
-// ─────────────────────────────────────────────────────────────
-async function db() {
-  const { prisma } = await import("./prisma");
-  return prisma;
-}
+// Use Postgres whenever a database URL is configured (dev or prod).
+const HAS_DB = hasDatabase();
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
+function iso(v: unknown): string | undefined {
+  if (v == null) return undefined;
+  return v instanceof Date ? v.toISOString() : String(v);
+}
 function mapE(r: any): Enrollment {
   return {
     id: r.id, enrollmentId: r.enrollmentId, fullName: r.fullName,
     whatsapp: r.whatsapp, email: r.email, course: r.course,
     plan: r.plan, learningMode: r.learningMode,
-    createdAt: r.createdAt instanceof Date ? r.createdAt.toISOString() : r.createdAt,
+    createdAt: iso(r.createdAt) ?? new Date().toISOString(),
   };
 }
 function mapP(r: any): Payment {
   return {
-    id: r.id, enrollmentId: r.enrollmentId, amount: r.amount,
+    id: r.id, enrollmentId: r.enrollmentId, amount: Number(r.amount),
     paymentMethod: r.paymentMethod, status: r.status,
-    submittedAt: r.submittedAt instanceof Date ? r.submittedAt.toISOString() : r.submittedAt,
-    verifiedAt:  r.verifiedAt  instanceof Date ? r.verifiedAt.toISOString()  : (r.verifiedAt ?? undefined),
+    submittedAt: iso(r.submittedAt) ?? new Date().toISOString(),
+    verifiedAt: iso(r.verifiedAt),
   };
 }
 function mapS(r: any): Subscription {
   return {
     id: r.id, enrollmentId: r.enrollmentId, plan: r.plan, status: r.status,
-    startDate:  r.startDate  instanceof Date ? r.startDate.toISOString()  : (r.startDate  ?? undefined),
-    expiryDate: r.expiryDate instanceof Date ? r.expiryDate.toISOString() : (r.expiryDate ?? undefined),
+    startDate: iso(r.startDate), expiryDate: iso(r.expiryDate),
   };
 }
 
 // ─────────────────────────────────────────────────────────────
 //  FILE PATH  (local dev, JSON files)
 // ─────────────────────────────────────────────────────────────
-function getFs()   { return require("fs")   as typeof import("fs");   }
-function getPath() { return require("path") as typeof import("path"); }
+function getFs()   { return fs;   }
+function getPath() { return path; }
 
 function dataDir() {
   return getPath().join(process.cwd(), "data");
@@ -127,33 +117,29 @@ function writeSubscriptions(d: Subscription[]) { if (IS_PROD) { mem.subscription
 // ── Enrollments ──────────────────────────────────────────────
 export async function getEnrollments(): Promise<Enrollment[]> {
   if (HAS_DB) {
-    const p = await db();
-    return (await p.enrollment.findMany({ orderBy: { createdAt: "desc" } })).map(mapE);
+    return (await query(`SELECT * FROM "enrollments" ORDER BY "createdAt" DESC`)).map(mapE);
   }
   return [...readEnrollments()].reverse();
 }
 
 export async function getEnrollmentByEnrollmentId(id: string): Promise<Enrollment | undefined> {
   if (HAS_DB) {
-    const p = await db();
-    const r = await p.enrollment.findUnique({ where: { enrollmentId: id } });
+    const r = await queryOne(`SELECT * FROM "enrollments" WHERE "enrollmentId" = $1`, [id]);
     return r ? mapE(r) : undefined;
   }
   return readEnrollments().find((e) => e.enrollmentId === id);
 }
 
-export async function saveEnrollment(e: Enrollment): Promise<void> {
+export async function saveEnrollment(e: Enrollment & { subTopic?: string }): Promise<void> {
   if (HAS_DB) {
-    const p = await db();
-    await p.enrollment.upsert({
-      where:  { enrollmentId: e.enrollmentId },
-      update: { fullName: e.fullName, whatsapp: e.whatsapp, email: e.email,
-                course: e.course, plan: e.plan, learningMode: e.learningMode },
-      create: { id: e.id, enrollmentId: e.enrollmentId, fullName: e.fullName,
-                whatsapp: e.whatsapp, email: e.email, course: e.course,
-                plan: e.plan, learningMode: e.learningMode,
-                createdAt: new Date(e.createdAt) },
-    });
+    await query(
+      `INSERT INTO "enrollments" ("id","enrollmentId","fullName","whatsapp","email","course","plan","learningMode","subTopic","createdAt")
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)
+       ON CONFLICT ("enrollmentId") DO UPDATE SET
+         "fullName" = EXCLUDED."fullName", "whatsapp" = EXCLUDED."whatsapp", "email" = EXCLUDED."email",
+         "course" = EXCLUDED."course", "plan" = EXCLUDED."plan", "learningMode" = EXCLUDED."learningMode"`,
+      [e.id, e.enrollmentId, e.fullName, e.whatsapp, e.email, e.course, e.plan, e.learningMode, e.subTopic || null, new Date(e.createdAt)]
+    );
     return;
   }
   const all = readEnrollments();
@@ -165,16 +151,14 @@ export async function saveEnrollment(e: Enrollment): Promise<void> {
 // ── Payments ─────────────────────────────────────────────────
 export async function getPayments(): Promise<Payment[]> {
   if (HAS_DB) {
-    const p = await db();
-    return (await p.payment.findMany({ orderBy: { submittedAt: "desc" } })).map(mapP);
+    return (await query(`SELECT * FROM "payments" ORDER BY "submittedAt" DESC`)).map(mapP);
   }
   return readPayments();
 }
 
 export async function getPaymentByEnrollmentId(id: string): Promise<Payment | undefined> {
   if (HAS_DB) {
-    const p = await db();
-    const r = await p.payment.findUnique({ where: { enrollmentId: id } });
+    const r = await queryOne(`SELECT * FROM "payments" WHERE "enrollmentId" = $1`, [id]);
     return r ? mapP(r) : undefined;
   }
   return readPayments().find((p) => p.enrollmentId === id);
@@ -182,16 +166,13 @@ export async function getPaymentByEnrollmentId(id: string): Promise<Payment | un
 
 export async function savePayment(pay: Payment): Promise<void> {
   if (HAS_DB) {
-    const p = await db();
-    await p.payment.upsert({
-      where:  { enrollmentId: pay.enrollmentId },
-      update: { status: pay.status, paymentMethod: pay.paymentMethod,
-                verifiedAt: pay.verifiedAt ? new Date(pay.verifiedAt) : null },
-      create: { id: pay.id, enrollmentId: pay.enrollmentId, amount: pay.amount,
-                paymentMethod: pay.paymentMethod, status: pay.status,
-                submittedAt: new Date(pay.submittedAt),
-                verifiedAt:  pay.verifiedAt ? new Date(pay.verifiedAt) : null },
-    });
+    await query(
+      `INSERT INTO "payments" ("id","enrollmentId","amount","paymentMethod","status","submittedAt","verifiedAt")
+       VALUES ($1,$2,$3,$4,$5,$6,$7)
+       ON CONFLICT ("enrollmentId") DO UPDATE SET
+         "status" = EXCLUDED."status", "paymentMethod" = EXCLUDED."paymentMethod", "verifiedAt" = EXCLUDED."verifiedAt"`,
+      [pay.id, pay.enrollmentId, pay.amount, pay.paymentMethod, pay.status, new Date(pay.submittedAt), pay.verifiedAt ? new Date(pay.verifiedAt) : null]
+    );
     return;
   }
   const all = readPayments();
@@ -203,16 +184,14 @@ export async function savePayment(pay: Payment): Promise<void> {
 // ── Subscriptions ─────────────────────────────────────────────
 export async function getSubscriptions(): Promise<Subscription[]> {
   if (HAS_DB) {
-    const p = await db();
-    return (await p.subscription.findMany()).map(mapS);
+    return (await query(`SELECT * FROM "subscriptions"`)).map(mapS);
   }
   return readSubscriptions();
 }
 
 export async function getSubscriptionByEnrollmentId(id: string): Promise<Subscription | undefined> {
   if (HAS_DB) {
-    const p = await db();
-    const r = await p.subscription.findUnique({ where: { enrollmentId: id } });
+    const r = await queryOne(`SELECT * FROM "subscriptions" WHERE "enrollmentId" = $1`, [id]);
     return r ? mapS(r) : undefined;
   }
   return readSubscriptions().find((s) => s.enrollmentId === id);
@@ -220,17 +199,14 @@ export async function getSubscriptionByEnrollmentId(id: string): Promise<Subscri
 
 export async function saveSubscription(sub: Subscription): Promise<void> {
   if (HAS_DB) {
-    const p = await db();
-    await p.subscription.upsert({
-      where:  { enrollmentId: sub.enrollmentId },
-      update: { status: sub.status,
-                startDate:  sub.startDate  ? new Date(sub.startDate)  : null,
-                expiryDate: sub.expiryDate ? new Date(sub.expiryDate) : null },
-      create: { id: sub.id, enrollmentId: sub.enrollmentId, plan: sub.plan,
-                status: sub.status,
-                startDate:  sub.startDate  ? new Date(sub.startDate)  : null,
-                expiryDate: sub.expiryDate ? new Date(sub.expiryDate) : null },
-    });
+    await query(
+      `INSERT INTO "subscriptions" ("id","enrollmentId","plan","status","startDate","expiryDate")
+       VALUES ($1,$2,$3,$4,$5,$6)
+       ON CONFLICT ("enrollmentId") DO UPDATE SET
+         "status" = EXCLUDED."status", "startDate" = EXCLUDED."startDate", "expiryDate" = EXCLUDED."expiryDate"`,
+      [sub.id, sub.enrollmentId, sub.plan, sub.status,
+       sub.startDate ? new Date(sub.startDate) : null, sub.expiryDate ? new Date(sub.expiryDate) : null]
+    );
     return;
   }
   const all = readSubscriptions();
@@ -242,15 +218,11 @@ export async function saveSubscription(sub: Subscription): Promise<void> {
 // ── Combined records ──────────────────────────────────────────
 export async function getAllEnrollmentRecords(): Promise<EnrollmentRecord[]> {
   if (HAS_DB) {
-    const p    = await db();
-    const rows = await p.enrollment.findMany({
-      orderBy: { createdAt: "desc" },
-      include: { payment: true, subscription: true },
-    });
-    return rows.map((r: any) => ({
-      enrollment:   mapE(r),
-      payment:      r.payment      ? mapP(r.payment)      : undefined,
-      subscription: r.subscription ? mapS(r.subscription) : undefined,
+    const [es, ps, ss] = await Promise.all([getEnrollments(), getPayments(), getSubscriptions()]);
+    return es.map((enrollment) => ({
+      enrollment,
+      payment:      ps.find((p) => p.enrollmentId === enrollment.enrollmentId),
+      subscription: ss.find((x) => x.enrollmentId === enrollment.enrollmentId),
     }));
   }
   const enrollments   = readEnrollments();
@@ -265,17 +237,10 @@ export async function getAllEnrollmentRecords(): Promise<EnrollmentRecord[]> {
 
 export async function getEnrollmentRecord(id: string): Promise<EnrollmentRecord | undefined> {
   if (HAS_DB) {
-    const p = await db();
-    const r = await p.enrollment.findUnique({
-      where: { enrollmentId: id },
-      include: { payment: true, subscription: true },
-    });
-    if (!r) return undefined;
-    return {
-      enrollment:   mapE(r),
-      payment:      r.payment      ? mapP(r.payment)      : undefined,
-      subscription: r.subscription ? mapS(r.subscription) : undefined,
-    };
+    const enrollment = await getEnrollmentByEnrollmentId(id);
+    if (!enrollment) return undefined;
+    const [payment, subscription] = await Promise.all([getPaymentByEnrollmentId(id), getSubscriptionByEnrollmentId(id)]);
+    return { enrollment, payment, subscription };
   }
   const enrollment = readEnrollments().find((e) => e.enrollmentId === id);
   if (!enrollment) return undefined;
@@ -284,4 +249,15 @@ export async function getEnrollmentRecord(id: string): Promise<EnrollmentRecord 
     payment:      readPayments().find((p) => p.enrollmentId === id),
     subscription: readSubscriptions().find((s) => s.enrollmentId === id),
   };
+}
+
+/** Delete an enrollment and its payment/subscription (FK cascade in Postgres). */
+export async function deleteEnrollmentRecord(enrollmentId: string): Promise<void> {
+  if (HAS_DB) {
+    await query(`DELETE FROM "enrollments" WHERE "enrollmentId" = $1`, [enrollmentId]);
+    return;
+  }
+  writeEnrollments(readEnrollments().filter((r) => r.enrollmentId !== enrollmentId));
+  writePayments(readPayments().filter((r) => r.enrollmentId !== enrollmentId));
+  writeSubscriptions(readSubscriptions().filter((r) => r.enrollmentId !== enrollmentId));
 }

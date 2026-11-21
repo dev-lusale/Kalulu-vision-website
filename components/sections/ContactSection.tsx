@@ -13,16 +13,16 @@ export function ContactSection() {
   const waUrl = buildWhatsAppUrl(SITE_CONFIG.whatsappNumber, buildEnquiryWhatsAppMessage());
 
   return (
-    <section id="contact" className="py-20 sm:py-28 bg-white" aria-labelledby="contact-heading">
+    <section id="contact" className="py-20 sm:py-28" aria-labelledby="contact-heading">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
 
         {/* Header — content frozen */}
         <div className="text-center mb-14">
           <span className="section-label">Get in Touch</span>
-          <h2 id="contact-heading" className="text-3xl sm:text-4xl font-extrabold tracking-tight mb-4" style={{ color: "#10182B" }}>
+          <h2 id="contact-heading" className="text-3xl sm:text-4xl font-extrabold tracking-tight mb-4" style={{ color: "#FFFFFF" }}>
             Have Questions?
           </h2>
-          <p className="max-w-md mx-auto text-[15px] leading-relaxed" style={{ color: "#4a5568" }}>
+          <p className="max-w-md mx-auto text-[15px] leading-relaxed" style={{ color: "#A7B0C0" }}>
             Reach out on WhatsApp or email and our team gets back to you promptly.
           </p>
         </div>
@@ -35,8 +35,8 @@ export function ContactSection() {
               style={{ background: "#DCFCE7", border: "1.5px solid #86EFAC", color: "#15803d" }}>
               {WA_SVG("w-5 h-5")}
             </div>
-            <h3 className="font-bold text-[15px] mb-1.5" style={{ color: "#10182B" }}>WhatsApp</h3>
-            <p className="text-[13px] leading-relaxed mb-5 flex-1" style={{ color: "#4a5568" }}>
+            <h3 className="font-bold text-[15px] mb-1.5" style={{ color: "#FFFFFF" }}>WhatsApp</h3>
+            <p className="text-[13px] leading-relaxed mb-5 flex-1" style={{ color: "#A7B0C0" }}>
               Chat directly for the quickest response. We typically reply within minutes.
             </p>
             <a href={waUrl} target="_blank" rel="noopener noreferrer"
@@ -55,15 +55,15 @@ export function ContactSection() {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
               </svg>
             </div>
-            <h3 className="font-bold text-[15px] mb-1.5" style={{ color: "#10182B" }}>Email</h3>
-            <p className="text-[13px] leading-relaxed mb-5 flex-1" style={{ color: "#4a5568" }}>
+            <h3 className="font-bold text-[15px] mb-1.5" style={{ color: "#FFFFFF" }}>Email</h3>
+            <p className="text-[13px] leading-relaxed mb-5 flex-1" style={{ color: "#A7B0C0" }}>
               Send a detailed enquiry and we&apos;ll respond within 24 hours.
             </p>
             <a href={`mailto:${SITE_CONFIG.email}`}
               className="inline-flex items-center gap-2 font-semibold text-[13px] px-5 py-2.5 rounded-xl transition-all w-fit"
-              style={{ background: "#10182B", color: "#E9FFA3", border: "none" }}
-              onMouseEnter={e => (e.currentTarget.style.background = "#063F3A")}
-              onMouseLeave={e => (e.currentTarget.style.background = "#10182B")}
+              style={{ background: "#FF8A00", color: "#070B18", border: "none" }}
+              onMouseEnter={e => (e.currentTarget.style.background = "#FF4D16")}
+              onMouseLeave={e => (e.currentTarget.style.background = "#FF8A00")}
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -76,9 +76,9 @@ export function ContactSection() {
           <div className="kv-card-teal p-6 flex flex-col relative overflow-hidden rounded-[20px]">
             {/* Decorative lime circle */}
             <div className="absolute -top-8 -right-8 w-32 h-32 rounded-full pointer-events-none opacity-20"
-              style={{ background: "#E9FFA3" }} />
+              style={{ background: "#FF8A00" }} />
             <div className="w-11 h-11 rounded-xl flex items-center justify-center mb-5 shrink-0 relative"
-              style={{ background: "rgba(233,255,163,0.15)", border: "1px solid rgba(233,255,163,0.25)", color: "#E9FFA3" }}>
+              style={{ background: "rgba(255,138,0,0.15)", border: "1px solid rgba(255,138,0,0.25)", color: "#FF8A00" }}>
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>

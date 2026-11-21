@@ -1,271 +1,137 @@
-# Kalulu Vision — Technology Training Enrollment Platform
+# Kalulu Vision — company website & platform
 
-> **Innovate. Empower. Transform.**
+> **See Beyond. Build the Future.**
 
-A modern, mobile-first single-page enrollment and subscription website for Kalulu Vision Tech Lessons, built with Next.js 16, TypeScript, and Tailwind CSS v4.
+The website for Kalulu Vision, an African technology and innovation company. It includes:
 
----
+- a company site with an interactive three.js hero built around the official logo
+- a Tech Lessons training platform at `/training`: courses, plans, enrollment and payment verification (the original site, kept working)
+- an admin area at `/admin` for managing projects, products, services, articles and research, opportunities, enquiries, company information and training enrollments
 
-## Features
-
-- Hero section with branding and CTAs
-- 7 course cards (Programming, Web Dev, AI/ML, Data Analytics, Automation, IoT, Custom)
-- Subscription pricing plans (Weekly, Monthly, 1-on-1)
-- Enrollment form with validation and auto-generated Enrollment ID (e.g. `KV-2026-00125`)
-- Payment section with MoMo / Airtel Money / Bank details
-- WhatsApp integration — pre-filled payment proof message
-- **Payment pending verification** workflow (never auto-activates)
-- Admin dashboard at `/admin` — verify/reject payments, enable/disable subscriptions
-- Contact section
-- Responsive, mobile-first design
+Built with Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS v4, three.js and PostgreSQL through node-postgres (`pg`).
 
 ---
 
-## Quick Start
+## Pages
 
-### 1. Clone / open the project
+| Route | What it is |
+|---|---|
+| `/` | Home: 3D hero, introduction, capabilities, services, featured projects, research, why Kalulu Vision, insights, partnership CTA |
+| `/about` | Overview, story, mission, vision, values, philosophy, approach, commitment to Africa |
+| `/services`, `/services/[slug]` | Eight services, each with offerings, technologies, applications, related projects and a contact CTA |
+| `/products` | Products with their real status (Tech Lessons is live; Educom AI is a prototype) |
+| `/projects`, `/projects/[slug]` | Portfolio with category filters and project detail pages |
+| `/research`, `/research/[slug]` | Research areas, experimental projects and research publications |
+| `/insights`, `/insights/[slug]` | Knowledge hub with search, category filters and reading time |
+| `/opportunities` | Openings plus a form to apply or express interest |
+| `/contact` | Contact details and a validated enquiry form |
+| `/training` | Tech Lessons enrollment platform (old links such as `/#enroll` redirect here) |
+| `/admin` | Content management (sign-in required) |
 
-```bash
-cd "your-project-directory"
-```
+Every page has its own metadata and Open Graph tags. The site also generates `sitemap.xml`, `robots.txt` and Organization/Article structured data.
 
-### 2. Install dependencies
+---
+
+## Architecture decisions
+
+- **No Prisma.** Prisma downloads its engine binaries at install time, and that host was blocked in the environment where this redesign was built, so the code could not be tested against a real database. The data layer now uses plain SQL through `pg`. It uses the **same tables and columns** Prisma created (`enrollments`, `payments`, `subscriptions`, `admins`), so existing production data keeps working with no changes.
+- **SQL migrations** live in `db/migrations/*.sql`. `scripts/migrate.mjs` applies them in order inside transactions and records each one in `kv_migrations`. Migration 001 is written with `IF NOT EXISTS` and matches the old Prisma tables exactly, so it does nothing on the existing database. Migration 002 only **adds** new `kv_*` content tables. Nothing existing is altered or dropped.
+- **Starting content** is in `db/seed/content.json`. It is loaded into the database once (`seed-content-v1`) and is never re-applied over your edits. If no database is configured, public pages fall back to this file, so the site never breaks.
+- **Caching:** public pages are statically generated and refresh every 60 seconds. Every admin save also triggers an immediate refresh.
+- **3D hero:** plain three.js (no React Three Fiber, to keep the bundle small), loaded only on devices that can run it. The front face is the untouched logo PNG; the depth comes from stacked, darkened copies of the same silhouette behind it. Reduced-motion users, devices without WebGL, devices with little memory and Data Saver users get a lightweight layered-image version instead.
+- **Animation:** CSS and IntersectionObserver rather than Framer Motion, so there is no extra dependency. Content is fully visible without JavaScript or with reduced motion.
+
+---
+
+## Environment variables
+
+Copy `.env.example` to `.env.local` for local development. On Vercel, set these under **Project → Settings → Environment Variables**.
+
+| Variable | Required | Purpose |
+|---|---|---|
+| `DATABASE_URL` | Yes (production) | Pooled Postgres URL. Vercel's Neon integration provides `kaluluvision_POSTGRES_PRISMA_URL`, which is also accepted. |
+| `DATABASE_URL_UNPOOLED` | Recommended | Direct URL used for migrations (`kaluluvision_POSTGRES_URL_NON_POOLING` is also accepted). |
+| `SESSION_SECRET` | **Yes** | At least 32 random characters, used to sign admin sessions. Without it, admins cannot sign in in production. Generate one with `node -e "console.log(require('crypto').randomBytes(48).toString('base64url'))"` |
+| `ADMIN_EMAIL` / `ADMIN_PASSWORD` | First run | Used once to create the first admin (see below). The password must be at least 10 characters. |
+| `NEXT_PUBLIC_SITE_URL` | Recommended | Canonical site URL for sitemaps and social previews, e.g. `https://kalulu-vision-website.vercel.app` |
+
+> **Important:** the previous version accepted the default password `admin123` and used `SESSION_SECRET` itself as the cookie value. Both are gone. Set a strong `SESSION_SECRET` before deploying.
+
+---
+
+## Database setup
+
+1. Create a Postgres database (Neon through Vercel Storage is what production already uses).
+2. Set `DATABASE_URL` (and `DATABASE_URL_UNPOOLED`).
+3. Run the migrations:
+   ```bash
+   npm run db:migrate
+   ```
+   The Vercel build also runs this automatically (`npm run build` → `scripts/migrate.mjs --if-db`). It is safe to run repeatedly.
+
+## Administrator setup
+
+Use either option:
+
+- **Environment bootstrap:** set `ADMIN_EMAIL` and `ADMIN_PASSWORD`, deploy, then sign in at `/admin` with them. That first sign-in creates the account, with the password stored as a bcrypt hash. Afterwards you can remove `ADMIN_PASSWORD` from the environment.
+- **Command line:** `npm run admin:create -- you@example.com 'a-long-password'` (this also resets the password of an existing admin).
+
+Change your password at any time under **Admin → Account**. Sessions last 8 hours. Repeated failed sign-ins are rate-limited.
+
+---
+
+## Development
 
 ```bash
 npm install
+cp .env.example .env.local    # then fill in the values
+npm run db:migrate            # if you have a database
+npm run dev                   # http://localhost:3000
 ```
 
-### 3. Configure environment
+Without `DATABASE_URL`, the public site uses the built-in content. Enrollments are saved to JSON files in `/data`, and the admin accepts `ADMIN_PASSWORD` (default `admin123`) in development only.
 
-```bash
-cp .env.example .env.local
-```
-
-Edit `.env.local`:
-
-```env
-ADMIN_PASSWORD=your-strong-password
-SESSION_SECRET=your-random-secret-string
-```
-
-### 4. Update configuration
-
-Edit **`lib/config.ts`** to set your real details:
-
-```ts
-export const SITE_CONFIG = {
-  whatsappNumber: "260XXXXXXXXX",   // ← your WhatsApp number (no + or spaces)
-  email: "bernardlusale20@gmail.com",
-  // ...
-};
-
-export const PAYMENT_DETAILS = {
-  momo:  { number: "0XX XXX XXXX", name: "Kalulu Vision" },
-  airtel: { number: "0XX XXX XXXX", name: "Kalulu Vision" },
-  bank: {
-    bankName: "Your Bank",
-    accountName: "Your Account Name",
-    accountNumber: "XXXXXXXXXXXX",
-    branch: "Your Branch",
-  },
-};
-
-// Update prices here:
-export const PLANS: Plan[] = [
-  { id: "weekly",    price: 150, ... },
-  { id: "monthly",   price: 450, ... },
-  { id: "one-on-one", price: 800, ... },
-];
-```
-
-### 5. Run development server
-
-```bash
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000).
-
-Admin dashboard: [http://localhost:3000/admin](http://localhost:3000/admin)  
-Default password: `admin123` (change in `.env.local`!)
+| Command | What it does |
+|---|---|
+| `npm run dev` | Development server |
+| `npm run build` | Runs migrations (if a DB is set) and builds for production |
+| `npm start` | Serves the production build |
+| `npm run lint` | ESLint |
+| `npm run typecheck` | Generates route types and runs the TypeScript checker |
+| `npm run db:migrate` | Applies pending migrations and the one-time content seed |
+| `npm run admin:create -- <email> <password>` | Creates or resets an admin |
 
 ---
 
-## Project Structure
+## Deploying to Vercel
 
-```
-kaluluvision/
-├── app/
-│   ├── api/
-│   │   ├── enrollments/route.ts     # POST: create enrollment
-│   │   ├── payments/route.ts        # POST: submit payment proof
-│   │   └── admin/
-│   │       ├── login/route.ts
-│   │       ├── logout/route.ts
-│   │       ├── enrollments/route.ts
-│   │       ├── payments/[action]/route.ts   # verify | reject
-│   │       └── subscriptions/[action]/route.ts # enable | disable
-│   ├── admin/
-│   │   ├── page.tsx                 # Dashboard (protected)
-│   │   └── login/page.tsx
-│   ├── layout.tsx
-│   ├── page.tsx                     # Main landing page
-│   └── globals.css
-├── components/
-│   ├── admin/
-│   │   ├── AdminDashboard.tsx
-│   │   └── AdminLoginForm.tsx
-│   ├── sections/
-│   │   ├── HeroSection.tsx
-│   │   ├── CoursesSection.tsx
-│   │   ├── PlansSection.tsx
-│   │   ├── EnrollmentSection.tsx    # Form + Payment + Submitted stages
-│   │   └── ContactSection.tsx
-│   ├── ui/
-│   │   ├── Badge.tsx
-│   │   └── Button.tsx
-│   ├── Navbar.tsx
-│   ├── Footer.tsx
-│   └── MainContent.tsx
-├── lib/
-│   ├── auth.ts                      # Cookie-based admin session
-│   ├── config.ts                    # ← ALL configurable values here
-│   ├── db.ts                        # File-based persistence (swap for DB later)
-│   ├── types.ts                     # TypeScript interfaces
-│   └── utils.ts                     # Helpers, WhatsApp URL builder, etc.
-├── data/                            # Auto-created — JSON data files
-│   ├── enrollments.json
-│   ├── payments.json
-│   └── subscriptions.json
-├── .env.example
-└── README.md
-```
+The project is already connected to Vercel (`kalulu-vision-website.vercel.app`).
+
+1. Add `SESSION_SECRET`, plus `ADMIN_EMAIL` and `ADMIN_PASSWORD` for the first admin, and `NEXT_PUBLIC_SITE_URL`, to the **Production** and **Preview** environments. The database variables from the Neon integration are already there.
+2. Push to a branch to get a preview deployment, or merge to `main` for production. The build command (`npm run build`, set in `vercel.json`) applies the database migrations before building.
+3. Sign in at `/admin` and review the content.
+
+**Images:** the admin takes image URLs, either `https://…` addresses or files you add under `/public` and reference as `/projects/name.png`. Uploading images from the admin would need file storage such as Vercel Blob, which is not included yet.
 
 ---
 
-## User Journey
+## Content that needs your input
 
-```
-Landing Page
-  ↓ Click "Enroll Now" or a course card
-Choose Course & Plan
-  ↓ Fill enrollment form
-Receive Enrollment ID  (e.g. KV-2026-00125)
-  ↓
-View MoMo / Bank payment details
-  ↓ Make payment manually
-Click "I've Made Payment"
-  ↓
-⏳ Payment Submitted — Awaiting Verification
-  ↓ Send screenshot on WhatsApp
-Admin reviews payment in /admin dashboard
-  ↓ Admin clicks "Verify Payment"
-✓ Subscription Enabled  (ACTIVE)
-```
+The starting content contains only verified information. Please review it in the admin:
+
+- the mission, vision and values, which are proposed brand statements
+- social media links (none are set yet; add your YouTube, LinkedIn and others under **Company info**)
+- screenshots or images for projects and products (abstract graphics are shown until you add real ones)
+- articles, research publications and opportunities, which start empty
 
 ---
 
-## Admin Dashboard
+## Security notes
 
-URL: `/admin`  
-Default password: set in `ADMIN_PASSWORD` env var (default: `admin123`)
+- Admin pages and APIs check a signed, httpOnly, `SameSite=Strict` session cookie. Admin write requests from other sites are rejected.
+- Passwords are stored as bcrypt hashes in the `admins` table.
+- All form input is validated on the server. The contact form has a honeypot field and per-IP rate limiting.
+- Article Markdown is rendered with everything HTML-escaped first, so authors cannot inject scripts.
+- Payment status is only ever changed by an admin, never automatically.
 
-**Actions available:**
-- Verify Payment → activates subscription with correct expiry
-- Reject Payment → marks payment as rejected
-- Enable Subscription → manually activate
-- Disable Subscription → manually deactivate
-
----
-
-## Data Persistence
-
-Currently uses JSON files in `/data/`. This is suitable for low-volume use.
-
-**To switch to PostgreSQL + Prisma:**
-
-1. `npm install prisma @prisma/client`
-2. `npx prisma init`
-3. Define models in `prisma/schema.prisma` (see schema below)
-4. Replace functions in `lib/db.ts` with Prisma calls
-
-### Prisma Schema
-
-```prisma
-model Enrollment {
-  id           String   @id @default(cuid())
-  enrollmentId String   @unique
-  fullName     String
-  whatsapp     String
-  email        String
-  course       String
-  plan         String
-  learningMode String
-  createdAt    DateTime @default(now())
-}
-
-model Payment {
-  id           String    @id @default(cuid())
-  enrollmentId String    @unique
-  amount       Float
-  paymentMethod String
-  status       String    @default("PENDING_VERIFICATION")
-  submittedAt  DateTime  @default(now())
-  verifiedAt   DateTime?
-}
-
-model Subscription {
-  id           String    @id @default(cuid())
-  enrollmentId String    @unique
-  plan         String
-  status       String    @default("PENDING")
-  startDate    DateTime?
-  expiryDate   DateTime?
-}
-```
-
----
-
-## Future Payment Integration
-
-The architecture supports dropping in a real payment provider:
-
-```
-Payment Provider → Webhook → /api/webhooks/payment → Verify → Activate Subscription
-```
-
-Create `app/api/webhooks/payment/route.ts` and call `savePayment()` + `saveSubscription()` from `lib/db.ts`.
-
----
-
-## Deployment on Vercel
-
-1. Push your project to GitHub.
-2. Go to [vercel.com](https://vercel.com) → **New Project** → import your repo.
-3. Set environment variables in Vercel dashboard:
-   - `ADMIN_PASSWORD`
-   - `SESSION_SECRET`
-   - `NODE_ENV=production`
-4. Click **Deploy**.
-
-> **Important**: The file-based `/data` folder does **not** persist between Vercel deployments (serverless functions are stateless). For production, switch to a database (Vercel Postgres, PlanetScale, Neon, Supabase, etc.).
-
-### Persistent storage options for Vercel:
-- **Vercel Postgres** (easiest — built-in)
-- **Neon** (free PostgreSQL tier)
-- **PlanetScale** (MySQL)
-- **Supabase** (PostgreSQL + extras)
-
----
-
-## Security Notes
-
-- Admin password is stored in environment variables — never committed to code.
-- Session cookie is `httpOnly`, `secure` (in production), `sameSite: strict`.
-- All inputs are sanitized server-side before storage.
-- Admin routes are protected — unauthenticated requests redirect to `/admin/login`.
-- Payment status is **never** automatically set to VERIFIED by the frontend.
-
----
-
-© 2026 Kalulu Vision. All rights reserved.
+© Kalulu Vision. All rights reserved.

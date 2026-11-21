@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import type { CourseId, PlanId } from "@/lib/config";
-import { HeroSection } from "@/components/sections/HeroSection";
 import { CoursesSection } from "@/components/sections/CoursesSection";
 import { PlansSection } from "@/components/sections/PlansSection";
 import { EnrollmentSection } from "@/components/sections/EnrollmentSection";
@@ -42,8 +41,7 @@ export function MainContent() {
   }
 
   return (
-    <main>
-      <HeroSection />
+    <div className="kv-legacy kv-dark">
       <CoursesSection onSelectCourse={handleSelectCourse} />
       <PlansSection onSelectPlan={handleSelectPlan} />
       <EnrollmentSection
@@ -52,6 +50,6 @@ export function MainContent() {
         selectedSubTopic={selectedSubTopic}
       />
       <ContactSection />
-    </main>
+    </div>
   );
 }

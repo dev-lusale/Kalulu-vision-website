@@ -2,7 +2,7 @@
 
 import {
   useState,
-  useEffect,
+
   type FormEvent,
   type ChangeEvent,
 } from "react";
@@ -50,15 +50,18 @@ export function EnrollmentSection({ selectedCourse, selectedPlan, selectedSubTop
   });
   const [errors, setErrors] = useState<FormErrors>({});
 
-  useEffect(() => { if (selectedCourse) setValues(v => ({ ...v, course: selectedCourse })); }, [selectedCourse]);
-  useEffect(() => { if (selectedPlan)   setValues(v => ({ ...v, plan: selectedPlan }));     }, [selectedPlan]);
-  useEffect(() => {
+  // Sync selections coming from the course/plan cards (adjust state during render).
+  const [prevSel, setPrevSel] = useState({ selectedCourse, selectedPlan, selectedSubTopic });
+  if (prevSel.selectedCourse !== selectedCourse || prevSel.selectedPlan !== selectedPlan || prevSel.selectedSubTopic !== selectedSubTopic) {
+    setPrevSel({ selectedCourse, selectedPlan, selectedSubTopic });
+    if (selectedCourse && selectedCourse !== prevSel.selectedCourse) setValues(v => ({ ...v, course: selectedCourse }));
+    if (selectedPlan && selectedPlan !== prevSel.selectedPlan) setValues(v => ({ ...v, plan: selectedPlan }));
     if (selectedSubTopic) {
       setSubTopicId(selectedSubTopic);
       const c = COURSES.find(c => c.id === selectedCourse);
       setSubTopicLabel(c?.subTopics?.find(s => s.id === selectedSubTopic)?.label ?? selectedSubTopic);
     }
-  }, [selectedSubTopic, selectedCourse]);
+  }
 
   function validate(vals: FormValues): FormErrors {
     const e: FormErrors = {};
@@ -143,7 +146,7 @@ export function EnrollmentSection({ selectedCourse, selectedPlan, selectedSubTop
       aria-labelledby="enroll-heading"
     >
       {/* Subtle lime top accent */}
-      <div className="absolute top-0 inset-x-0 h-1" style={{ background: "linear-gradient(90deg, transparent, #E9FFA3, #c8e86a, transparent)" }} />
+      <div className="absolute top-0 inset-x-0 h-1" style={{ background: "linear-gradient(90deg, transparent, #FFB52E, #FF8A00, transparent)" }} />
 
       <div className="relative z-10 max-w-xl mx-auto px-4 sm:px-6">
 
@@ -153,10 +156,10 @@ export function EnrollmentSection({ selectedCourse, selectedPlan, selectedSubTop
             <div className="mb-10">
               <span className="section-label">Get Started</span>
               {/* Content frozen: */}
-              <h2 id="enroll-heading" className="text-3xl sm:text-4xl font-extrabold tracking-tight mb-3" style={{ color: "#10182B" }}>
+              <h2 id="enroll-heading" className="text-3xl sm:text-4xl font-extrabold tracking-tight mb-3" style={{ color: "#FFFFFF" }}>
                 Enroll Today
               </h2>
-              <p className="text-[15px] leading-relaxed" style={{ color: "#4a5568" }}>
+              <p className="text-[15px] leading-relaxed" style={{ color: "#A7B0C0" }}>
                 Fill in your details to receive your unique Enrollment ID,
                 then complete payment via MoMo or bank.
               </p>
@@ -203,12 +206,12 @@ export function EnrollmentSection({ selectedCourse, selectedPlan, selectedSubTop
                   <div className="flex items-center gap-2 px-4 py-3 rounded-xl"
                     style={{ background: "#DCFCE7", border: "1.5px solid #86EFAC" }}>
                     <div className="w-4 h-4 rounded-full flex items-center justify-center shrink-0"
-                      style={{ background: "#063F3A" }}>
+                      style={{ background: "#FF4D16" }}>
                       <svg className="w-2.5 h-2.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                       </svg>
                     </div>
-                    <span className="text-[13px] flex-1 font-medium" style={{ color: "#063F3A" }}>
+                    <span className="text-[13px] flex-1 font-medium" style={{ color: "#FFB52E" }}>
                       Language: <strong>{subTopicLabel}</strong>
                     </span>
                     <button type="button" onClick={() => { setSubTopicLabel(null); setSubTopicId(null); }}
@@ -278,8 +281,8 @@ function LField({ label, required, error, children }: {
 }) {
   return (
     <div className="space-y-1.5">
-      <label className="block text-[13.5px] font-semibold" style={{ color: "#10182B" }}>
-        {label}{required && <span className="ml-1" style={{ color: "#063F3A" }}>*</span>}
+      <label className="block text-[13.5px] font-semibold" style={{ color: "#FFFFFF" }}>
+        {label}{required && <span className="ml-1" style={{ color: "#FFB52E" }}>*</span>}
       </label>
       {children}
       {error && (
@@ -312,22 +315,22 @@ function PaymentStage({ enrollment, planObj, courseObj, loading, onSubmitPayment
             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
           </svg>
         </div>
-        <h2 className="text-[17px] font-bold mb-1" style={{ color: "#10182B" }}>Enrollment Confirmed!</h2>
-        <p className="text-[13px] mb-4" style={{ color: "#4a5568" }}>
+        <h2 className="text-[17px] font-bold mb-1" style={{ color: "#FFFFFF" }}>Enrollment Confirmed!</h2>
+        <p className="text-[13px] mb-4" style={{ color: "#A7B0C0" }}>
           Save your Enrollment ID you&apos;ll need it for payment.
         </p>
         <div className="inline-block px-6 py-3 rounded-2xl mb-5"
-          style={{ background: "#E9FFA3", border: "1.5px solid #c8e86a" }}>
-          <p className="text-[9.5px] uppercase tracking-[0.18em] font-bold mb-0.5" style={{ color: "#063F3A" }}>Enrollment ID</p>
-          <p className="text-xl font-black font-mono tracking-widest" style={{ color: "#10182B" }}>
+          style={{ background: "#FF8A00", border: "1.5px solid #c8e86a" }}>
+          <p className="text-[9.5px] uppercase tracking-[0.18em] font-bold mb-0.5" style={{ color: "#FFB52E" }}>Enrollment ID</p>
+          <p className="text-xl font-black font-mono tracking-widest" style={{ color: "#FFFFFF" }}>
             {enrollment.enrollmentId}
           </p>
         </div>
         <div className="grid grid-cols-2 gap-2.5 text-left">
           {[{ label: "Course", value: courseObj.title }, { label: "Plan & Amount", value: `${planObj.label} · K${planObj.price}` }].map(({ label, value }) => (
-            <div key={label} className="rounded-xl p-3" style={{ background: "#F5F6F2", border: "1px solid #E5E7DF" }}>
-              <p className="text-[10px] mb-0.5 font-semibold uppercase tracking-wider" style={{ color: "#7a8394" }}>{label}</p>
-              <p className="text-[13px] font-semibold truncate" style={{ color: "#10182B" }}>{value}</p>
+            <div key={label} className="rounded-xl p-3" style={{ background: "#0B1224", border: "1px solid #E5E7DF" }}>
+              <p className="text-[10px] mb-0.5 font-semibold uppercase tracking-wider" style={{ color: "#A7B0C0" }}>{label}</p>
+              <p className="text-[13px] font-semibold truncate" style={{ color: "#FFFFFF" }}>{value}</p>
             </div>
           ))}
         </div>
@@ -335,9 +338,9 @@ function PaymentStage({ enrollment, planObj, courseObj, loading, onSubmitPayment
 
       {/* Payment method card — content frozen */}
       <div className="kv-card p-6">
-        <h3 className="font-bold text-[15px] mb-1" style={{ color: "#10182B" }}>Complete Your Payment</h3>
-        <p className="text-[13px] mb-4" style={{ color: "#4a5568" }}>
-          Send <span className="font-bold" style={{ color: "#063F3A" }}>K{planObj.price}</span> using your preferred method, then tap &ldquo;I&apos;ve Paid&rdquo;.
+        <h3 className="font-bold text-[15px] mb-1" style={{ color: "#FFFFFF" }}>Complete Your Payment</h3>
+        <p className="text-[13px] mb-4" style={{ color: "#A7B0C0" }}>
+          Send <span className="font-bold" style={{ color: "#FFB52E" }}>K{planObj.price}</span> using your preferred method, then tap &ldquo;I&apos;ve Paid&rdquo;.
         </p>
 
         {/* Method tabs — logo images */}
@@ -346,9 +349,9 @@ function PaymentStage({ enrollment, planObj, courseObj, loading, onSubmitPayment
           <button type="button" onClick={() => setActiveTab("momo")}
             className="flex items-center justify-center gap-2 py-2.5 rounded-xl text-[13px] font-semibold transition-all cursor-pointer"
             style={{
-              background:   activeTab === "momo" ? "#E9FFA3" : "#F5F6F2",
+              background:   activeTab === "momo" ? "#FF8A00" : "#0B1224",
               border:       activeTab === "momo" ? "1.5px solid #c8e86a" : "1.5px solid #E5E7DF",
-              color:        activeTab === "momo" ? "#063F3A" : "#7a8394",
+              color:        activeTab === "momo" ? "#FFB52E" : "#A7B0C0",
               touchAction:  "manipulation",
               WebkitTapHighlightColor: "transparent",
             } as React.CSSProperties}>
@@ -361,9 +364,9 @@ function PaymentStage({ enrollment, planObj, courseObj, loading, onSubmitPayment
           <button type="button" onClick={() => setActiveTab("bank")}
             className="flex items-center justify-center gap-2 py-2.5 rounded-xl text-[13px] font-semibold transition-all cursor-pointer"
             style={{
-              background:   activeTab === "bank" ? "#E9FFA3" : "#F5F6F2",
+              background:   activeTab === "bank" ? "#FF8A00" : "#0B1224",
               border:       activeTab === "bank" ? "1.5px solid #c8e86a" : "1.5px solid #E5E7DF",
-              color:        activeTab === "bank" ? "#063F3A" : "#7a8394",
+              color:        activeTab === "bank" ? "#FFB52E" : "#A7B0C0",
               touchAction:  "manipulation",
               WebkitTapHighlightColor: "transparent",
             } as React.CSSProperties}>
@@ -376,7 +379,7 @@ function PaymentStage({ enrollment, planObj, courseObj, loading, onSubmitPayment
         {/* MTN MoMo details — all values from config, frozen */}
         {activeTab === "momo" && (
           <div className="rounded-xl p-4 mb-4" style={{ background: "#FEFCE8", border: "1.5px solid #FDE047" }}>
-            <p className="font-bold text-[13.5px] mb-3 flex items-center gap-2" style={{ color: "#10182B" }}>
+            <p className="font-bold text-[13.5px] mb-3 flex items-center gap-2" style={{ color: "#FFFFFF" }}>
               <img src="/mtn.png" alt="MTN" style={{ height: "18px", width: "auto", objectFit: "contain" }}
                 onError={e => { (e.currentTarget as HTMLImageElement).style.display = "none"; }} />
               MTN Mobile Money
@@ -395,7 +398,7 @@ function PaymentStage({ enrollment, planObj, courseObj, loading, onSubmitPayment
         {/* Bank details — all values from config, frozen */}
         {activeTab === "bank" && (
           <div className="rounded-xl p-4 mb-4" style={{ background: "#F0FDF4", border: "1.5px solid #86EFAC" }}>
-            <p className="font-bold text-[13.5px] mb-3 flex items-center gap-2" style={{ color: "#10182B" }}>
+            <p className="font-bold text-[13.5px] mb-3 flex items-center gap-2" style={{ color: "#FFFFFF" }}>
               <img src="/zanaco.png" alt="Zanaco" style={{ height: "18px", width: "auto", objectFit: "contain" }}
                 onError={e => { (e.currentTarget as HTMLImageElement).style.display = "none"; }} />
               Zanaco Bank Transfer
@@ -453,8 +456,8 @@ function DR({ label, value, highlight, copyable }: {
 
   return (
     <div className="flex items-center gap-2 text-[12.5px]">
-      <dt className="w-28 shrink-0 font-medium" style={{ color: "#7a8394" }}>{label}</dt>
-      <dd className="font-bold font-mono break-all flex-1" style={{ color: highlight ? "#063F3A" : "#10182B" }}>
+      <dt className="w-28 shrink-0 font-medium" style={{ color: "#A7B0C0" }}>{label}</dt>
+      <dd className="font-bold font-mono break-all flex-1" style={{ color: highlight ? "#FFB52E" : "#FFFFFF" }}>
         {value}
       </dd>
       {copyable && (
@@ -463,9 +466,9 @@ function DR({ label, value, highlight, copyable }: {
           onClick={handleCopy}
           className="shrink-0 flex items-center gap-1 text-[10.5px] font-bold px-2 py-0.5 rounded-lg cursor-pointer transition-all"
           style={{
-            background: copied ? "#DCFCE7" : "#E9FFA3",
-            color:      copied ? "#15803d" : "#063F3A",
-            border:     `1px solid ${copied ? "#86EFAC" : "#c8e86a"}`,
+            background: copied ? "#DCFCE7" : "#FF8A00",
+            color:      copied ? "#15803d" : "#FFB52E",
+            border:     `1px solid ${copied ? "#86EFAC" : "#FFB52E"}`,
             whiteSpace: "nowrap",
             touchAction: "manipulation",
             WebkitTapHighlightColor: "transparent",
@@ -504,21 +507,21 @@ function SubmittedStage({ enrollment, waUrl }: { enrollment: Enrollment; waUrl: 
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
         </div>
-        <h2 className="text-[17px] font-bold mb-1" style={{ color: "#10182B" }}>⏳ Awaiting Verification</h2>
-        <p className="text-[13px] leading-relaxed max-w-sm mx-auto mb-5" style={{ color: "#4a5568" }}>
+        <h2 className="text-[17px] font-bold mb-1" style={{ color: "#FFFFFF" }}>⏳ Awaiting Verification</h2>
+        <p className="text-[13px] leading-relaxed max-w-sm mx-auto mb-5" style={{ color: "#A7B0C0" }}>
           Payment submitted. Send your screenshot on WhatsApp so we can verify and activate your subscription.
         </p>
-        <div className="inline-block px-5 py-2.5 rounded-2xl" style={{ background: "#E9FFA3", border: "1.5px solid #c8e86a" }}>
-          <p className="text-[9.5px] uppercase tracking-[0.18em] font-bold mb-0.5" style={{ color: "#063F3A" }}>Enrollment ID</p>
-          <p className="text-[17px] font-black font-mono tracking-widest" style={{ color: "#10182B" }}>
+        <div className="inline-block px-5 py-2.5 rounded-2xl" style={{ background: "#FF8A00", border: "1.5px solid #c8e86a" }}>
+          <p className="text-[9.5px] uppercase tracking-[0.18em] font-bold mb-0.5" style={{ color: "#FFB52E" }}>Enrollment ID</p>
+          <p className="text-[17px] font-black font-mono tracking-widest" style={{ color: "#FFFFFF" }}>
             {enrollment.enrollmentId}
           </p>
         </div>
       </div>
 
       <div className="kv-card p-6">
-        <h3 className="font-bold text-[15px] mb-1" style={{ color: "#10182B" }}>Send Screenshot on WhatsApp</h3>
-        <p className="text-[13px] mb-4" style={{ color: "#4a5568" }}>
+        <h3 className="font-bold text-[15px] mb-1" style={{ color: "#FFFFFF" }}>Send Screenshot on WhatsApp</h3>
+        <p className="text-[13px] mb-4" style={{ color: "#A7B0C0" }}>
           Tap the button below to open a pre-filled WhatsApp message, then attach your payment screenshot.
         </p>
         <a href={waUrl} target="_blank" rel="noopener noreferrer"
@@ -531,8 +534,8 @@ function SubmittedStage({ enrollment, waUrl }: { enrollment: Enrollment; waUrl: 
           Send Screenshot on WhatsApp
         </a>
         {/* "What happens next?" — content frozen */}
-        <div className="mt-4 rounded-xl p-4 space-y-2.5" style={{ background: "#F5F6F2", border: "1px solid #E5E7DF" }}>
-          <p className="text-[12px] font-bold" style={{ color: "#10182B" }}>What happens next?</p>
+        <div className="mt-4 rounded-xl p-4 space-y-2.5" style={{ background: "#0B1224", border: "1px solid #E5E7DF" }}>
+          <p className="text-[12px] font-bold" style={{ color: "#FFFFFF" }}>What happens next?</p>
           {[
             "Send your payment screenshot in the WhatsApp chat.",
             "Our team reviews and verifies your payment.",
@@ -540,10 +543,10 @@ function SubmittedStage({ enrollment, waUrl }: { enrollment: Enrollment; waUrl: 
           ].map((step, i) => (
             <div key={i} className="flex items-start gap-2.5">
               <span className="w-5 h-5 rounded-full text-[10px] font-bold flex items-center justify-center shrink-0 mt-0.5"
-                style={{ background: "#063F3A", color: "#E9FFA3" }}>
+                style={{ background: "#FF4D16", color: "#070B18" }}>
                 {i + 1}
               </span>
-              <p className="text-[12.5px]" style={{ color: "#4a5568" }}>{step}</p>
+              <p className="text-[12.5px]" style={{ color: "#A7B0C0" }}>{step}</p>
             </div>
           ))}
         </div>

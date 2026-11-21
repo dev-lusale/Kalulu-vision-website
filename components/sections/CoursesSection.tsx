@@ -7,13 +7,13 @@ import { COURSE_ICON_MAP } from "@/components/icons/CourseIcons";
 
 /* Light-theme color set keyed by CourseId */
 const LIGHT_COLORS: Record<string, { bg: string; border: string; text: string }> = {
-  "programming":     { bg: "#EEF0FF", border: "#C7CBF8", text: "#4338ca" },
-  "web-development": { bg: "#E0F5FF", border: "#BAE3F9", text: "#0369a1" },
-  "ai-ml":           { bg: "#F3E8FF", border: "#D8B4FE", text: "#7c3aed" },
-  "data-analytics":  { bg: "#DCFCE7", border: "#86EFAC", text: "#15803d" },
-  "automation":      { bg: "#FEFCE8", border: "#FDE047", text: "#a16207" },
-  "iot-embedded":    { bg: "#FEE2E2", border: "#FCA5A5", text: "#b91c1c" },
-  "custom":          { bg: "#CCFBF1", border: "#5EEAD4", text: "#0f766e" },
+  "programming":     { bg: "rgba(255,138,0,0.10)", border: "rgba(255,138,0,0.28)", text: "#FFB52E" },
+  "web-development": { bg: "rgba(255,138,0,0.10)", border: "rgba(255,138,0,0.28)", text: "#FFB52E" },
+  "ai-ml":           { bg: "rgba(255,138,0,0.10)", border: "rgba(255,138,0,0.28)", text: "#FFB52E" },
+  "data-analytics":  { bg: "rgba(255,138,0,0.10)", border: "rgba(255,138,0,0.28)", text: "#FFB52E" },
+  "automation":      { bg: "rgba(255,138,0,0.10)", border: "rgba(255,138,0,0.28)", text: "#FFB52E" },
+  "iot-embedded":    { bg: "rgba(255,138,0,0.10)", border: "rgba(255,138,0,0.28)", text: "#FFB52E" },
+  "custom":          { bg: "rgba(255,138,0,0.10)", border: "rgba(255,138,0,0.28)", text: "#FFB52E" },
 };
 
 interface CoursesSectionProps {
@@ -52,11 +52,11 @@ export function CoursesSection({ onSelectCourse }: CoursesSectionProps) {
             <h2
               id="courses-heading"
               className="text-3xl sm:text-4xl font-extrabold tracking-tight mb-4"
-              style={{ color: "#10182B" }}
+              style={{ color: "#FFFFFF" }}
             >
               Available Courses
             </h2>
-            <p className="max-w-xl mx-auto text-[15px] leading-relaxed" style={{ color: "#4a5568" }}>
+            <p className="max-w-xl mx-auto text-[15px] leading-relaxed" style={{ color: "#A7B0C0" }}>
               Choose from our range of practical, industry-relevant technology
               courses designed to build real-world skills fast.
             </p>
@@ -66,7 +66,7 @@ export function CoursesSection({ onSelectCourse }: CoursesSectionProps) {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
             {COURSES.map((course) => {
               const Icon   = COURSE_ICON_MAP[course.id];
-              const colors = LIGHT_COLORS[course.id] ?? { bg: "#F5F6F2", border: "#E5E7DF", text: "#10182B" };
+              const colors = LIGHT_COLORS[course.id] ?? { bg: "#0B1224", border: "rgba(255,255,255,0.10)", text: "#FFFFFF" };
               return (
                 <div key={course.id} className="kv-card kv-card-lime flex flex-col p-5 group">
 
@@ -79,7 +79,7 @@ export function CoursesSection({ onSelectCourse }: CoursesSectionProps) {
                   </div>
 
                   {/* Title — content frozen */}
-                  <h3 className="font-bold text-[15px] leading-snug mb-0.5" style={{ color: "#10182B" }}>
+                  <h3 className="font-bold text-[15px] leading-snug mb-0.5" style={{ color: "#FFFFFF" }}>
                     {course.title}
                   </h3>
                   <p className="text-[11.5px] font-semibold mb-2.5" style={{ color: colors.text }}>
@@ -87,7 +87,7 @@ export function CoursesSection({ onSelectCourse }: CoursesSectionProps) {
                   </p>
 
                   {/* Description — content frozen */}
-                  <p className="text-[12.5px] leading-relaxed mb-4 flex-1" style={{ color: "#4a5568" }}>
+                  <p className="text-[12.5px] leading-relaxed mb-4 flex-1" style={{ color: "#A7B0C0" }}>
                     {course.description}
                   </p>
 
@@ -110,14 +110,14 @@ export function CoursesSection({ onSelectCourse }: CoursesSectionProps) {
                     onClick={() => handleCardEnroll(course)}
                     className="w-full flex items-center justify-center gap-1.5 text-[13px] font-bold py-2.5 rounded-xl transition-all duration-200 cursor-pointer active:scale-95"
                     style={{
-                      background: "#10182B",
-                      color: "#E9FFA3",
+                      background: "#FF8A00",
+                      color: "#070B18",
                       border: "none",
                       touchAction: "manipulation",
                       WebkitTapHighlightColor: "transparent",
                     } as React.CSSProperties}
-                    onMouseEnter={e => (e.currentTarget.style.background = "#063F3A")}
-                    onMouseLeave={e => (e.currentTarget.style.background = "#10182B")}
+                    onMouseEnter={e => (e.currentTarget.style.background = "#FF4D16")}
+                    onMouseLeave={e => (e.currentTarget.style.background = "#FF8A00")}
                   >
                     Enroll
                     {course.subTopics ? (
@@ -158,20 +158,20 @@ function SubTopicPicker({
   onClose: () => void;
 }) {
   const Icon   = COURSE_ICON_MAP[course.id];
-  const colors = LIGHT_COLORS[course.id] ?? { bg: "#F5F6F2", border: "#E5E7DF", text: "#10182B" };
+  const colors = LIGHT_COLORS[course.id] ?? { bg: "#0B1224", border: "rgba(255,255,255,0.10)", text: "#FFFFFF" };
 
   return (
     <div
       className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4"
-      style={{ background: "rgba(16,24,43,0.55)", backdropFilter: "blur(6px)" }}
+      style={{ background: "rgba(0,0,0,0.55)", backdropFilter: "blur(6px)" }}
       onClick={e => { if (e.target === e.currentTarget) onClose(); }}
       role="dialog"
       aria-modal="true"
       aria-labelledby="picker-title"
     >
       <div
-        className="w-full max-w-md max-h-[88vh] flex flex-col overflow-hidden bg-white"
-        style={{ borderRadius: "22px", boxShadow: "0 24px 64px rgba(16,24,43,0.18)", border: "1px solid #E5E7DF" }}
+        className="w-full max-w-md max-h-[88vh] flex flex-col overflow-hidden"
+        style={{ borderRadius: "22px", boxShadow: "0 24px 64px rgba(0,0,0,0.18)", border: "1px solid #E5E7DF" }}
       >
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-4 shrink-0" style={{ borderBottom: "1px solid #E5E7DF" }}>
@@ -181,17 +181,17 @@ function SubTopicPicker({
               <Icon className="w-5 h-5" style={{ color: colors.text } as React.CSSProperties} />
             </div>
             <div>
-              <h2 id="picker-title" className="font-bold text-[15px]" style={{ color: "#10182B" }}>
+              <h2 id="picker-title" className="font-bold text-[15px]" style={{ color: "#FFFFFF" }}>
                 {course.title}
               </h2>
               {/* Content frozen: */}
-              <p className="text-[11px] mt-0.5" style={{ color: "#7a8394" }}>Choose your programming language</p>
+              <p className="text-[11px] mt-0.5" style={{ color: "#A7B0C0" }}>Choose your programming language</p>
             </div>
           </div>
           <button
             type="button" onClick={onClose}
             className="w-8 h-8 flex items-center justify-center rounded-lg cursor-pointer transition-colors hover:bg-gray-100"
-            style={{ color: "#7a8394", border: "none", background: "transparent" }}
+            style={{ color: "#A7B0C0", border: "none", background: "transparent" }}
             aria-label="Close"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -203,23 +203,23 @@ function SubTopicPicker({
         {/* Sub-topic list */}
         <div className="overflow-y-auto p-4 space-y-1.5">
           {/* Content frozen: */}
-          <p className="text-[12.5px] mb-3 px-1" style={{ color: "#7a8394" }}>
+          <p className="text-[12.5px] mb-3 px-1" style={{ color: "#A7B0C0" }}>
             Select the specific language for your enrollment.
           </p>
           {course.subTopics?.map((sub) => (
             <button
               key={sub.id} type="button" onClick={() => onSelect(sub)}
               className="w-full flex items-center gap-3 text-left p-3.5 rounded-xl transition-all duration-150 cursor-pointer active:scale-[0.98]"
-              style={{ background: "#F5F6F2", border: "1.5px solid #E5E7DF", touchAction: "manipulation", WebkitTapHighlightColor: "transparent" } as React.CSSProperties}
+              style={{ background: "#0B1224", border: "1.5px solid #E5E7DF", touchAction: "manipulation", WebkitTapHighlightColor: "transparent" } as React.CSSProperties}
               onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = colors.bg; (e.currentTarget as HTMLButtonElement).style.borderColor = colors.border; }}
-              onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = "#F5F6F2"; (e.currentTarget as HTMLButtonElement).style.borderColor = "#E5E7DF"; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = "#0B1224"; (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(255,255,255,0.10)"; }}
             >
-              <span className="text-xl shrink-0">{sub.icon}</span>
+              <span className="grid size-9 shrink-0 place-items-center rounded-lg text-[11px] font-bold uppercase tracking-wide" style={{ background: "rgba(255,138,0,0.12)", color: "#FFB52E" }} aria-hidden="true">{sub.label === "Other / Not Sure" ? "?" : sub.label.replace(/[^A-Za-z#+]/g, "").slice(0, 3)}</span>
               <div className="flex-1 min-w-0">
-                <p className="font-semibold text-[13.5px]" style={{ color: "#10182B" }}>{sub.label}</p>
-                <p className="text-[11.5px] mt-0.5 truncate" style={{ color: "#7a8394" }}>{sub.description}</p>
+                <p className="font-semibold text-[13.5px]" style={{ color: "#FFFFFF" }}>{sub.label}</p>
+                <p className="text-[11.5px] mt-0.5 truncate" style={{ color: "#A7B0C0" }}>{sub.description}</p>
               </div>
-              <svg className="w-4 h-4 shrink-0" style={{ color: "#7a8394" }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <svg className="w-4 h-4 shrink-0" style={{ color: "#A7B0C0" }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
               </svg>
             </button>
@@ -229,7 +229,7 @@ function SubTopicPicker({
             type="button"
             onClick={() => onSelect({ id: "general", label: "General Programming", description: "", icon: "💻" })}
             className="w-full text-center text-[12.5px] py-2.5 cursor-pointer transition-colors hover:text-teal-700"
-            style={{ color: "#7a8394", background: "transparent", border: "none" }}
+            style={{ color: "#A7B0C0", background: "transparent", border: "none" }}
           >
             Not sure yet — enroll in general programming →
           </button>
