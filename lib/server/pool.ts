@@ -15,7 +15,8 @@ export function resolveDatabaseUrl(): string {
   if (!raw) return "";
   try {
     const u = new URL(raw);
-    for (const k of ["pgbouncer", "connection_limit", "pool_timeout", "schema", "connect_timeout"]) u.searchParams.delete(k);
+    // sslmode is dropped because TLS is configured explicitly below (full certificate verification)
+    for (const k of ["pgbouncer", "connection_limit", "pool_timeout", "schema", "connect_timeout", "sslmode"]) u.searchParams.delete(k);
     return u.toString();
   } catch {
     return raw;
@@ -37,7 +38,7 @@ function pool(): Pool {
     const host = new URL(url).hostname;
     if (host === "localhost" || host === "127.0.0.1") ssl = false;
   } catch { /* keep ssl */ }
-  g.__kvPool = new Pool({ connectionString: url, ssl, max: 5, idleTimeoutMillis: 10_000, connectionTimeoutMillis: 8_000 });
+  g.__kvPool = new Pool({ connectionString: url, ssl, max: 5, idleTimeoutMillis: 120_000, connectionTimeoutMillis: 10_000 });
   g.__kvPool.on("error", (err) => console.error("[db] idle client error", err.message));
   return g.__kvPool;
 }
@@ -50,4 +51,9 @@ export async function query<T extends QueryResultRow = QueryResultRow>(text: str
 export async function queryOne<T extends QueryResultRow = QueryResultRow>(text: string, params: unknown[] = []): Promise<T | undefined> {
   const rows = await query<T>(text, params);
   return rows[0];
+}
+
+/** Cheap round trip used to wake the database (Neon pauses it after ~5 idle minutes). */
+export async function ping(): Promise<void> {
+  await pool().query("SELECT 1");
 }

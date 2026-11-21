@@ -1,6 +1,7 @@
 "use client";
 
 import { useId, useState } from "react";
+import { warmUp } from "@/lib/warm";
 
 /** Email-only "stay updated" sign-up. Stored as a newsletter enquiry in the admin inbox. */
 export function Subscribe({ invert = false }: { invert?: boolean }) {
@@ -29,7 +30,7 @@ export function Subscribe({ invert = false }: { invert?: boolean }) {
   }
 
   return (
-    <form onSubmit={onSubmit} noValidate className="w-full max-w-md">
+    <form onSubmit={onSubmit} onFocus={warmUp} noValidate className="w-full max-w-md">
       <label htmlFor={id} className="sr-only">Email address</label>
       <div className="flex flex-col gap-2 sm:flex-row">
         <input id={id} name="email" type="email" autoComplete="email" required placeholder="Your email address"

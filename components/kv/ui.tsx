@@ -156,7 +156,7 @@ export function Photo({ src, alt, className = "", sizes = "(min-width: 1024px) 5
   src: string; alt: string; className?: string; sizes?: string; priority?: boolean; fit?: "cover" | "contain";
 }) {
   const fitCls = fit === "contain" ? "object-contain" : "object-cover";
-  if (/^\/(photos|screens|brand)\//.test(src)) {
+  if (/^\/(photos|screens|brand)\//.test(src) || /^\/api\/media\/[0-9a-f-]{36}$/i.test(src)) {
     return <Image src={src} alt={alt} fill sizes={sizes} priority={priority} className={`${fitCls} ${className}`} />;
   }
   return <img src={src} alt={alt} loading={priority ? "eager" : "lazy"} decoding="async" className={`absolute inset-0 h-full w-full ${fitCls} ${className}`} />;

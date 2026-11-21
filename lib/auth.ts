@@ -120,11 +120,10 @@ export async function verifyAdminCredentials(
   // Owner sign-in with the ADMIN_PASSWORD set in the hosting environment.
   const envPass = process.env.ADMIN_PASSWORD || "";
   if (envPass && safeEqual(password, envPass) && email === (await ownerEmail())) {
-    const hash = await bcrypt.hash(envPass, 12);
-    const existing = await queryOne<{ id: string }>(`SELECT "id" FROM "admins" WHERE lower("email") = $1`, [email]);
+    const existing = await queryOne<{ id: string; passwordHash: string }>(`SELECT "id","passwordHash" FROM "admins" WHERE lower("email") = $1`, [email]);
     const id = existing?.id ?? crypto.randomUUID();
-    if (existing) await query(`UPDATE "admins" SET "passwordHash" = $1 WHERE "id" = $2`, [hash, id]);
-    else await query(`INSERT INTO "admins" ("id","email","passwordHash") VALUES ($1,$2,$3)`, [id, email, hash]);
+    if (!existing) await query(`INSERT INTO "admins" ("id","email","passwordHash") VALUES ($1,$2,$3)`, [id, email, await bcrypt.hash(envPass, 12)]);
+    else if (!(await bcrypt.compare(envPass, existing.passwordHash))) await query(`UPDATE "admins" SET "passwordHash" = $1 WHERE "id" = $2`, [await bcrypt.hash(envPass, 12), id]);
     clearFailures(clientKey);
     return { ok: true, adminId: id, email };
   }

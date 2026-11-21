@@ -14,6 +14,8 @@ export async function GET(_req: Request, ctx: RouteContext<"/api/media/[id]">) {
       "Content-Type": m.mime,
       // ids are immutable (a replaced image gets a new id), so cache aggressively
       "Cache-Control": "public, max-age=31536000, immutable",
+      // let Vercel's CDN keep a copy near visitors (ids never change)
+      "CDN-Cache-Control": "public, max-age=31536000, immutable",
       "X-Content-Type-Options": "nosniff",
       "Content-Security-Policy": "default-src 'none'; style-src 'unsafe-inline'; sandbox",
     },

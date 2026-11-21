@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
+import { warmUp } from "@/lib/warm";
 import { Icon } from "./ui";
 
 interface Props {
@@ -110,7 +111,7 @@ export function EnquiryForm({ kind, services = [], partnerTypes = [], defaultPar
   }
 
   return (
-    <form onSubmit={onSubmit} noValidate className={`relative grid gap-5 ${box}`} aria-busy={state === "sending"}>
+    <form onSubmit={onSubmit} onFocus={warmUp} noValidate className={`relative grid gap-5 ${box}`} aria-busy={state === "sending"}>
       {errList.length > 0 && (
         <div ref={summaryRef} tabIndex={-1} className="rounded-lg border border-danger/60 bg-danger/[0.06] p-4 outline-none" role="alert">
           <p className="font-semibold">Please fix {errList.length === 1 ? "1 problem" : `${errList.length} problems`}:</p>

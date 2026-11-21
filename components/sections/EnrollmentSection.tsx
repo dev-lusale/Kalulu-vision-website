@@ -15,6 +15,7 @@ import {
 } from "@/lib/config";
 import type { CourseId, LearningMode, PlanId } from "@/lib/config";
 import type { Enrollment } from "@/lib/types";
+import { warmUp } from "@/lib/warm";
 import {
   buildWhatsAppUrl,
   buildPaymentWhatsAppMessage,
@@ -172,7 +173,7 @@ export function EnrollmentSection({ selectedCourse, selectedPlan, selectedSubTop
                 </div>
               )}
 
-              <form onSubmit={handleSubmit} noValidate className="space-y-5">
+              <form onSubmit={handleSubmit} onFocus={warmUp} noValidate className="space-y-5">
 
                 <LField label="Full Name" required error={errors.fullName}>
                   <input type="text" id="fullName" name="fullName" value={values.fullName}

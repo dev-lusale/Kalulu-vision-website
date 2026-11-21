@@ -2,7 +2,8 @@
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { warmUp } from "@/lib/warm";
 
 const input = "min-h-12 w-full rounded-lg border border-line-strong bg-surface px-4 text-fg focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20";
 
@@ -27,6 +28,8 @@ export function AdminLoginForm({ configError }: { configError?: string | null })
       setBusy(false);
     }
   }
+
+  useEffect(() => { warmUp(); }, []);
 
   return (
     <form onSubmit={submit} className="kv-card w-full p-8 shadow-lift" noValidate>
