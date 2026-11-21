@@ -11,7 +11,7 @@ export interface NavService { slug: string; title: string; summary: string; icon
 interface NavChild { href: string; label: string; text?: string; icon?: string }
 interface NavItem { href: string; label: string; children?: NavChild[]; mega?: boolean }
 
-export function Navbar({ services, email, phone }: { services: NavService[]; email: string; phone: string }) {
+export function Navbar({ services, phone }: { services: NavService[]; phone: string }) {
   const pathname = usePathname();
   const ITEMS: NavItem[] = [
     { href: "/", label: "Home" },
@@ -92,10 +92,8 @@ export function Navbar({ services, email, phone }: { services: NavService[]; ema
       {/* Utility bar */}
       <div className="hidden border-b border-band-line bg-band text-band-muted md:block">
         <div className="container-kv flex h-10 items-center gap-6 text-[0.82rem]">
-          <span className="font-display font-semibold tracking-[0.12em] text-band-fg uppercase">See beyond. Build the future.</span>
           <div className="ml-auto flex items-center gap-5">
-            {email && <a href={`mailto:${email}`} className="inline-flex items-center gap-1.5 hover:text-band-fg"><Icon name="mail" className="size-3.5" />{email}</a>}
-            {phone && <a href={`tel:${phone.replace(/\s/g, "")}`} className="hidden items-center gap-1.5 hover:text-band-fg lg:inline-flex"><Icon name="phone" className="size-3.5" />{phone}</a>}
+            {phone && <a href={`tel:${phone.replace(/\s/g, "")}`} className="inline-flex items-center gap-1.5 hover:text-band-fg"><Icon name="phone" className="size-3.5" />{phone}</a>}
             <Link href="/training" className="inline-flex items-center gap-1.5 font-semibold text-band-fg hover:underline underline-offset-4"><Icon name="book" className="size-3.5" />Tech Lessons</Link>
           </div>
         </div>
