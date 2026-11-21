@@ -19,5 +19,5 @@ export default async function InsightPage({ params }: PageProps<"/insights/[slug
   const { slug } = await params;
   const post = await getPost(slug);
   if (!post || post.kind === "research") notFound();
-  return <Article post={post} back={{ href: "/insights", label: "All insights" }} />;
+  return <Article post={post} back={{ href: "/insights", label: "Insights" }} />;
 }

@@ -41,7 +41,7 @@ export function MainContent() {
   }
 
   return (
-    <div className="kv-legacy kv-dark">
+    <div className="kv-legacy kv-themed">
       <CoursesSection onSelectCourse={handleSelectCourse} />
       <PlansSection onSelectPlan={handleSelectPlan} />
       <EnrollmentSection

@@ -83,6 +83,7 @@ export interface Product {
   features: string[];
   technologies: string[];
   imageUrl: string;
+  gallery: string[];
   websiteUrl: string;
   sortOrder: number;
   published: boolean;
@@ -100,6 +101,7 @@ export interface Project {
   outcomes: string;
   technologies: string[];
   imageUrl: string;
+  gallery: string[];
   demoUrl: string;
   repoUrl: string;
   featured: boolean;
@@ -135,9 +137,36 @@ export interface Opportunity {
   sortOrder: number;
 }
 
+export const ENQUIRY_KINDS = ["contact", "opportunity", "partnership", "newsletter"] as const;
+export type EnquiryKind = (typeof ENQUIRY_KINDS)[number];
+
+export const PARTNER_TYPES: { id: string; label: string; text: string; icon: string }[] = [
+  { id: "corporate", label: "Corporate organisations", text: "Digital products, data and AI capabilities built around your operations.", icon: "layers" },
+  { id: "university", label: "Universities", text: "Joint research, student projects, supervision and knowledge exchange.", icon: "book" },
+  { id: "government", label: "Government institutions", text: "Public-service technology designed for local infrastructure and users.", icon: "shield" },
+  { id: "research", label: "Research institutions", text: "Applied research in AI, accessibility, language technology and IoT.", icon: "flask" },
+  { id: "technology", label: "Technology companies", text: "Integration, co-development and delivery partnerships across Africa.", icon: "code" },
+  { id: "ecosystem", label: "Innovation ecosystems", text: "Hubs, incubators and programmes that grow local innovators.", icon: "spark" },
+];
+
+/** A photo slot on the website, editable in Admin → Company info → Photos. */
+export interface SiteImage { url: string; alt: string; caption: string }
+export const SITE_IMAGE_SLOTS = [
+  { key: "hero", label: "Home hero" },
+  { key: "overview", label: "Home & About overview" },
+  { key: "research", label: "Research" },
+  { key: "partnerships", label: "Partnerships" },
+  { key: "careers", label: "Careers & opportunities" },
+  { key: "recognition", label: "About — recognition" },
+] as const;
+export type SiteImageKey = (typeof SITE_IMAGE_SLOTS)[number]["key"];
+export type SiteImages = Record<SiteImageKey, SiteImage>;
+
+export interface MediaItem { id: string; url: string; filename: string; mime: string; size: number; width: number | null; height: number | null; alt: string; createdAt: string }
+
 export interface Enquiry {
   id: string;
-  kind: "contact" | "opportunity";
+  kind: EnquiryKind;
   name: string;
   email: string;
   organisation: string;

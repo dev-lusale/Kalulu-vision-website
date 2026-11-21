@@ -12,7 +12,7 @@ import { hasDatabase, query, queryOne } from "./server/pool";
 import {
   readingMinutes,
   type About, type Company, type Enquiry, type Opportunity, type Post, type Product,
-  type Project, type ProjectCategory, type ResearchInfo, type Service,
+  type MediaItem, type Project, type ProjectCategory, type ResearchInfo, type Service, type SiteImages,
 } from "./content-types";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -37,7 +37,7 @@ export const ENTITIES = {
     fields: {
       slug: ["slug", "text"], name: ["name", "text"], tagline: ["tagline", "text"], description: ["description", "text"],
       status: ["status", "text"], features: ["features", "json"], technologies: ["technologies", "json"],
-      imageUrl: ["image_url", "text"], websiteUrl: ["website_url", "text"], sortOrder: ["sort_order", "int"],
+      imageUrl: ["image_url", "text"], gallery: ["gallery", "json"], websiteUrl: ["website_url", "text"], sortOrder: ["sort_order", "int"],
       published: ["published", "bool"],
     },
   },
@@ -46,7 +46,7 @@ export const ENTITIES = {
     fields: {
       slug: ["slug", "text"], title: ["title", "text"], categories: ["categories", "json"], status: ["status", "text"],
       overview: ["overview", "text"], problem: ["problem", "text"], solution: ["solution", "text"], outcomes: ["outcomes", "text"],
-      technologies: ["technologies", "json"], imageUrl: ["image_url", "text"], demoUrl: ["demo_url", "text"],
+      technologies: ["technologies", "json"], imageUrl: ["image_url", "text"], gallery: ["gallery", "json"], demoUrl: ["demo_url", "text"],
       repoUrl: ["repo_url", "text"], featured: ["featured", "bool"], sortOrder: ["sort_order", "int"], published: ["published", "bool"],
     },
   },
@@ -128,6 +128,14 @@ async function getSetting<T>(key: string): Promise<T> {
 export const getCompany = () => getSetting<Company>("company");
 export const getAbout = () => getSetting<About>("about");
 export const getResearchInfo = () => getSetting<ResearchInfo>("research");
+export async function getSiteImages(): Promise<SiteImages> {
+  const fb = S.settings.images as SiteImages;
+  const v = await getSetting<Partial<SiteImages>>("images");
+  // fill any missing/empty slot from the defaults so a page never loses its photo
+  const out = { ...fb } as SiteImages;
+  for (const k of Object.keys(fb) as (keyof SiteImages)[]) if (v[k]?.url) out[k] = { ...fb[k], ...v[k] };
+  return out;
+}
 
 export async function getServices(): Promise<Service[]> {
   return safe("services", async () =>
@@ -245,12 +253,12 @@ export async function adminDelete(entity: EntityName, id: string): Promise<void>
   await query(`DELETE FROM ${ENTITIES[entity].table} WHERE id = $1`, [id]);
 }
 
-export async function adminGetSettings(): Promise<{ company: Company; about: About; research: ResearchInfo }> {
-  const [company, about, research] = await Promise.all([getCompany(), getAbout(), getResearchInfo()]);
-  return { company, about, research };
+export async function adminGetSettings(): Promise<{ company: Company; about: About; research: ResearchInfo; images: SiteImages }> {
+  const [company, about, research, images] = await Promise.all([getCompany(), getAbout(), getResearchInfo(), getSiteImages()]);
+  return { company, about, research, images };
 }
 
-export async function adminSaveSetting(key: "company" | "about" | "research", value: unknown): Promise<void> {
+export async function adminSaveSetting(key: "company" | "about" | "research" | "images", value: unknown): Promise<void> {
   await query(
     `INSERT INTO kv_settings (key, value, updated_at) VALUES ($1, $2, now())
      ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value, updated_at = now()`,
@@ -268,4 +276,35 @@ export async function adminCounts(): Promise<Record<string, number>> {
     (SELECT count(*) FROM kv_opportunities WHERE is_open)::text AS "openOpportunities",
     (SELECT count(*) FROM "payments" WHERE "status" = 'PENDING_VERIFICATION')::text AS "pendingPayments"`);
   return Object.fromEntries(Object.entries(r ?? {}).map(([k, v]) => [k, Number(v)]));
+}
+
+// ─────────────────────────────────────────────────────────────
+//  Media library (images stored in Postgres, served by /api/media/[id])
+// ─────────────────────────────────────────────────────────────
+const mediaRow = (r: any): MediaItem => ({
+  id: r.id, url: `/api/media/${r.id}`, filename: r.filename, mime: r.mime, size: Number(r.size),
+  width: r.width ?? null, height: r.height ?? null, alt: r.alt ?? "",
+  createdAt: r.created_at instanceof Date ? r.created_at.toISOString() : r.created_at,
+});
+
+export async function listMedia(): Promise<MediaItem[]> {
+  return (await query(`SELECT id, filename, mime, size, width, height, alt, created_at FROM kv_media ORDER BY created_at DESC LIMIT 500`)).map(mediaRow);
+}
+export async function saveMedia(m: { filename: string; mime: string; data: Buffer; width: number | null; height: number | null; alt: string }): Promise<MediaItem> {
+  const id = crypto.randomUUID();
+  const rows = await query(
+    `INSERT INTO kv_media (id, filename, mime, size, width, height, alt, data) VALUES ($1,$2,$3,$4,$5,$6,$7,$8)
+     RETURNING id, filename, mime, size, width, height, alt, created_at`,
+    [id, m.filename, m.mime, m.data.length, m.width, m.height, m.alt, m.data]
+  );
+  return mediaRow(rows[0]);
+}
+export async function getMediaData(id: string): Promise<{ mime: string; data: Buffer } | null> {
+  return (await queryOne<{ mime: string; data: Buffer }>(`SELECT mime, data FROM kv_media WHERE id = $1`, [id])) ?? null;
+}
+export async function updateMediaAlt(id: string, alt: string): Promise<void> {
+  await query(`UPDATE kv_media SET alt = $1 WHERE id = $2`, [alt, id]);
+}
+export async function deleteMedia(id: string): Promise<void> {
+  await query(`DELETE FROM kv_media WHERE id = $1`, [id]);
 }

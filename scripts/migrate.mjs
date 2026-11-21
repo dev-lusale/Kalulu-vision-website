@@ -64,15 +64,15 @@ try {
       }
       for (const p of c.products) {
         await client.query(
-          `INSERT INTO kv_products (id, slug, name, tagline, description, status, features, technologies, image_url, website_url, sort_order)
-           VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11) ON CONFLICT (slug) DO NOTHING`,
-          [crypto.randomUUID(), p.slug, p.name, p.tagline, p.description, p.status, j(p.features), j(p.technologies), p.image_url, p.website_url, p.sort_order]);
+          `INSERT INTO kv_products (id, slug, name, tagline, description, status, features, technologies, image_url, website_url, sort_order, gallery)
+           VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12) ON CONFLICT (slug) DO NOTHING`,
+          [crypto.randomUUID(), p.slug, p.name, p.tagline, p.description, p.status, j(p.features), j(p.technologies), p.image_url, p.website_url, p.sort_order, j(p.gallery ?? [])]);
       }
       for (const p of c.projects) {
         await client.query(
-          `INSERT INTO kv_projects (id, slug, title, categories, status, overview, problem, solution, outcomes, technologies, image_url, demo_url, repo_url, featured, sort_order)
-           VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15) ON CONFLICT (slug) DO NOTHING`,
-          [crypto.randomUUID(), p.slug, p.title, j(p.categories), p.status, p.overview, p.problem, p.solution, p.outcomes, j(p.technologies), p.image_url, p.demo_url, p.repo_url, p.featured, p.sort_order]);
+          `INSERT INTO kv_projects (id, slug, title, categories, status, overview, problem, solution, outcomes, technologies, image_url, demo_url, repo_url, featured, sort_order, gallery)
+           VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16) ON CONFLICT (slug) DO NOTHING`,
+          [crypto.randomUUID(), p.slug, p.title, j(p.categories), p.status, p.overview, p.problem, p.solution, p.outcomes, j(p.technologies), p.image_url, p.demo_url, p.repo_url, p.featured, p.sort_order, j(p.gallery ?? [])]);
       }
       await client.query("INSERT INTO kv_migrations (name) VALUES ($1)", [SEED]);
       await client.query("COMMIT");

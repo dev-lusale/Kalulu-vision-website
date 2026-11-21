@@ -9,7 +9,14 @@
       "phone": "+260 972 079 994",
       "whatsapp": "260972079994",
       "location": "Zambia",
-      "socials": { "linkedin": "", "youtube": "", "github": "", "x": "", "facebook": "", "tiktok": "" }
+      "socials": {
+        "linkedin": "",
+        "youtube": "",
+        "github": "",
+        "x": "",
+        "facebook": "",
+        "tiktok": ""
+      }
     },
     "about": {
       "overview": "Kalulu Vision is a young technology and innovation company from Zambia. We design and build AI, software, data and IoT solutions for problems we see around us, and we teach the practical digital skills that help people build their own.",
@@ -17,171 +24,544 @@
       "mission": "To develop intelligent, accessible and impactful technology solutions that solve real-world problems.",
       "vision": "To become a leading African technology and innovation company creating solutions with global relevance.",
       "values": [
-        { "title": "Innovation", "text": "We look for new approaches, and test them against reality before we call them solutions." },
-        { "title": "Intelligence", "text": "We apply AI and data where they genuinely improve a decision or a service." },
-        { "title": "Integrity", "text": "Honest scoping, clear communication and no inflated claims." },
-        { "title": "Excellence", "text": "Careful engineering, thorough testing and work we are proud to hand over." },
-        { "title": "Collaboration", "text": "We build with the people who will use what we make." },
-        { "title": "Impact", "text": "Success is measured by the difference a solution makes, not by its complexity." }
+        {
+          "title": "Innovation",
+          "text": "We look for new approaches, and test them against reality before we call them solutions."
+        },
+        {
+          "title": "Intelligence",
+          "text": "We apply AI and data where they genuinely improve a decision or a service."
+        },
+        {
+          "title": "Integrity",
+          "text": "Honest scoping, clear communication and no inflated claims."
+        },
+        {
+          "title": "Excellence",
+          "text": "Careful engineering, thorough testing and work we are proud to hand over."
+        },
+        {
+          "title": "Collaboration",
+          "text": "We build with the people who will use what we make."
+        },
+        {
+          "title": "Impact",
+          "text": "Success is measured by the difference a solution makes, not by its complexity."
+        }
       ],
       "philosophy": "Start with the problem, not the technology. Design for the devices, connectivity and languages people really have. Prove it works, then scale it.",
       "approach": [
-        { "title": "Listen first", "text": "Understand the people, the context and the constraints before proposing anything." },
-        { "title": "Prototype early", "text": "Put a working version in front of users quickly and learn from how they use it." },
-        { "title": "Validate with evidence", "text": "Test against real data and real conditions, and report results honestly." },
-        { "title": "Build to last", "text": "Ship maintainable, documented systems and transfer the knowledge to run them." }
+        {
+          "title": "Listen first",
+          "text": "Understand the people, the context and the constraints before proposing anything."
+        },
+        {
+          "title": "Prototype early",
+          "text": "Put a working version in front of users quickly and learn from how they use it."
+        },
+        {
+          "title": "Validate with evidence",
+          "text": "Test against real data and real conditions, and report results honestly."
+        },
+        {
+          "title": "Build to last",
+          "text": "Ship maintainable, documented systems and transfer the knowledge to run them."
+        }
       ],
       "africa": "We believe Africa should build and own its technology, not only consume it. That means solutions designed for local infrastructure, support for African languages, and investing in the skills of the next generation of builders through our training programmes."
     },
     "research": {
       "intro": "Our research is applied: each question comes from a real problem, and each answer is tested in the field.",
       "areas": [
-        { "title": "Applied AI research", "text": "Practical machine learning for problems with limited data and limited compute." },
-        { "title": "African language technologies", "text": "Tools for Bemba, Nyanja and other Zambian languages, designed to work offline." },
-        { "title": "Accessibility and sign language", "text": "Computer vision for Zambian Sign Language recognition, starting with building the first dataset." },
-        { "title": "Intelligent automation", "text": "Automating repetitive work in education and operations so people can focus on judgement." },
-        { "title": "Data-driven innovation", "text": "Turning public and organisational data into evidence that supports decisions." },
-        { "title": "Emerging technologies", "text": "IoT and edge systems for safety and environmental monitoring in mining communities." }
+        {
+          "title": "Applied AI research",
+          "text": "Practical machine learning for problems with limited data and limited compute."
+        },
+        {
+          "title": "African language technologies",
+          "text": "Tools for Bemba, Nyanja and other Zambian languages, designed to work offline."
+        },
+        {
+          "title": "Accessibility and sign language",
+          "text": "Computer vision for Zambian Sign Language recognition, starting with building the first dataset."
+        },
+        {
+          "title": "Intelligent automation",
+          "text": "Automating repetitive work in education and operations so people can focus on judgement."
+        },
+        {
+          "title": "Data-driven innovation",
+          "text": "Turning public and organisational data into evidence that supports decisions."
+        },
+        {
+          "title": "Emerging technologies",
+          "text": "IoT and edge systems for safety and environmental monitoring in mining communities."
+        }
       ]
+    },
+    "images": {
+      "hero": {
+        "url": "/photos/collaboration.webp",
+        "alt": "Young developers gathered with laptops in a computer lab, giving a thumbs up",
+        "caption": "A collaborative build session with young developers."
+      },
+      "overview": {
+        "url": "/photos/founder-workspace.webp",
+        "alt": "Bernard Lusale working on a laptop in a computer lab",
+        "caption": "Founder Bernard Lusale at work."
+      },
+      "research": {
+        "url": "/photos/research-symposium.webp",
+        "alt": "Bernard Lusale in front of the Second National Research and Innovation Symposium 2025 banner",
+        "caption": "At the Second National Research and Innovation Symposium, 2025."
+      },
+      "partnerships": {
+        "url": "/photos/unipod-session.webp",
+        "alt": "A group of innovators standing in front of UNDP and Unipod banners",
+        "caption": "With fellow innovators at a Unipod session, 2025."
+      },
+      "careers": {
+        "url": "/photos/workshop.webp",
+        "alt": "Participants seated at long tables during a technology workshop",
+        "caption": "A technology workshop session."
+      },
+      "recognition": {
+        "url": "/photos/evoke-hackathon-team.webp",
+        "alt": "Hackathon participants holding a large prize cheque at the Evoke Data Analytics Hackathon",
+        "caption": "First prize at the Evoke Data Analytics Hackathon, 2026."
+      }
     }
   },
   "services": [
     {
-      "slug": "artificial-intelligence-machine-learning", "icon": "brain", "title": "Artificial Intelligence & Machine Learning",
+      "slug": "artificial-intelligence-machine-learning",
+      "icon": "brain",
+      "title": "Artificial Intelligence & Machine Learning",
       "summary": "Practical AI that solves a specific problem, from prediction to computer vision and language tools.",
       "intro": "We help organisations identify where AI can genuinely add value, then design, train and deploy models that work with the data, devices and connectivity they actually have.",
-      "offerings": ["AI opportunity assessment", "Machine learning model development", "Computer vision systems", "Natural language and chatbot solutions", "Retrieval-augmented AI assistants", "Model evaluation and monitoring"],
-      "technologies": ["Python", "TensorFlow", "PyTorch", "scikit-learn", "OpenCV", "MediaPipe", "LLM APIs", "Vector databases"],
-      "applications": ["Automating document and lesson preparation", "Image and video recognition", "Forecasting and risk scoring", "Assistants grounded in your own documents"],
-      "categories": ["ai"], "sort_order": 1
+      "offerings": [
+        "AI opportunity assessment",
+        "Machine learning model development",
+        "Computer vision systems",
+        "Natural language and chatbot solutions",
+        "Retrieval-augmented AI assistants",
+        "Model evaluation and monitoring"
+      ],
+      "technologies": [
+        "Python",
+        "TensorFlow",
+        "PyTorch",
+        "scikit-learn",
+        "OpenCV",
+        "MediaPipe",
+        "LLM APIs",
+        "Vector databases"
+      ],
+      "applications": [
+        "Automating document and lesson preparation",
+        "Image and video recognition",
+        "Forecasting and risk scoring",
+        "Assistants grounded in your own documents"
+      ],
+      "categories": [
+        "ai"
+      ],
+      "sort_order": 1
     },
     {
-      "slug": "software-development", "icon": "code", "title": "Software Development",
+      "slug": "software-development",
+      "icon": "code",
+      "title": "Software Development",
       "summary": "Reliable custom software engineered around your processes, built to be maintained.",
       "intro": "We design and build custom systems, from internal tools to full platforms, with clean architecture, tests and documentation so they keep working long after launch.",
-      "offerings": ["Custom business systems", "API design and integration", "Desktop applications", "System modernisation", "Code review and quality improvement"],
-      "technologies": ["TypeScript", "C# / .NET", "Python", "Java", "PostgreSQL", "Docker", "Git"],
-      "applications": ["Enrollment, booking and records systems", "Workflow and approval tools", "Integrations between existing systems"],
-      "categories": ["software"], "sort_order": 2
+      "offerings": [
+        "Custom business systems",
+        "API design and integration",
+        "Desktop applications",
+        "System modernisation",
+        "Code review and quality improvement"
+      ],
+      "technologies": [
+        "TypeScript",
+        "C# / .NET",
+        "Python",
+        "Java",
+        "PostgreSQL",
+        "Docker",
+        "Git"
+      ],
+      "applications": [
+        "Enrollment, booking and records systems",
+        "Workflow and approval tools",
+        "Integrations between existing systems"
+      ],
+      "categories": [
+        "software"
+      ],
+      "sort_order": 2
     },
     {
-      "slug": "web-application-development", "icon": "browser", "title": "Web Application Development",
+      "slug": "web-application-development",
+      "icon": "browser",
+      "title": "Web Application Development",
       "summary": "Fast, responsive web platforms that work well on everyday phones and slower connections.",
       "intro": "We build websites and web applications that load quickly, work on any screen and are easy for your team to update.",
-      "offerings": ["Company websites", "Web applications and portals", "Admin dashboards and content management", "E-commerce and payment flows", "Performance and accessibility improvements"],
-      "technologies": ["Next.js", "React", "TypeScript", "Tailwind CSS", "Node.js", "PostgreSQL", "Vercel"],
-      "applications": ["Online enrollment and subscriptions", "Customer and member portals", "Data dashboards"],
-      "categories": ["software"], "sort_order": 3
+      "offerings": [
+        "Company websites",
+        "Web applications and portals",
+        "Admin dashboards and content management",
+        "E-commerce and payment flows",
+        "Performance and accessibility improvements"
+      ],
+      "technologies": [
+        "Next.js",
+        "React",
+        "TypeScript",
+        "Tailwind CSS",
+        "Node.js",
+        "PostgreSQL",
+        "Vercel"
+      ],
+      "applications": [
+        "Online enrollment and subscriptions",
+        "Customer and member portals",
+        "Data dashboards"
+      ],
+      "categories": [
+        "software"
+      ],
+      "sort_order": 3
     },
     {
-      "slug": "mobile-application-development", "icon": "phone", "title": "Mobile Application Development",
+      "slug": "mobile-application-development",
+      "icon": "phone",
+      "title": "Mobile Application Development",
       "summary": "Android and cross-platform apps designed for everyday devices and intermittent connectivity.",
       "intro": "We build mobile apps that respect limited data, storage and battery, with offline-first designs where connectivity cannot be assumed.",
-      "offerings": ["Android applications", "Cross-platform apps for Android and iOS", "Offline-first data capture", "App backend and API development"],
-      "technologies": ["React Native", "Flutter", "Kotlin", ".NET MAUI", "Firebase", "REST APIs"],
-      "applications": ["Field data collection", "Offline translation and learning tools", "Customer-facing service apps"],
-      "categories": ["mobile"], "sort_order": 4
+      "offerings": [
+        "Android applications",
+        "Cross-platform apps for Android and iOS",
+        "Offline-first data capture",
+        "App backend and API development"
+      ],
+      "technologies": [
+        "React Native",
+        "Flutter",
+        "Kotlin",
+        ".NET MAUI",
+        "Firebase",
+        "REST APIs"
+      ],
+      "applications": [
+        "Field data collection",
+        "Offline translation and learning tools",
+        "Customer-facing service apps"
+      ],
+      "categories": [
+        "mobile"
+      ],
+      "sort_order": 4
     },
     {
-      "slug": "data-science-analytics", "icon": "chart", "title": "Data Science & Analytics",
+      "slug": "data-science-analytics",
+      "icon": "chart",
+      "title": "Data Science & Analytics",
       "summary": "Turn raw data into clear evidence, dashboards and decisions.",
       "intro": "We clean, analyse and visualise data, apply sound statistics, and present findings in a form decision-makers can act on.",
-      "offerings": ["Data cleaning and preparation", "Exploratory and statistical analysis", "Dashboards and reporting", "Predictive analytics", "Data strategy advice"],
-      "technologies": ["Python", "Pandas", "NumPy", "Matplotlib", "Jupyter", "SQL", "Excel / Sheets"],
-      "applications": ["Agriculture and aquaculture analysis", "Procurement and supplier analysis", "Programme monitoring and evaluation"],
-      "categories": ["data"], "sort_order": 5
+      "offerings": [
+        "Data cleaning and preparation",
+        "Exploratory and statistical analysis",
+        "Dashboards and reporting",
+        "Predictive analytics",
+        "Data strategy advice"
+      ],
+      "technologies": [
+        "Python",
+        "Pandas",
+        "NumPy",
+        "Matplotlib",
+        "Jupyter",
+        "SQL",
+        "Excel / Sheets"
+      ],
+      "applications": [
+        "Agriculture and aquaculture analysis",
+        "Procurement and supplier analysis",
+        "Programme monitoring and evaluation"
+      ],
+      "categories": [
+        "data"
+      ],
+      "sort_order": 5
     },
     {
-      "slug": "internet-of-things", "icon": "chip", "title": "Internet of Things",
+      "slug": "internet-of-things",
+      "icon": "chip",
+      "title": "Internet of Things",
       "summary": "Connected sensors and devices that monitor conditions and raise alerts in real time.",
       "intro": "We design IoT systems end to end: sensors and microcontrollers, data transmission and the dashboards and alerts that make the data useful.",
-      "offerings": ["Sensor and device prototyping", "Embedded firmware", "Data pipelines from field to cloud", "Real-time alerts and dashboards"],
-      "technologies": ["Arduino", "Raspberry Pi", "ESP32", "C / C++", "MQTT", "Python"],
-      "applications": ["Safety monitoring for small-scale mining", "Environmental monitoring", "Remote asset monitoring"],
-      "categories": ["iot"], "sort_order": 6
+      "offerings": [
+        "Sensor and device prototyping",
+        "Embedded firmware",
+        "Data pipelines from field to cloud",
+        "Real-time alerts and dashboards"
+      ],
+      "technologies": [
+        "Arduino",
+        "Raspberry Pi",
+        "ESP32",
+        "C / C++",
+        "MQTT",
+        "Python"
+      ],
+      "applications": [
+        "Safety monitoring for small-scale mining",
+        "Environmental monitoring",
+        "Remote asset monitoring"
+      ],
+      "categories": [
+        "iot"
+      ],
+      "sort_order": 6
     },
     {
-      "slug": "digital-transformation", "icon": "arrows", "title": "Digital Transformation",
+      "slug": "digital-transformation",
+      "icon": "arrows",
+      "title": "Digital Transformation",
       "summary": "Move manual, paper-based processes to simple, dependable digital systems.",
       "intro": "We map how work is done today, find the steps that cost the most time or cause errors, and replace them with digital tools your team will actually use.",
-      "offerings": ["Process mapping and analysis", "Digitisation of records and forms", "Workflow automation", "Staff training and change support"],
-      "technologies": ["Web applications", "Automation scripts", "Cloud databases", "Microsoft 365", "Google Workspace"],
-      "applications": ["Schools and training providers", "Small and growing businesses", "Programme and NGO operations"],
-      "categories": ["software", "data"], "sort_order": 7
+      "offerings": [
+        "Process mapping and analysis",
+        "Digitisation of records and forms",
+        "Workflow automation",
+        "Staff training and change support"
+      ],
+      "technologies": [
+        "Web applications",
+        "Automation scripts",
+        "Cloud databases",
+        "Microsoft 365",
+        "Google Workspace"
+      ],
+      "applications": [
+        "Schools and training providers",
+        "Small and growing businesses",
+        "Programme and NGO operations"
+      ],
+      "categories": [
+        "software",
+        "data"
+      ],
+      "sort_order": 7
     },
     {
-      "slug": "technology-consulting-research", "icon": "compass", "title": "Technology Consulting & Research",
+      "slug": "technology-consulting-research",
+      "icon": "compass",
+      "title": "Technology Consulting & Research",
       "summary": "Independent advice and applied research to help you choose and validate the right technology.",
       "intro": "We help you evaluate options, test ideas with prototypes and evidence, and plan technology investments that fit your context.",
-      "offerings": ["Technology strategy and feasibility studies", "Proof-of-concept prototypes", "Applied research partnerships", "Technical training and workshops"],
-      "technologies": ["Research methods", "Rapid prototyping", "Data analysis", "Technical writing"],
-      "applications": ["Feasibility studies for new products", "Research collaborations with institutions", "Innovation challenge entries"],
-      "categories": ["research"], "sort_order": 8
+      "offerings": [
+        "Technology strategy and feasibility studies",
+        "Proof-of-concept prototypes",
+        "Applied research partnerships",
+        "Technical training and workshops"
+      ],
+      "technologies": [
+        "Research methods",
+        "Rapid prototyping",
+        "Data analysis",
+        "Technical writing"
+      ],
+      "applications": [
+        "Feasibility studies for new products",
+        "Research collaborations with institutions",
+        "Innovation challenge entries"
+      ],
+      "categories": [
+        "research"
+      ],
+      "sort_order": 8
     }
   ],
   "products": [
     {
-      "slug": "tech-lessons", "name": "Kalulu Vision Tech Lessons", "status": "live",
+      "slug": "tech-lessons",
+      "name": "Kalulu Vision Tech Lessons",
+      "status": "live",
       "tagline": "Practical technology training in Zambia.",
       "description": "Our training platform offers hands-on courses in programming, web development, AI and machine learning, data analytics, automation and IoT, with weekly, monthly and one-on-one plans, online or in person.",
-      "features": ["Seven course tracks", "Weekly, monthly and one-on-one plans", "Online, in-person or one-on-one learning", "Enrollment ID and payment tracking", "WhatsApp support"],
-      "technologies": ["Next.js", "TypeScript", "PostgreSQL"],
-      "image_url": "", "website_url": "/training", "sort_order": 1
+      "features": [
+        "Seven course tracks",
+        "Weekly, monthly and one-on-one plans",
+        "Online, in-person or one-on-one learning",
+        "Enrollment ID and payment tracking",
+        "WhatsApp support"
+      ],
+      "technologies": [
+        "Next.js",
+        "TypeScript",
+        "PostgreSQL"
+      ],
+      "image_url": "/screens/tech-lessons-courses.webp",
+      "website_url": "/training",
+      "sort_order": 1,
+      "gallery": [
+        "/screens/tech-lessons-plans.webp",
+        "/screens/tech-lessons-enroll.webp"
+      ]
     },
     {
-      "slug": "educom-ai", "name": "Educom AI", "status": "prototype",
+      "slug": "educom-ai",
+      "name": "Educom AI",
+      "status": "prototype",
       "tagline": "AI-assisted lesson planning for Zambian teachers.",
       "description": "An AI platform that helps teachers create curriculum-aligned lesson plans, quizzes, exams and marking schemes, grounded in curriculum documents. Submitted to the HEA Research and Innovation Digest 2026.",
-      "features": ["Curriculum-aligned lesson plans", "Quiz, exam and marking-scheme generation", "Answers grounded in curriculum documents", "PDF export", "Classroom and resource tools"],
-      "technologies": ["Next.js", "TypeScript", "Python FastAPI", "ChromaDB", "PostgreSQL"],
-      "image_url": "", "website_url": "https://github.com/dev-lusale/Educom-AI", "sort_order": 2
+      "features": [
+        "Curriculum-aligned lesson plans",
+        "Quiz, exam and marking-scheme generation",
+        "Answers grounded in curriculum documents",
+        "PDF export",
+        "Classroom and resource tools"
+      ],
+      "technologies": [
+        "Next.js",
+        "TypeScript",
+        "Python FastAPI",
+        "ChromaDB",
+        "PostgreSQL"
+      ],
+      "image_url": "",
+      "website_url": "https://github.com/dev-lusale/Educom-AI",
+      "sort_order": 2,
+      "gallery": []
     }
   ],
   "projects": [
     {
-      "slug": "educom-ai", "title": "Educom AI", "categories": ["ai", "software"], "status": "prototype", "featured": true,
+      "slug": "educom-ai",
+      "title": "Educom AI",
+      "categories": [
+        "ai",
+        "software"
+      ],
+      "status": "prototype",
+      "featured": true,
       "overview": "AI-powered education technology that helps Zambian teachers prepare curriculum-aligned lessons and assessments.",
       "problem": "Teachers spend hours preparing lesson plans and assessments that must align with the competency-based curriculum, often with limited resources.",
       "solution": "A web platform that generates lesson plans, quizzes, exams and marking schemes, using retrieval over curriculum documents to keep output aligned, with PDF export and classroom tools.",
       "outcomes": "Working prototype. Submitted to the HEA Research and Innovation Digest 2026.",
-      "technologies": ["Next.js 15", "TypeScript", "Python FastAPI", "ChromaDB", "Prisma", "PostgreSQL"],
-      "image_url": "", "demo_url": "", "repo_url": "https://github.com/dev-lusale/Educom-AI", "sort_order": 1
+      "technologies": [
+        "Next.js 15",
+        "TypeScript",
+        "Python FastAPI",
+        "ChromaDB",
+        "Prisma",
+        "PostgreSQL"
+      ],
+      "image_url": "",
+      "demo_url": "",
+      "repo_url": "https://github.com/dev-lusale/Educom-AI",
+      "sort_order": 1,
+      "gallery": []
     },
     {
-      "slug": "signbridge", "title": "SignBridge", "categories": ["ai", "research"], "status": "research", "featured": true,
+      "slug": "signbridge",
+      "title": "SignBridge",
+      "categories": [
+        "ai",
+        "research"
+      ],
+      "status": "research",
+      "featured": true,
       "overview": "Real-time Zambian Sign Language recognition.",
       "problem": "Deaf people who use Zambian Sign Language have almost no technology that understands their language, and no public dataset of Zambian signs exists to build it.",
       "solution": "A real-time recognition system using hand-landmark tracking, beginning with a new dataset of roughly 30 to 50 Zambian signs recorded from 5 to 10 signers.",
       "outcomes": "Planned research project; dataset design under way.",
-      "technologies": ["Python", "OpenCV", "MediaPipe"],
-      "image_url": "", "demo_url": "", "repo_url": "", "sort_order": 2
+      "technologies": [
+        "Python",
+        "OpenCV",
+        "MediaPipe"
+      ],
+      "image_url": "",
+      "demo_url": "",
+      "repo_url": "",
+      "sort_order": 2,
+      "gallery": []
     },
     {
-      "slug": "talkzed", "title": "TalkZed", "categories": ["ai", "mobile", "research"], "status": "concept", "featured": true,
+      "slug": "talkzed",
+      "title": "TalkZed",
+      "categories": [
+        "ai",
+        "mobile",
+        "research"
+      ],
+      "status": "concept",
+      "featured": true,
       "overview": "Offline translation between Bemba, Nyanja and English.",
       "problem": "Few digital tools support Bemba or Nyanja, and those that do usually need a reliable internet connection.",
       "solution": "A mobile translation app designed to work offline on everyday phones, backed by a REST API and a PostgreSQL language database.",
       "outcomes": "Concept and technical design completed.",
-      "technologies": ["React Native", "REST API", "PostgreSQL"],
-      "image_url": "", "demo_url": "", "repo_url": "", "sort_order": 3
+      "technologies": [
+        "React Native",
+        "REST API",
+        "PostgreSQL"
+      ],
+      "image_url": "",
+      "demo_url": "",
+      "repo_url": "",
+      "sort_order": 3,
+      "gallery": []
     },
     {
-      "slug": "mineguard-ai", "title": "MINEGUARD AI", "categories": ["iot", "ai"], "status": "concept", "featured": false,
+      "slug": "mineguard-ai",
+      "title": "MINEGUARD AI",
+      "categories": [
+        "iot",
+        "ai"
+      ],
+      "status": "concept",
+      "featured": false,
       "overview": "An IoT and AI safety platform concept for artisanal and small-scale miners.",
       "problem": "Artisanal and small-scale miners work with little safety monitoring, so hazards are often detected too late.",
       "solution": "Connected sensors combined with AI-based risk detection to warn miners and supervisors about unsafe conditions early.",
       "outcomes": "Concept developed for the Minepreneur Innovation Challenge.",
-      "technologies": ["IoT sensors", "Machine learning"],
-      "image_url": "", "demo_url": "", "repo_url": "", "sort_order": 4
+      "technologies": [
+        "IoT sensors",
+        "Machine learning"
+      ],
+      "image_url": "",
+      "demo_url": "",
+      "repo_url": "",
+      "sort_order": 4,
+      "gallery": []
     },
     {
-      "slug": "tech-lessons-platform", "title": "Tech Lessons Platform", "categories": ["software"], "status": "live", "featured": false,
+      "slug": "tech-lessons-platform",
+      "title": "Tech Lessons Platform",
+      "categories": [
+        "software"
+      ],
+      "status": "live",
+      "featured": false,
       "overview": "The enrollment and subscription platform behind Kalulu Vision's technology training.",
       "problem": "Running training enrollments over chat alone made it hard to track who had enrolled, paid and been activated.",
       "solution": "A web platform with course and plan selection, automatic enrollment IDs, mobile money and bank payment instructions, and an admin dashboard to verify payments and manage subscriptions.",
       "outcomes": "Live and taking enrollments.",
-      "technologies": ["Next.js", "TypeScript", "PostgreSQL", "Tailwind CSS"],
-      "image_url": "", "demo_url": "/training", "repo_url": "", "sort_order": 5
+      "technologies": [
+        "Next.js",
+        "TypeScript",
+        "PostgreSQL",
+        "Tailwind CSS"
+      ],
+      "image_url": "/screens/tech-lessons-courses.webp",
+      "demo_url": "/training",
+      "repo_url": "",
+      "sort_order": 5,
+      "gallery": [
+        "/screens/tech-lessons-plans.webp",
+        "/screens/tech-lessons-enroll.webp"
+      ]
     }
   ]
 }

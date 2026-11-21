@@ -1,92 +1,92 @@
 import Link from "next/link";
 import { Hero3D } from "@/components/kv/Hero3D";
-import { PartnerCTA, ProjectCard } from "@/components/kv/cards";
-import { AbstractVisual, ButtonLink, Icon, SectionHeading } from "@/components/kv/ui";
-import { getAbout, getPosts, getProducts, getProjects, getResearchInfo, getServices } from "@/lib/content";
+import { EnquiryForm } from "@/components/kv/EnquiryForm";
+import { PostCard, ProductCard } from "@/components/kv/cards";
+import { ProjectTabs } from "@/components/kv/ProjectTabs";
+import { ArrowLink, ButtonLink, Figure, Icon, IconTile, Photo, SectionHeading } from "@/components/kv/ui";
+import { getAbout, getCompany, getPosts, getProducts, getProjects, getResearchInfo, getServices, getSiteImages } from "@/lib/content";
+import { PARTNER_TYPES } from "@/lib/content-types";
 
 export const revalidate = 60;
 
 const CAPABILITIES = [
-  { icon: "brain", title: "Artificial Intelligence", text: "Machine learning, computer vision and language technology applied to specific problems.", href: "/services/artificial-intelligence-machine-learning", span: "lg:col-span-2" },
-  { icon: "chart", title: "Data Science", text: "From raw data to evidence and dashboards.", href: "/services/data-science-analytics", span: "" },
-  { icon: "code", title: "Software & Web", text: "Reliable systems and fast web platforms.", href: "/services/software-development", span: "" },
-  { icon: "phone", title: "Mobile", text: "Apps built for everyday devices and patchy networks.", href: "/services/mobile-application-development", span: "" },
-  { icon: "chip", title: "Internet of Things", text: "Sensors, edge devices and real-time alerts.", href: "/services/internet-of-things", span: "" },
-  { icon: "flask", title: "Research & Innovation", text: "Applied research on African languages, accessibility and intelligent systems.", href: "/research", span: "lg:col-span-2" },
+  { icon: "brain", title: "Artificial Intelligence & Machine Learning", text: "Computer vision, language technology and predictive models applied to specific, real problems.", href: "/services/artificial-intelligence-machine-learning" },
+  { icon: "code", title: "Software Engineering", text: "Reliable systems, APIs and business platforms engineered to be maintained for years.", href: "/services/software-development" },
+  { icon: "chart", title: "Data Science & Analytics", text: "From raw records to evidence: pipelines, analysis and decision dashboards.", href: "/services/data-science-analytics" },
+  { icon: "phone", title: "Web & Mobile Development", text: "Fast web platforms and apps designed for everyday devices and patchy networks.", href: "/services/web-application-development" },
+  { icon: "chip", title: "Internet of Things", text: "Sensors, edge devices and real-time monitoring and alerts for the field.", href: "/services/internet-of-things" },
+  { icon: "flask", title: "Research & Innovation", text: "Applied research on African languages, accessibility and intelligent systems.", href: "/research" },
+];
+
+const PATHWAYS = [
+  { icon: "layers", label: "I want a technology solution", href: "/services" },
+  { icon: "handshake", label: "I want to partner with you", href: "/partnerships" },
+  { icon: "book", label: "I want to learn tech skills", href: "/training" },
+  { icon: "briefcase", label: "I want to join or intern", href: "/opportunities" },
+  { icon: "flask", label: "I want to collaborate on research", href: "/research" },
 ];
 
 export default async function HomePage() {
-  const [about, services, projects, products, research, posts] = await Promise.all([
-    getAbout(), getServices(), getProjects(), getProducts(), getResearchInfo(), getPosts("insights"),
+  const [company, about, services, projects, products, research, posts, images] = await Promise.all([
+    getCompany(), getAbout(), getServices(), getProjects(), getProducts(), getResearchInfo(), getPosts("insights"), getSiteImages(),
   ]);
-  const featured = (projects.filter((p) => p.featured).length ? projects.filter((p) => p.featured) : projects).slice(0, 3);
-  const training = products.find((p) => p.slug === "tech-lessons");
+  const showcase = [...projects].sort((a, b) => Number(b.featured) - Number(a.featured));
 
   return (
     <>
-      {/* ═══ HERO ═══ */}
-      <section className="relative overflow-hidden pt-[var(--nav-h)]" aria-labelledby="hero-title">
-        <div className="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
-          <div className="kv-aurora absolute -inset-[25%]" />
-          <div className="kv-grid-bg absolute inset-0" />
-          <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-ink-900" />
-        </div>
-        <div className="container-kv grid min-h-[calc(100svh-var(--nav-h))] items-center gap-4 py-8 lg:grid-cols-[1.05fr_1fr] lg:gap-4 lg:py-0">
-          <div className="relative z-10 order-2 lg:order-1">
-            <p className="eyebrow mb-6" data-reveal><span className="size-1.5 rounded-full bg-orange" aria-hidden="true" />AI &amp; technology company · Zambia</p>
-            <h1 id="hero-title" className="text-[clamp(2.7rem,1.6rem+5vw,5.6rem)] font-semibold leading-[0.98] tracking-[-0.035em]" data-reveal style={{ ["--d" as string]: 1 }}>
-              Intelligence Meets <span className="text-gradient-brand">Innovation.</span>
+      {/* ═══ B · HERO ═══ */}
+      <section className="relative overflow-hidden border-b border-line bg-soft" aria-labelledby="hero-title">
+        <div className="kv-dots pointer-events-none absolute inset-0 opacity-70 [mask-image:linear-gradient(100deg,#000_10%,transparent_55%)]" aria-hidden="true" />
+        <div className="container-kv relative grid items-center gap-10 py-12 sm:py-16 lg:grid-cols-[1fr_1.05fr] lg:gap-14 lg:py-20">
+          <div>
+            <p className="eyebrow mb-5" data-reveal><span className="size-2 rounded-full bg-brand" aria-hidden="true" />African technology &amp; innovation company</p>
+            <h1 id="hero-title" className="text-[clamp(2.5rem,1.5rem+4.2vw,4.6rem)] font-bold leading-[1.02] tracking-[-0.03em]" data-reveal style={{ ["--d" as string]: 1 }}>
+              Engineering Intelligence. <span className="text-primary dark:text-accent">Building Possibilities.</span>
             </h1>
             <p className="mt-6 max-w-xl text-lg text-muted sm:text-xl" data-reveal style={{ ["--d" as string]: 2 }}>
-              We engineer intelligent digital solutions, transform ideas into technology, and build innovations that address real-world challenges.
+              We develop intelligent digital solutions through artificial intelligence, software engineering, data science and emerging technologies to address real-world challenges.
             </p>
-            <div className="mt-9 flex flex-wrap gap-3" data-reveal style={{ ["--d" as string]: 3 }}>
+            <div className="mt-8 flex flex-wrap gap-3" data-reveal style={{ ["--d" as string]: 3 }}>
               <ButtonLink href="/services" size="lg" arrow>Explore Our Solutions</ButtonLink>
-              <ButtonLink href="/about" size="lg" variant="secondary">Discover Kalulu Vision</ButtonLink>
+              <ButtonLink href="/projects" size="lg" variant="secondary">Discover Our Work</ButtonLink>
             </div>
-            <p className="mt-12 font-display text-sm font-medium tracking-[0.2em] text-subtle uppercase" data-reveal style={{ ["--d" as string]: 4 }}>
-              See Beyond. Build the Future.
-            </p>
+            <dl className="mt-10 grid max-w-lg grid-cols-3 divide-x divide-line rounded-xl border border-line bg-surface shadow-card" data-reveal style={{ ["--d" as string]: 4 }}>
+              {[[String(services.length), "Service areas"], [String(projects.length), "Projects"], [String(products.filter((p) => p.status === "live").length), "Live product" + (products.filter((p) => p.status === "live").length === 1 ? "" : "s")]].map(([n, l]) => (
+                <div key={l} className="px-4 py-3.5">
+                  <dt className="text-xs text-muted">{l}</dt>
+                  <dd className="font-display text-2xl font-bold text-fg">{n}</dd>
+                </div>
+              ))}
+            </dl>
           </div>
-          <div className="order-1 flex justify-center lg:order-2 lg:justify-end">
-            <Hero3D />
+
+          <div className="relative" data-reveal style={{ ["--d" as string]: 2 }}>
+            <figure>
+              <div className="kv-photo aspect-[16/11] rounded-2xl border border-line shadow-lift">
+                <div className="absolute inset-0" data-parallax="0.05"><Photo src={images.hero.url} alt={images.hero.alt} priority sizes="(min-width: 1024px) 50vw, 100vw" /></div>
+              </div>
+              {images.hero.caption && <figcaption className="mt-3 text-sm text-subtle lg:pr-48">{images.hero.caption}</figcaption>}
+            </figure>
+            {/* Subtle 3D logo presentation */}
+            <div className="absolute -bottom-6 right-4 hidden w-44 rounded-2xl border border-line bg-surface/95 p-3 shadow-lift backdrop-blur sm:block lg:-right-4 lg:w-52">
+              <Hero3D className="w-full" />
+              <p className="mt-1 text-center font-display text-[0.7rem] font-semibold tracking-[0.14em] text-muted uppercase">{company.slogan}</p>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* ═══ INTRODUCTION ═══ */}
-      <section className="py-24 sm:py-32" aria-labelledby="intro-title">
-        <div className="container-kv grid gap-12 lg:grid-cols-[1.3fr_1fr] lg:gap-20">
-          <div>
-            <p className="eyebrow mb-5" data-reveal><span className="h-px w-6 bg-amber/70" aria-hidden="true" />Who we are</p>
-            <h2 id="intro-title" className="text-[clamp(1.45rem,1.15rem+1.3vw,2.25rem)] font-medium leading-[1.25] text-white/90" data-reveal style={{ ["--d" as string]: 1 }}>
-              {about.overview}
-            </h2>
-            <div className="mt-8" data-reveal style={{ ["--d" as string]: 2 }}>
-              <ButtonLink href="/about" variant="secondary" arrow>Our story</ButtonLink>
-            </div>
-          </div>
-          <aside className="kv-glow-card self-start p-7 sm:p-8" data-reveal style={{ ["--d" as string]: 2 }}>
-            <p className="font-display text-sm font-semibold tracking-[0.16em] text-amber uppercase">Kalulu · /ka-lu-lu/</p>
-            <p className="mt-3 font-display text-2xl font-semibold">The clever hare of Zambian folklore.</p>
-            <p className="mt-4 text-muted">Small, curious and adaptable, kalulu always finds a way through difficult ground. We build technology in the same spirit: intelligent, resourceful and made for real conditions.</p>
-          </aside>
-        </div>
-      </section>
-
-      {/* ═══ CAPABILITIES ═══ */}
-      <section className="relative border-y border-line bg-ink-850 py-24 sm:py-32" aria-labelledby="cap-title">
-        <div className="container-kv">
-          <SectionHeading id="cap-title" eyebrow="Core capabilities" title={<>Six disciplines, <span className="text-gradient-brand">one team.</span></>} lead="We combine AI, data, software and hardware so a solution can go from idea to the field without changing hands." />
-          <ul className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {CAPABILITIES.map((c, i) => (
-              <li key={c.title} className={c.span} data-reveal style={{ ["--d" as string]: i }}>
-                <Link href={c.href} className="kv-glow-card group flex h-full min-h-56 flex-col p-7" data-tilt>
-                  <span className="grid size-12 place-items-center rounded-xl border border-line bg-white/[0.03] text-orange transition-all duration-500 group-hover:scale-110 group-hover:border-orange/50 group-hover:shadow-[0_0_30px_-6px_rgb(255_138_0/0.7)]">
-                    <Icon name={c.icon} className="size-6" />
-                  </span>
-                  <h3 className="mt-auto pt-10 text-xl font-semibold">{c.title}</h3>
-                  <p className="mt-2 text-muted">{c.text}</p>
+      {/* Pathways (audience selector) */}
+      <section aria-labelledby="paths-title" className="border-b border-line bg-bg">
+        <div className="container-kv py-10">
+          <h2 id="paths-title" className="font-display text-lg font-bold">How can we help you?</h2>
+          <ul className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+            {PATHWAYS.map((p, i) => (
+              <li key={p.href} data-reveal style={{ ["--d" as string]: i }}>
+                <Link href={p.href} className="kv-card group flex h-full min-h-20 items-center gap-3 p-4">
+                  <IconTile name={p.icon} tone={i % 2 ? "accent" : "primary"} className="size-11" />
+                  <span className="text-[0.95rem] font-semibold leading-snug">{p.label}</span>
+                  <Icon name="arrowRight" className="ml-auto size-4 shrink-0 text-subtle transition-transform group-hover:translate-x-0.5 group-hover:text-fg" />
                 </Link>
               </li>
             ))}
@@ -94,23 +94,54 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ═══ FEATURED SERVICES ═══ */}
-      <section className="py-24 sm:py-32" aria-labelledby="svc-title">
+      {/* ═══ C · COMPANY OVERVIEW ═══ */}
+      <section className="section-y" aria-labelledby="overview-title">
+        <div className="container-kv grid gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:items-center lg:gap-16">
+          <div className="relative mx-auto w-full max-w-md lg:max-w-none" data-reveal>
+            <Figure image={images.overview} ratio="aspect-[4/5]" sizes="(min-width: 1024px) 40vw, 90vw" />
+            <div className="absolute -right-3 top-8 hidden rounded-xl bg-band px-5 py-4 text-band-fg shadow-lift sm:block">
+              <p className="font-display text-xs font-semibold tracking-[0.14em] text-band-muted uppercase">Kalulu · /ka-lu-lu/</p>
+              <p className="mt-1 max-w-[15rem] font-display font-semibold leading-snug">The clever hare of Zambian folklore</p>
+            </div>
+          </div>
+          <div>
+            <SectionHeading id="overview-title" eyebrow="Company overview" title="Technology that works in the conditions people actually live in." />
+            <dl className="mt-10 grid gap-x-10 gap-y-8 sm:grid-cols-2">
+              {[
+                ["Who we are", about.overview],
+                ["What we do", `${services.slice(0, 6).map((s) => s.title).join(", ")}, and practical technology training through Tech Lessons.`],
+                ["Our approach", about.philosophy],
+                ["Our commitment", about.africa],
+              ].map(([t, d], i) => (
+                <div key={t} className="border-t-2 border-line pt-5" data-reveal style={{ ["--d" as string]: i }}>
+                  <dt className="font-display text-lg font-bold">{t}</dt>
+                  <dd className="mt-2 text-muted">{d}</dd>
+                </div>
+              ))}
+            </dl>
+            <div className="mt-10"><ButtonLink href="/about" variant="secondary" arrow>More about Kalulu Vision</ButtonLink></div>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ D · CAPABILITIES ═══ */}
+      <section className="section-y border-y border-line bg-soft" aria-labelledby="cap-title">
         <div className="container-kv">
           <div className="flex flex-wrap items-end justify-between gap-6">
-            <SectionHeading id="svc-title" eyebrow="Services" title="What we do for our clients" />
+            <SectionHeading id="cap-title" eyebrow="Our technology capabilities" title="Six disciplines under one roof" lead="AI, data, software and hardware in one team, so a solution can go from idea to the field without changing hands." />
             <ButtonLink href="/services" variant="secondary" arrow>All {services.length} services</ButtonLink>
           </div>
-          <ol className="mt-14 border-t border-line">
-            {services.slice(0, 5).map((s, i) => (
-              <li key={s.slug} data-reveal style={{ ["--d" as string]: i }}>
-                <Link href={`/services/${s.slug}`} className="group grid items-center gap-4 border-b border-line py-7 transition-colors sm:grid-cols-[64px_1fr_1.2fr_auto] sm:gap-8">
-                  <span className="font-display text-sm text-subtle">0{i + 1}</span>
-                  <span className="font-display text-2xl font-semibold transition-colors group-hover:text-orange sm:text-[1.65rem]">{s.title}</span>
-                  <span className="text-muted">{s.summary}</span>
-                  <span className="hidden size-12 place-items-center rounded-full border border-line-strong transition-all duration-500 group-hover:rotate-[-45deg] group-hover:border-orange group-hover:bg-orange group-hover:text-ink-900 sm:grid">
-                    <Icon name="arrowRight" className="size-5" />
-                  </span>
+          <ol className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {CAPABILITIES.map((c, i) => (
+              <li key={c.title} data-reveal style={{ ["--d" as string]: i }}>
+                <Link href={c.href} className="kv-card group flex h-full flex-col p-7">
+                  <div className="flex items-start justify-between">
+                    <IconTile name={c.icon} tone={i % 3 === 1 ? "accent" : "primary"} />
+                    <span className="font-display text-3xl font-bold text-line-strong" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+                  </div>
+                  <h3 className="mt-6 text-xl font-bold">{c.title}</h3>
+                  <p className="mt-2 text-muted">{c.text}</p>
+                  <span className="mt-auto inline-flex items-center gap-1.5 pt-6 text-sm font-semibold text-primary dark:text-fg">Learn more<Icon name="arrowRight" className="size-4 transition-transform group-hover:translate-x-1" /></span>
                 </Link>
               </li>
             ))}
@@ -118,97 +149,78 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ═══ FEATURED PROJECTS ═══ */}
-      <section className="border-y border-line bg-ink-850 py-24 sm:py-32" aria-labelledby="proj-title">
+      {/* ═══ E · FEATURED PROJECTS ═══ */}
+      <section className="section-y" aria-labelledby="proj-title">
         <div className="container-kv">
           <div className="flex flex-wrap items-end justify-between gap-6">
-            <SectionHeading id="proj-title" eyebrow="Featured projects" title="Built for real problems" lead="Each project shows its honest status, from concept to live." />
-            <ButtonLink href="/projects" variant="secondary" arrow>View portfolio</ButtonLink>
+            <SectionHeading id="proj-title" eyebrow="Featured projects" title="Real projects, honest status" lead="Every project shows where it really is, from concept and research to live." />
+            <ButtonLink href="/projects" variant="secondary" arrow>View all projects</ButtonLink>
           </div>
-          <ul className="mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {featured.map((p, i) => (
-              <li key={p.slug} data-reveal style={{ ["--d" as string]: i }}><ProjectCard project={p} /></li>
-            ))}
-          </ul>
+          <div className="mt-10"><ProjectTabs projects={showcase} /></div>
         </div>
       </section>
 
-      {/* ═══ RESEARCH ═══ */}
-      <section className="relative overflow-hidden py-24 sm:py-32" aria-labelledby="res-title">
-        <div className="pointer-events-none absolute right-[-20%] top-1/2 -z-10 size-[700px] -translate-y-1/2 rounded-full bg-orange/[0.07] blur-3xl" aria-hidden="true" />
-        <div className="container-kv grid gap-14 lg:grid-cols-[1fr_1.2fr]">
-          <div className="lg:sticky lg:top-32 lg:self-start">
-            <SectionHeading id="res-title" eyebrow="Research & innovation" title={<>Questions worth <span className="text-gradient-brand">answering.</span></>} lead={research.intro} />
-            <div className="mt-8" data-reveal><ButtonLink href="/research" arrow>Explore our research</ButtonLink></div>
+      {/* ═══ F · PRODUCTS ═══ */}
+      {products.length > 0 && (
+        <section className="section-y border-y border-line bg-soft" aria-labelledby="prod-title">
+          <div className="container-kv">
+            <div className="flex flex-wrap items-end justify-between gap-6">
+              <SectionHeading id="prod-title" eyebrow="Products & solutions" title="What we have built" />
+              <ButtonLink href="/products" variant="secondary" arrow>All products</ButtonLink>
+            </div>
+            <div className="mt-12 grid gap-8">
+              {products.slice(0, 2).map((p, i) => <div key={p.slug} data-reveal><ProductCard product={p} reverse={i % 2 === 1} /></div>)}
+            </div>
           </div>
-          <ul className="grid gap-4 sm:grid-cols-2">
-            {research.areas.slice(0, 4).map((a, i) => (
-              <li key={a.title} className="kv-glow-card p-7" data-reveal style={{ ["--d" as string]: i }}>
-                <span className="font-display text-sm text-amber">R{String(i + 1).padStart(2, "0")}</span>
-                <h3 className="mt-6 text-xl font-semibold">{a.title}</h3>
-                <p className="mt-2 text-muted">{a.text}</p>
-              </li>
-            ))}
-          </ul>
+        </section>
+      )}
+
+      {/* ═══ G · RESEARCH ═══ */}
+      <section className="section-y" aria-labelledby="res-title">
+        <div className="container-kv grid gap-12 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
+          <div>
+            <SectionHeading id="res-title" eyebrow="Research & innovation" title="Practical research for African technology challenges" lead={research.intro} />
+            <Figure image={images.research} ratio="aspect-[16/11]" className="mt-10 hidden lg:block" sizes="40vw" />
+          </div>
+          <div>
+            <ul className="grid gap-4 sm:grid-cols-2">
+              {research.areas.map((a, i) => (
+                <li key={a.title} className="kv-card p-6" data-reveal style={{ ["--d" as string]: i }}>
+                  <span className="font-display text-sm font-bold text-accent-ink">R{String(i + 1).padStart(2, "0")}</span>
+                  <h3 className="mt-3 text-lg font-bold">{a.title}</h3>
+                  <p className="mt-1.5 text-[0.95rem] text-muted">{a.text}</p>
+                </li>
+              ))}
+            </ul>
+            <div className="mt-8"><ButtonLink href="/research" arrow>Explore our research</ButtonLink></div>
+          </div>
         </div>
       </section>
 
-      {/* ═══ WHY ═══ */}
-      <section className="border-y border-line bg-ink-850 py-24 sm:py-32" aria-labelledby="why-title">
+      {/* ═══ H · INSIGHTS ═══ */}
+      <section className="section-y border-y border-line bg-soft" aria-labelledby="ins-title">
         <div className="container-kv">
-          <SectionHeading id="why-title" eyebrow="Why Kalulu Vision" title="How we work, and what you can expect" align="center" lead={about.philosophy} />
-          <ol className="mt-16 grid gap-px overflow-hidden rounded-[var(--radius-card)] border border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
-            {about.approach.map((a, i) => (
-              <li key={a.title} className="bg-ink-850 p-8 transition-colors hover:bg-ink-800" data-reveal style={{ ["--d" as string]: i }}>
-                <span className="grid size-10 place-items-center rounded-full bg-gradient-brand font-display text-sm font-bold text-ink-900">{i + 1}</span>
-                <h3 className="mt-8 text-xl font-semibold">{a.title}</h3>
-                <p className="mt-2 text-muted">{a.text}</p>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </section>
-
-      {/* ═══ INSIGHTS / LEARNING ═══ */}
-      <section className="py-24 sm:py-32" aria-labelledby="ins-title">
-        <div className="container-kv">
+          <div className="flex flex-wrap items-end justify-between gap-6">
+            <SectionHeading id="ins-title" eyebrow="Insights" title="Technology insights & publications" lead="Articles on AI research, software development, data science and African innovation." />
+            {posts.length > 0 && <ButtonLink href="/insights" variant="secondary" arrow>All insights</ButtonLink>}
+          </div>
           {posts.length > 0 ? (
-            <>
-              <div className="flex flex-wrap items-end justify-between gap-6">
-                <SectionHeading id="ins-title" eyebrow="Insights" title="Technology insights and articles" />
-                <ButtonLink href="/insights" variant="secondary" arrow>All insights</ButtonLink>
-              </div>
-              <ul className="mt-14 grid gap-5 md:grid-cols-3">
-                {posts.slice(0, 3).map((p, i) => (
-                  <li key={p.slug} data-reveal style={{ ["--d" as string]: i }}>
-                    <Link href={`/insights/${p.slug}`} className="kv-glow-card group flex h-full flex-col overflow-hidden">
-                      <div className="aspect-[16/9] overflow-hidden border-b border-line">
-                        {p.coverUrl ? <img src={p.coverUrl} alt="" className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" /> : <AbstractVisual seed={p.slug} />}
-                      </div>
-                      <div className="flex flex-1 flex-col p-6">
-                        <p className="text-sm text-amber">{p.category || p.kind} · {p.readingMinutes} min read</p>
-                        <h3 className="mt-3 text-xl font-semibold group-hover:text-orange">{p.title}</h3>
-                        <p className="mt-2 line-clamp-3 text-muted">{p.excerpt}</p>
-                      </div>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </>
+            <ul className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+              {posts.slice(0, 3).map((p, i) => <li key={p.slug} data-reveal style={{ ["--d" as string]: i }}><PostCard post={p} /></li>)}
+            </ul>
           ) : (
-            <div className="kv-glow-card grid gap-10 overflow-hidden p-8 sm:p-12 lg:grid-cols-[1.2fr_1fr] lg:items-center" data-reveal>
+            <div className="kv-card mt-12 grid gap-8 p-8 sm:p-10 lg:grid-cols-[1.3fr_1fr] lg:items-center" data-reveal>
               <div>
-                <p className="eyebrow mb-4"><Icon name="book" className="size-4" />Knowledge sharing</p>
-                <h2 id="ins-title" className="text-[clamp(1.8rem,1.3rem+2vw,2.8rem)] font-semibold">Learn practical technology with us.</h2>
-                <p className="mt-4 max-w-xl text-muted">{training?.description ?? "Hands-on courses in programming, AI, data and IoT."} Articles and tutorials are coming to our Insights hub.</p>
-                <div className="mt-8 flex flex-wrap gap-3">
+                <h3 className="text-2xl font-bold">Our first articles are being written.</h3>
+                <p className="mt-3 max-w-xl text-muted">Insights will cover AI research, software development, data science and African innovation. Subscribe at the bottom of this page to hear when they are published, or learn with us now through Tech Lessons.</p>
+                <div className="mt-6 flex flex-wrap gap-3">
                   <ButtonLink href="/training" arrow>Explore Tech Lessons</ButtonLink>
                   <ButtonLink href="/insights" variant="secondary">Visit Insights</ButtonLink>
                 </div>
               </div>
-              <ul className="grid grid-cols-2 gap-3 text-sm">
-                {["Programming", "Web Development", "AI & ML", "Data Analytics", "Automation", "IoT & Embedded"].map((c) => (
-                  <li key={c} className="rounded-xl border border-line bg-white/[0.03] px-4 py-3 font-medium">{c}</li>
+              <ul className="grid grid-cols-2 gap-2.5 text-sm">
+                {["AI research", "Software development", "Data science", "African innovation", "Tutorials", "Case studies"].map((c) => (
+                  <li key={c} className="rounded-lg border border-line bg-soft px-4 py-3 font-medium">{c}</li>
                 ))}
               </ul>
             </div>
@@ -216,7 +228,43 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <PartnerCTA />
+      {/* ═══ I · PARTNERSHIPS ═══ */}
+      <section className="section-y" aria-labelledby="partner-title">
+        <div className="container-kv">
+          <SectionHeading id="partner-title" eyebrow="Partnerships" title="Work with us" lead="We welcome collaboration with organisations that share our commitment to useful, locally relevant technology." align="center" />
+          <ul className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {PARTNER_TYPES.map((p, i) => (
+              <li key={p.id} data-reveal style={{ ["--d" as string]: i }}>
+                <Link href={`/partnerships?type=${p.id}#enquiry`} className="kv-card group flex h-full gap-4 p-6">
+                  <IconTile name={p.icon} tone={i % 2 ? "accent" : "primary"} />
+                  <span>
+                    <span className="block font-display text-lg font-bold">{p.label}</span>
+                    <span className="mt-1 block text-[0.95rem] text-muted">{p.text}</span>
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+          <div className="mt-10 flex justify-center"><ButtonLink href="/partnerships#enquiry" arrow>Make a partnership enquiry</ButtonLink></div>
+        </div>
+      </section>
+
+      {/* ═══ J · CONTACT ═══ */}
+      <section id="get-in-touch" className="section-y bg-soft" aria-labelledby="contact-title">
+        <div className="container-kv grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
+          <div>
+            <SectionHeading id="contact-title" eyebrow="Contact" title="Let's talk about your project" lead="Send us a message and we will reply by email. For quick questions, WhatsApp is fastest." />
+            <ul className="mt-10 grid gap-4">
+              {company.email && <li><a href={`mailto:${company.email}`} className="kv-card flex items-center gap-4 p-5"><IconTile name="mail" /><span><span className="block text-sm text-muted">Email</span><span className="font-semibold break-all">{company.email}</span></span></a></li>}
+              {company.phone && <li><a href={`tel:${company.phone.replace(/\s/g, "")}`} className="kv-card flex items-center gap-4 p-5"><IconTile name="phone" tone="accent" /><span><span className="block text-sm text-muted">Phone</span><span className="font-semibold">{company.phone}</span></span></a></li>}
+              {company.whatsapp && <li><a href={`https://wa.me/${company.whatsapp}`} target="_blank" rel="noopener noreferrer" className="kv-card flex items-center gap-4 p-5"><IconTile name="whatsapp" tone="accent" /><span><span className="block text-sm text-muted">WhatsApp</span><span className="font-semibold">Chat with us<span className="sr-only"> (opens in a new tab)</span></span></span></a></li>}
+              {company.location && <li className="kv-card flex items-center gap-4 p-5"><IconTile name="pin" /><span><span className="block text-sm text-muted">Location</span><span className="font-semibold">{company.location}</span></span></li>}
+            </ul>
+            <p className="mt-6"><ArrowLink href="/contact">Open the full contact page</ArrowLink></p>
+          </div>
+          <EnquiryForm kind="contact" services={services.map((s) => s.title)} email={company.email} whatsapp={company.whatsapp} />
+        </div>
+      </section>
     </>
   );
 }

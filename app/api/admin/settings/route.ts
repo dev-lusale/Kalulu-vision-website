@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { adminSaveSetting } from "@/lib/content";
 import { requireAdmin } from "@/lib/server/admin-guard";
 import { hasDatabase } from "@/lib/server/pool";
+import { SITE_IMAGE_SLOTS } from "@/lib/content-types";
 
 const s = (v: unknown, max = 4000) => (typeof v === "string" ? v.trim().slice(0, max) : "");
 const pairs = (v: unknown) => (Array.isArray(v) ? v : [])
@@ -34,6 +35,17 @@ export async function PUT(req: Request) {
       philosophy: s(v.philosophy, 800), approach: pairs(v.approach), africa: s(v.africa) };
   } else if (key === "research") {
     value = { intro: s(v.intro, 800), areas: pairs(v.areas) };
+  } else if (key === "images") {
+    const errors: Record<string, string> = {};
+    const out: Record<string, { url: string; alt: string; caption: string }> = {};
+    for (const { key: k, label } of SITE_IMAGE_SLOTS) {
+      const url = s(v[k]?.url, 500), alt = s(v[k]?.alt, 300), caption = s(v[k]?.caption, 300);
+      if (url && !/^(https?:\/\/\S+|\/[^\s/]\S*)$/i.test(url)) errors[`${k}.url`] = "Use a full https:// address or a site path starting with /.";
+      if (url && !alt) errors[`${k}.alt`] = `Describe the ${label.toLowerCase()} photo for screen readers.`;
+      out[k] = { url, alt, caption };
+    }
+    if (Object.keys(errors).length) return Response.json({ success: false, error: "Please fix the highlighted fields.", fieldErrors: errors }, { status: 400 });
+    value = out;
   } else {
     return Response.json({ success: false, error: "Unknown setting." }, { status: 400 });
   }

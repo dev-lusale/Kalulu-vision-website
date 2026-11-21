@@ -1,42 +1,48 @@
 import type { Metadata } from "next";
 import { PartnerCTA, ProjectCard } from "@/components/kv/cards";
 import { InsightsBrowser } from "@/components/kv/InsightsBrowser";
-import { PageHero } from "@/components/kv/ui";
-import { getPosts, getProjects, getResearchInfo } from "@/lib/content";
+import { ButtonLink, Figure, PageHero, SectionHeading } from "@/components/kv/ui";
+import { getPosts, getProjects, getResearchInfo, getSiteImages } from "@/lib/content";
 
 export const revalidate = 60;
 export const metadata: Metadata = {
-  title: "Research & innovation",
+  title: "Research & Innovation",
   description: "Kalulu Vision's applied research in AI, African language technology, accessibility, intelligent automation and emerging technologies.",
   alternates: { canonical: "/research" },
 };
 
 export default async function ResearchPage() {
-  const [info, publications, projects] = await Promise.all([getResearchInfo(), getPosts("research"), getProjects()]);
-  const experiments = projects.filter((p) => p.categories.includes("research"));
+  const [info, publications, projects, images] = await Promise.all([getResearchInfo(), getPosts("research"), getProjects(), getSiteImages()]);
+  const experiments = projects.filter((p) => p.categories.includes("research") || ["research", "concept", "prototype"].includes(p.status));
   return (
     <>
-      <PageHero eyebrow="Research & innovation" title={<>Applied research, <span className="text-gradient-brand">tested in the field.</span></>} lead={info.intro} />
+      <PageHero eyebrow="Research & Innovation" title="Applied research for African technology challenges." lead={info.intro} tone="band"
+        aside={<Figure image={images.research} ratio="aspect-[4/3]" className="[&_figcaption]:text-band-muted" sizes="(min-width: 1024px) 45vw, 100vw" priority />}>
+        <div className="flex flex-wrap gap-3">
+          <ButtonLink href="/partnerships?type=research#enquiry" variant="brand" arrow>Collaborate on research</ButtonLink>
+          <ButtonLink href="#publications" variant="light">Publications</ButtonLink>
+        </div>
+      </PageHero>
 
-      <section className="py-20 sm:py-28" aria-labelledby="areas-title">
+      <section className="section-y" aria-labelledby="areas-title">
         <div className="container-kv">
-          <h2 id="areas-title" className="text-3xl font-semibold" data-reveal>Research areas</h2>
-          <ul className="mt-10 grid gap-px overflow-hidden rounded-[var(--radius-card)] border border-line bg-line sm:grid-cols-2 lg:grid-cols-3">
+          <SectionHeading id="areas-title" eyebrow="Focus areas" title="What we research" />
+          <ol className="mt-12 grid gap-0 border-t border-line">
             {info.areas.map((a, i) => (
-              <li key={a.title} className="bg-ink-900 p-8 transition-colors hover:bg-ink-850" data-reveal style={{ ["--d" as string]: i % 3 }}>
-                <span className="font-display text-sm text-amber">R{String(i + 1).padStart(2, "0")}</span>
-                <h3 className="mt-6 text-xl font-semibold">{a.title}</h3>
-                <p className="mt-2 text-muted">{a.text}</p>
+              <li key={a.title} className="grid gap-3 border-b border-line py-7 sm:grid-cols-[90px_1fr_1.4fr] sm:gap-8" data-reveal style={{ ["--d" as string]: i % 3 }}>
+                <span className="font-display text-3xl font-bold text-accent-ink">R{String(i + 1).padStart(2, "0")}</span>
+                <h3 className="text-xl font-bold">{a.title}</h3>
+                <p className="text-muted">{a.text}</p>
               </li>
             ))}
-          </ul>
+          </ol>
         </div>
       </section>
 
       {experiments.length > 0 && (
-        <section className="border-y border-line bg-ink-850 py-20 sm:py-28" aria-labelledby="exp-title">
+        <section className="section-y border-y border-line bg-soft" aria-labelledby="exp-title">
           <div className="container-kv">
-            <h2 id="exp-title" className="text-3xl font-semibold" data-reveal>Experimental projects</h2>
+            <SectionHeading id="exp-title" eyebrow="Technical work" title="Experimental solutions" lead="Concepts, prototypes and research projects under active investigation." />
             <ul className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
               {experiments.map((p, i) => <li key={p.slug} data-reveal style={{ ["--d" as string]: i }}><ProjectCard project={p} /></li>)}
             </ul>
@@ -44,17 +50,17 @@ export default async function ResearchPage() {
         </section>
       )}
 
-      <section className="py-20 sm:py-28" aria-labelledby="pub-title">
+      <section id="publications" className="section-y" aria-labelledby="pub-title">
         <div className="container-kv">
-          <h2 id="pub-title" className="text-3xl font-semibold" data-reveal>Publications &amp; technical notes</h2>
+          <SectionHeading id="pub-title" eyebrow="Publications" title="Publications & technical notes" />
           {publications.length ? (
-            <div className="mt-10"><InsightsBrowser posts={publications} basePath="/research" /></div>
+            <div className="mt-10"><InsightsBrowser posts={publications} label="research publications" /></div>
           ) : (
-            <p className="mt-6 max-w-2xl text-muted">Research write-ups and technical demonstrations will be published here as our projects reach milestones.</p>
+            <p className="mt-8 max-w-2xl rounded-lg border border-dashed border-line-strong bg-soft p-6 text-muted">Research write-ups and technical demonstrations will be published here as our projects reach milestones.</p>
           )}
         </div>
       </section>
-      <PartnerCTA />
+      <PartnerCTA title="Researching something we should work on together?" text="We collaborate with universities, research institutions and innovators on applied problems." />
     </>
   );
 }

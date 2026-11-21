@@ -10,8 +10,8 @@ export const metadata: Metadata = { title: "Admin sign in", robots: { index: fal
 export default async function LoginPage() {
   if (await isAdminAuthenticated()) redirect("/admin");
   return (
-    <main id="main" className="relative grid min-h-dvh place-items-center overflow-hidden bg-[#070B18] px-4 py-10">
-      <div className="kv-aurora pointer-events-none absolute -inset-[30%]" aria-hidden="true" />
+    <main id="main" className="relative grid min-h-dvh place-items-center overflow-hidden bg-soft px-4 py-10">
+      <div className="kv-dots pointer-events-none absolute inset-0 opacity-70" aria-hidden="true" />
       <div className="relative w-full max-w-sm"><AdminLoginForm configError={authConfigError()} /></div>
     </main>
   );

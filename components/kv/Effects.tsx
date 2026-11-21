@@ -6,7 +6,7 @@ import { useEffect } from "react";
 /**
  * Site-wide progressive enhancements:
  *  - scroll reveal for [data-reveal] (content is fully visible without JS / with reduced motion)
- *  - pointer-tracking glow for .kv-glow-card
+ *  - gentle parallax for [data-parallax] photos
  */
 export function Effects() {
   const pathname = usePathname();
@@ -34,18 +34,29 @@ export function Effects() {
     return () => io.disconnect();
   }, [pathname]);
 
+  // Gentle parallax for [data-parallax="<speed>"] (photos inside overflow-hidden frames)
   useEffect(() => {
-    if (!window.matchMedia("(pointer: fine)").matches) return;
-    function onMove(e: PointerEvent) {
-      const card = (e.target as Element | null)?.closest?.(".kv-glow-card") as HTMLElement | null;
-      if (!card) return;
-      const r = card.getBoundingClientRect();
-      card.style.setProperty("--mx", `${e.clientX - r.left}px`);
-      card.style.setProperty("--my", `${e.clientY - r.top}px`);
-    }
-    document.addEventListener("pointermove", onMove, { passive: true });
-    return () => document.removeEventListener("pointermove", onMove);
-  }, []);
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const els = Array.from(document.querySelectorAll<HTMLElement>("[data-parallax]"));
+    if (!els.length) return;
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const vh = window.innerHeight;
+      for (const el of els) {
+        const r = el.getBoundingClientRect();
+        if (r.bottom < -100 || r.top > vh + 100) continue;
+        const speed = Number(el.dataset.parallax) || 0.08;
+        const offset = (r.top + r.height / 2 - vh / 2) * -speed;
+        el.style.transform = `translate3d(0, ${offset.toFixed(1)}px, 0) scale(1.08)`;
+      }
+    };
+    const onScroll = () => { if (!raf) raf = requestAnimationFrame(update); };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => { window.removeEventListener("scroll", onScroll); window.removeEventListener("resize", onScroll); cancelAnimationFrame(raf); };
+  }, [pathname]);
 
   // Old links to the former single-page training site (/#enroll etc.) now live at /training.
   useEffect(() => {

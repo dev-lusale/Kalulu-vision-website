@@ -7,13 +7,13 @@ import { COURSE_ICON_MAP } from "@/components/icons/CourseIcons";
 
 /* Light-theme color set keyed by CourseId */
 const LIGHT_COLORS: Record<string, { bg: string; border: string; text: string }> = {
-  "programming":     { bg: "rgba(255,138,0,0.10)", border: "rgba(255,138,0,0.28)", text: "#FFB52E" },
-  "web-development": { bg: "rgba(255,138,0,0.10)", border: "rgba(255,138,0,0.28)", text: "#FFB52E" },
-  "ai-ml":           { bg: "rgba(255,138,0,0.10)", border: "rgba(255,138,0,0.28)", text: "#FFB52E" },
-  "data-analytics":  { bg: "rgba(255,138,0,0.10)", border: "rgba(255,138,0,0.28)", text: "#FFB52E" },
-  "automation":      { bg: "rgba(255,138,0,0.10)", border: "rgba(255,138,0,0.28)", text: "#FFB52E" },
-  "iot-embedded":    { bg: "rgba(255,138,0,0.10)", border: "rgba(255,138,0,0.28)", text: "#FFB52E" },
-  "custom":          { bg: "rgba(255,138,0,0.10)", border: "rgba(255,138,0,0.28)", text: "#FFB52E" },
+  "programming":     { bg: "rgba(255,138,0,0.10)", border: "rgba(255,138,0,0.28)", text: "var(--kv-brand-ink)" },
+  "web-development": { bg: "rgba(255,138,0,0.10)", border: "rgba(255,138,0,0.28)", text: "var(--kv-brand-ink)" },
+  "ai-ml":           { bg: "rgba(255,138,0,0.10)", border: "rgba(255,138,0,0.28)", text: "var(--kv-brand-ink)" },
+  "data-analytics":  { bg: "rgba(255,138,0,0.10)", border: "rgba(255,138,0,0.28)", text: "var(--kv-brand-ink)" },
+  "automation":      { bg: "rgba(255,138,0,0.10)", border: "rgba(255,138,0,0.28)", text: "var(--kv-brand-ink)" },
+  "iot-embedded":    { bg: "rgba(255,138,0,0.10)", border: "rgba(255,138,0,0.28)", text: "var(--kv-brand-ink)" },
+  "custom":          { bg: "rgba(255,138,0,0.10)", border: "rgba(255,138,0,0.28)", text: "var(--kv-brand-ink)" },
 };
 
 interface CoursesSectionProps {
@@ -52,11 +52,11 @@ export function CoursesSection({ onSelectCourse }: CoursesSectionProps) {
             <h2
               id="courses-heading"
               className="text-3xl sm:text-4xl font-extrabold tracking-tight mb-4"
-              style={{ color: "#FFFFFF" }}
+              style={{ color: "var(--kv-fg)" }}
             >
               Available Courses
             </h2>
-            <p className="max-w-xl mx-auto text-[15px] leading-relaxed" style={{ color: "#A7B0C0" }}>
+            <p className="max-w-xl mx-auto text-[15px] leading-relaxed" style={{ color: "var(--kv-muted)" }}>
               Choose from our range of practical, industry-relevant technology
               courses designed to build real-world skills fast.
             </p>
@@ -66,7 +66,7 @@ export function CoursesSection({ onSelectCourse }: CoursesSectionProps) {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
             {COURSES.map((course) => {
               const Icon   = COURSE_ICON_MAP[course.id];
-              const colors = LIGHT_COLORS[course.id] ?? { bg: "#0B1224", border: "rgba(255,255,255,0.10)", text: "#FFFFFF" };
+              const colors = LIGHT_COLORS[course.id] ?? { bg: "var(--kv-surface)", border: "var(--kv-line)", text: "var(--kv-fg)" };
               return (
                 <div key={course.id} className="kv-card kv-card-lime flex flex-col p-5 group">
 
@@ -79,7 +79,7 @@ export function CoursesSection({ onSelectCourse }: CoursesSectionProps) {
                   </div>
 
                   {/* Title — content frozen */}
-                  <h3 className="font-bold text-[15px] leading-snug mb-0.5" style={{ color: "#FFFFFF" }}>
+                  <h3 className="font-bold text-[15px] leading-snug mb-0.5" style={{ color: "var(--kv-fg)" }}>
                     {course.title}
                   </h3>
                   <p className="text-[11.5px] font-semibold mb-2.5" style={{ color: colors.text }}>
@@ -87,7 +87,7 @@ export function CoursesSection({ onSelectCourse }: CoursesSectionProps) {
                   </p>
 
                   {/* Description — content frozen */}
-                  <p className="text-[12.5px] leading-relaxed mb-4 flex-1" style={{ color: "#A7B0C0" }}>
+                  <p className="text-[12.5px] leading-relaxed mb-4 flex-1" style={{ color: "var(--kv-muted)" }}>
                     {course.description}
                   </p>
 
@@ -110,14 +110,14 @@ export function CoursesSection({ onSelectCourse }: CoursesSectionProps) {
                     onClick={() => handleCardEnroll(course)}
                     className="w-full flex items-center justify-center gap-1.5 text-[13px] font-bold py-2.5 rounded-xl transition-all duration-200 cursor-pointer active:scale-95"
                     style={{
-                      background: "#FF8A00",
-                      color: "#070B18",
+                      background: "var(--kv-primary)",
+                      color: "var(--kv-on-primary)",
                       border: "none",
                       touchAction: "manipulation",
                       WebkitTapHighlightColor: "transparent",
                     } as React.CSSProperties}
-                    onMouseEnter={e => (e.currentTarget.style.background = "#FF4D16")}
-                    onMouseLeave={e => (e.currentTarget.style.background = "#FF8A00")}
+                    onMouseEnter={e => (e.currentTarget.style.background = "var(--kv-primary-hover)")}
+                    onMouseLeave={e => (e.currentTarget.style.background = "var(--kv-primary)")}
                   >
                     Enroll
                     {course.subTopics ? (
@@ -158,7 +158,7 @@ function SubTopicPicker({
   onClose: () => void;
 }) {
   const Icon   = COURSE_ICON_MAP[course.id];
-  const colors = LIGHT_COLORS[course.id] ?? { bg: "#0B1224", border: "rgba(255,255,255,0.10)", text: "#FFFFFF" };
+  const colors = LIGHT_COLORS[course.id] ?? { bg: "var(--kv-surface)", border: "var(--kv-line)", text: "var(--kv-fg)" };
 
   return (
     <div
@@ -171,27 +171,27 @@ function SubTopicPicker({
     >
       <div
         className="w-full max-w-md max-h-[88vh] flex flex-col overflow-hidden"
-        style={{ borderRadius: "22px", boxShadow: "0 24px 64px rgba(0,0,0,0.18)", border: "1px solid #E5E7DF" }}
+        style={{ borderRadius: "22px", boxShadow: "0 24px 64px rgba(0,0,0,0.18)", border: "1px solid var(--kv-line)" }}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-5 py-4 shrink-0" style={{ borderBottom: "1px solid #E5E7DF" }}>
+        <div className="flex items-center justify-between px-5 py-4 shrink-0" style={{ borderBottom: "1px solid var(--kv-line)" }}>
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl flex items-center justify-center"
               style={{ background: colors.bg, border: `1.5px solid ${colors.border}` }}>
               <Icon className="w-5 h-5" style={{ color: colors.text } as React.CSSProperties} />
             </div>
             <div>
-              <h2 id="picker-title" className="font-bold text-[15px]" style={{ color: "#FFFFFF" }}>
+              <h2 id="picker-title" className="font-bold text-[15px]" style={{ color: "var(--kv-fg)" }}>
                 {course.title}
               </h2>
               {/* Content frozen: */}
-              <p className="text-[11px] mt-0.5" style={{ color: "#A7B0C0" }}>Choose your programming language</p>
+              <p className="text-[11px] mt-0.5" style={{ color: "var(--kv-muted)" }}>Choose your programming language</p>
             </div>
           </div>
           <button
             type="button" onClick={onClose}
             className="w-8 h-8 flex items-center justify-center rounded-lg cursor-pointer transition-colors hover:bg-gray-100"
-            style={{ color: "#A7B0C0", border: "none", background: "transparent" }}
+            style={{ color: "var(--kv-muted)", border: "none", background: "transparent" }}
             aria-label="Close"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -203,23 +203,23 @@ function SubTopicPicker({
         {/* Sub-topic list */}
         <div className="overflow-y-auto p-4 space-y-1.5">
           {/* Content frozen: */}
-          <p className="text-[12.5px] mb-3 px-1" style={{ color: "#A7B0C0" }}>
+          <p className="text-[12.5px] mb-3 px-1" style={{ color: "var(--kv-muted)" }}>
             Select the specific language for your enrollment.
           </p>
           {course.subTopics?.map((sub) => (
             <button
               key={sub.id} type="button" onClick={() => onSelect(sub)}
               className="w-full flex items-center gap-3 text-left p-3.5 rounded-xl transition-all duration-150 cursor-pointer active:scale-[0.98]"
-              style={{ background: "#0B1224", border: "1.5px solid #E5E7DF", touchAction: "manipulation", WebkitTapHighlightColor: "transparent" } as React.CSSProperties}
+              style={{ background: "var(--kv-surface)", border: "1.5px solid var(--kv-line)", touchAction: "manipulation", WebkitTapHighlightColor: "transparent" } as React.CSSProperties}
               onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = colors.bg; (e.currentTarget as HTMLButtonElement).style.borderColor = colors.border; }}
-              onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = "#0B1224"; (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(255,255,255,0.10)"; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = "var(--kv-surface)"; (e.currentTarget as HTMLButtonElement).style.borderColor = "var(--kv-line)"; }}
             >
-              <span className="grid size-9 shrink-0 place-items-center rounded-lg text-[11px] font-bold uppercase tracking-wide" style={{ background: "rgba(255,138,0,0.12)", color: "#FFB52E" }} aria-hidden="true">{sub.label === "Other / Not Sure" ? "?" : sub.label.replace(/[^A-Za-z#+]/g, "").slice(0, 3)}</span>
+              <span className="grid size-9 shrink-0 place-items-center rounded-lg text-[11px] font-bold uppercase tracking-wide" style={{ background: "rgba(255,138,0,0.12)", color: "var(--kv-brand-ink)" }} aria-hidden="true">{sub.label === "Other / Not Sure" ? "?" : sub.label.replace(/[^A-Za-z#+]/g, "").slice(0, 3)}</span>
               <div className="flex-1 min-w-0">
-                <p className="font-semibold text-[13.5px]" style={{ color: "#FFFFFF" }}>{sub.label}</p>
-                <p className="text-[11.5px] mt-0.5 truncate" style={{ color: "#A7B0C0" }}>{sub.description}</p>
+                <p className="font-semibold text-[13.5px]" style={{ color: "var(--kv-fg)" }}>{sub.label}</p>
+                <p className="text-[11.5px] mt-0.5 truncate" style={{ color: "var(--kv-muted)" }}>{sub.description}</p>
               </div>
-              <svg className="w-4 h-4 shrink-0" style={{ color: "#A7B0C0" }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <svg className="w-4 h-4 shrink-0" style={{ color: "var(--kv-muted)" }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
               </svg>
             </button>
@@ -229,7 +229,7 @@ function SubTopicPicker({
             type="button"
             onClick={() => onSelect({ id: "general", label: "General Programming", description: "", icon: "💻" })}
             className="w-full text-center text-[12.5px] py-2.5 cursor-pointer transition-colors hover:text-teal-700"
-            style={{ color: "#A7B0C0", background: "transparent", border: "none" }}
+            style={{ color: "var(--kv-muted)", background: "transparent", border: "none" }}
           >
             Not sure yet — enroll in general programming →
           </button>

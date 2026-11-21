@@ -76,58 +76,11 @@ export function createHeroScene(canvas: HTMLCanvasElement, opts: Options): HeroS
   // soft orange halo behind the mark
   const halo = new THREE.Sprite(new THREE.SpriteMaterial({
     map: radialTexture("rgba(255,138,0,0.55)", "rgba(255,77,22,0)"),
-    blending: THREE.AdditiveBlending, depthWrite: false, transparent: true,
+    blending: THREE.NormalBlending, depthWrite: false, transparent: true,
   }));
-  halo.scale.set(6.5, 6.5, 1);
+  halo.scale.set(5.2, 5.2, 1);
   halo.position.z = -0.8;
   logo.add(halo);
-
-  // ── Floating elements ────────────────────────────────────
-  const orange = new THREE.MeshStandardMaterial({ color: 0xff8a00, metalness: 0.55, roughness: 0.28, emissive: 0x3a1200, emissiveIntensity: 0.4 });
-  const amber = new THREE.MeshStandardMaterial({ color: 0xffb52e, metalness: 0.5, roughness: 0.3 });
-  const navy = new THREE.MeshStandardMaterial({ color: 0x1a2440, metalness: 0.7, roughness: 0.25 });
-  const wire = new THREE.MeshBasicMaterial({ color: 0xff8a00, wireframe: true, transparent: true, opacity: 0.35 });
-  const floaters: { mesh: THREE.Mesh; base: THREE.Vector3; speed: number; phase: number; spin: THREE.Vector3 }[] = [];
-  const specs: [THREE.BufferGeometry, THREE.Material, [number, number, number], number][] = [
-    [new THREE.IcosahedronGeometry(0.38, 0), orange, [-2.25, 1.15, -0.6], 1],
-    [new THREE.TorusGeometry(0.32, 0.1, 16, 48), amber, [2.15, 1.45, -0.9], 1],
-    [new THREE.OctahedronGeometry(0.3, 0), navy, [2.2, -1.3, 0.2], 1],
-    [new THREE.SphereGeometry(0.18, 24, 24), orange, [-1.95, -1.45, 0.4], 1],
-    [new THREE.IcosahedronGeometry(0.9, 1), wire, [-2.6, -0.1, -2.6], 1],
-    [new THREE.TorusKnotGeometry(0.22, 0.065, 80, 12), navy, [1.5, 2.1, -1.8], 1],
-    [new THREE.SphereGeometry(0.11, 16, 16), amber, [2.7, 0.15, -0.3], 1],
-  ];
-  for (const [geo, mat, pos] of mobile ? specs.slice(0, 4) : specs) {
-    const mesh = new THREE.Mesh(geo, mat);
-    mesh.position.set(...pos);
-    scene.add(mesh);
-    floaters.push({
-      mesh, base: mesh.position.clone(), speed: 0.4 + Math.random() * 0.4, phase: Math.random() * Math.PI * 2,
-      spin: new THREE.Vector3(Math.random() * 0.4, Math.random() * 0.5, Math.random() * 0.3),
-    });
-  }
-
-  // ── Particles ────────────────────────────────────────────
-  const count = mobile ? 220 : 650;
-  const pos = new Float32Array(count * 3);
-  const col = new Float32Array(count * 3);
-  const c1 = new THREE.Color(0xff8a00), c2 = new THREE.Color(0xffffff), c3 = new THREE.Color(0xffb52e);
-  for (let i = 0; i < count; i++) {
-    pos[i * 3] = (Math.random() - 0.5) * 16;
-    pos[i * 3 + 1] = (Math.random() - 0.5) * 10;
-    pos[i * 3 + 2] = (Math.random() - 0.5) * 8 - 2;
-    const c = [c1, c2, c3][i % 3];
-    col.set([c.r, c.g, c.b], i * 3);
-  }
-  const pGeo = new THREE.BufferGeometry();
-  pGeo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
-  pGeo.setAttribute("color", new THREE.BufferAttribute(col, 3));
-  const pMat = new THREE.PointsMaterial({
-    size: mobile ? 0.045 : 0.035, vertexColors: true, transparent: true, opacity: 0.75,
-    blending: THREE.AdditiveBlending, depthWrite: false, map: radialTexture("rgba(255,255,255,1)", "rgba(255,255,255,0)"),
-  });
-  const points = new THREE.Points(pGeo, pMat);
-  scene.add(points);
 
   // ── Layout / interaction ─────────────────────────────────
   function resize() {
@@ -174,31 +127,18 @@ export function createHeroScene(canvas: HTMLCanvasElement, opts: Options): HeroS
     const ease = 1 - Math.pow(1 - intro.t, 3);
 
     camera.position.z = baseZ + 2.5 * (1 - ease);
-    camera.position.x += (target.x * 0.6 - camera.position.x) * 0.04;
-    camera.position.y += (-target.y * 0.35 - camera.position.y) * 0.04;
+    camera.position.x += (target.x * 0.25 - camera.position.x) * 0.04;
+    camera.position.y += (-target.y * 0.15 - camera.position.y) * 0.04;
     camera.lookAt(0, 0, 0);
 
-    logo.rotation.y += ((target.x * 0.42 + Math.sin(t * 0.5) * 0.12) - logo.rotation.y) * 0.06;
-    logo.rotation.x += ((target.y * 0.22) - logo.rotation.x) * 0.06;
-    logo.position.y = Math.sin(t * 0.9) * 0.08;
+    // subtle: a slow turn plus a little pointer response
+    logo.rotation.y += ((target.x * 0.28 + Math.sin(t * 0.35) * 0.22 - 0.12) - logo.rotation.y) * 0.05;
+    logo.rotation.x += ((target.y * 0.14) - logo.rotation.x) * 0.05;
+    logo.position.y = Math.sin(t * 0.7) * 0.06;
     const s = (0.85 + 0.15 * ease) * (camera.aspect < 0.9 ? 0.95 : 1);
     logo.scale.setScalar(s);
-    halo.material.opacity = 0.75 + Math.sin(t * 1.4) * 0.12;
+    halo.material.opacity = 0.32 + Math.sin(t * 1.1) * 0.06;
 
-    for (const f of floaters) {
-      f.mesh.position.y = f.base.y + Math.sin(t * f.speed + f.phase) * 0.22;
-      f.mesh.position.x = f.base.x + Math.cos(t * f.speed * 0.6 + f.phase) * 0.12;
-      f.mesh.rotation.x += f.spin.x * dt;
-      f.mesh.rotation.y += f.spin.y * dt;
-      f.mesh.rotation.z += f.spin.z * dt;
-    }
-    const arr = pGeo.attributes.position.array as Float32Array;
-    for (let i = 0; i < count; i++) {
-      arr[i * 3 + 1] += dt * 0.12 * (1 + (i % 5) * 0.2);
-      if (arr[i * 3 + 1] > 5) arr[i * 3 + 1] = -5;
-    }
-    pGeo.attributes.position.needsUpdate = true;
-    points.rotation.y = t * 0.02;
     rim.position.x = -3 + Math.sin(t * 0.6) * 1.2;
 
     renderer.render(scene, camera);

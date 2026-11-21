@@ -4,9 +4,9 @@
 
 The website for Kalulu Vision, an African technology and innovation company. It includes:
 
-- a company site with an interactive three.js hero built around the official logo
+- a company site with an institutional light design (inspired by the CPHIA website), a ChatGPT-style dark theme, a Light / Dark / System switcher and a subtle three.js presentation of the official logo
 - a Tech Lessons training platform at `/training`: courses, plans, enrollment and payment verification (the original site, kept working)
-- an admin area at `/admin` for managing projects, products, services, articles and research, opportunities, enquiries, company information and training enrollments
+- an admin area at `/admin` for managing projects, products, services, articles and research, opportunities, enquiries, company information, website photos, an image library and training enrollments
 
 Built with Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS v4, three.js and PostgreSQL through node-postgres (`pg`).
 
@@ -16,14 +16,16 @@ Built with Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS v4, three
 
 | Route | What it is |
 |---|---|
-| `/` | Home: 3D hero, introduction, capabilities, services, featured projects, research, why Kalulu Vision, insights, partnership CTA |
+| `/` | Home: photo hero with subtle 3D logo, "How can we help you?" pathways, company overview, capabilities, featured projects (tabs), products, research, insights, partnerships, contact form |
 | `/about` | Overview, story, mission, vision, values, philosophy, approach, commitment to Africa |
 | `/services`, `/services/[slug]` | Eight services, each with offerings, technologies, applications, related projects and a contact CTA |
 | `/products` | Products with their real status (Tech Lessons is live; Educom AI is a prototype) |
 | `/projects`, `/projects/[slug]` | Portfolio with category filters and project detail pages |
 | `/research`, `/research/[slug]` | Research areas, experimental projects and research publications |
 | `/insights`, `/insights/[slug]` | Knowledge hub with search, category filters and reading time |
-| `/opportunities` | Openings plus a form to apply or express interest |
+| `/opportunities` | Careers & opportunities, with open/closed status and an application form |
+| `/partnerships` | Partner types, ways of working and a partnership enquiry form |
+| `/privacy`, `/terms` | Privacy Policy and Terms of Use |
 | `/contact` | Contact details and a validated enquiry form |
 | `/training` | Tech Lessons enrollment platform (old links such as `/#enroll` redirect here) |
 | `/admin` | Content management (sign-in required) |
@@ -35,7 +37,9 @@ Every page has its own metadata and Open Graph tags. The site also generates `si
 ## Architecture decisions
 
 - **No Prisma.** Prisma downloads its engine binaries at install time, and that host was blocked in the environment where this redesign was built, so the code could not be tested against a real database. The data layer now uses plain SQL through `pg`. It uses the **same tables and columns** Prisma created (`enrollments`, `payments`, `subscriptions`, `admins`), so existing production data keeps working with no changes.
-- **SQL migrations** live in `db/migrations/*.sql`. `scripts/migrate.mjs` applies them in order inside transactions and records each one in `kv_migrations`. Migration 001 is written with `IF NOT EXISTS` and matches the old Prisma tables exactly, so it does nothing on the existing database. Migration 002 only **adds** new `kv_*` content tables. Nothing existing is altered or dropped.
+- **Design system:** colour tokens are CSS variables in `app/globals.css`, switched by `<html data-theme>`. See [`docs/design-reference.md`](docs/design-reference.md) for the CPHIA audit, tokens, contrast ratios and photography policy.
+- **Images:** uploads from the admin are stored in Postgres (`kv_media`) and served from `/api/media/<id>` with long-term caching, so no extra storage service is needed. Only PNG, JPEG, WebP and GIF are accepted (checked by file content, max 4 MB); SVG is refused because it can carry scripts.
+- **SQL migrations** live in `db/migrations/*.sql`. `scripts/migrate.mjs` applies them in order inside transactions and records each one in `kv_migrations`. Migration 001 is written with `IF NOT EXISTS` and matches the old Prisma tables exactly, so it does nothing on the existing database. Migration 002 only **adds** new `kv_*` content tables. Migration 003 adds the image library and screenshot galleries. Nothing existing is altered or dropped.
 - **Starting content** is in `db/seed/content.json`. It is loaded into the database once (`seed-content-v1`) and is never re-applied over your edits. If no database is configured, public pages fall back to this file, so the site never breaks.
 - **Caching:** public pages are statically generated and refresh every 60 seconds. Every admin save also triggers an immediate refresh.
 - **3D hero:** plain three.js (no React Three Fiber, to keep the bundle small), loaded only on devices that can run it. The front face is the untouched logo PNG; the depth comes from stacked, darkened copies of the same silhouette behind it. Reduced-motion users, devices without WebGL, devices with little memory and Data Saver users get a lightweight layered-image version instead.
@@ -111,7 +115,7 @@ The project is already connected to Vercel (`kalulu-vision-website.vercel.app`).
 2. Push to a branch to get a preview deployment, or merge to `main` for production. The build command (`npm run build`, set in `vercel.json`) applies the database migrations before building.
 3. Sign in at `/admin` and review the content.
 
-**Images:** the admin takes image URLs, either `https://…` addresses or files you add under `/public` and reference as `/projects/name.png`. Uploading images from the admin would need file storage such as Vercel Blob, which is not included yet.
+**Images:** upload images in **Admin → Media library**, or directly from any image field ("Upload" / "Choose from library"). You can also paste an `https://…` address or a path under `/public`. Website photo slots (hero, overview, research, partnerships, careers, recognition) are edited in **Admin → Company info → Website photos**.
 
 ---
 
@@ -121,7 +125,8 @@ The starting content contains only verified information. Please review it in the
 
 - the mission, vision and values, which are proposed brand statements
 - social media links (none are set yet; add your YouTube, LinkedIn and others under **Company info**)
-- screenshots or images for projects and products (abstract graphics are shown until you add real ones)
+- real interface screenshots for Educom AI, SignBridge, TalkZed and MINEGUARD AI (a labelled "Screenshots to be published" placeholder is shown until you add them). Tech Lessons already uses real screenshots of the live platform
+- the website photos are from your own portfolio (events and your workspace). Check that the captions are accurate and replace any you prefer
 - articles, research publications and opportunities, which start empty
 
 ---

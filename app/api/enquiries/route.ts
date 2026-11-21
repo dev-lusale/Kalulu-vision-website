@@ -2,6 +2,7 @@ export const runtime = "nodejs";
 
 import { NextRequest } from "next/server";
 import { saveEnquiry } from "@/lib/content";
+import { ENQUIRY_KINDS, PARTNER_TYPES, type EnquiryKind } from "@/lib/content-types";
 import { hasDatabase } from "@/lib/server/pool";
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
@@ -23,9 +24,9 @@ export async function POST(req: NextRequest) {
   // Honeypot: pretend nothing happened, store nothing.
   if (clean(body.website, 200)) return Response.json({ success: true });
 
-  const kind = body.kind === "opportunity" ? "opportunity" : "contact";
+  const kind: EnquiryKind = (ENQUIRY_KINDS as readonly string[]).includes(body.kind) ? body.kind : "contact";
   const data = {
-    kind: kind as "contact" | "opportunity",
+    kind,
     name: clean(body.name, 120),
     email: clean(body.email, 160),
     organisation: clean(body.organisation, 160),
@@ -36,11 +37,23 @@ export async function POST(req: NextRequest) {
     message: clean(body.message, 5000),
   };
   const fieldErrors: Record<string, string> = {};
+  if (kind === "newsletter") {
+    // email-only subscription
+    if (!EMAIL.test(data.email)) fieldErrors.email = "Enter a valid email address.";
+    data.name = data.name || "Newsletter subscriber";
+    data.subject = "Newsletter subscription";
+    data.message = "Subscribed to updates from the website.";
+  }
   if (data.name.length < 2) fieldErrors.name = "Enter your name.";
   if (!EMAIL.test(data.email)) fieldErrors.email = "Enter a valid email address.";
+  if (kind === "partnership") {
+    if (!PARTNER_TYPES.some((p) => p.label === data.service)) fieldErrors.service = "Choose the type of organisation.";
+    if (data.organisation.length < 2) fieldErrors.organisation = "Enter your organisation's name.";
+    data.subject = data.subject || `Partnership enquiry: ${data.service}`;
+  }
   if (kind === "contact" && data.subject.length < 3) fieldErrors.subject = "Add a short subject.";
   if (kind === "opportunity" && !data.opportunity) fieldErrors.opportunity = "Choose what you're interested in.";
-  if (data.message.length < 20) fieldErrors.message = "Add a little more detail (at least 20 characters).";
+  if (kind !== "newsletter" && data.message.length < 20) fieldErrors.message = "Add a little more detail (at least 20 characters).";
   if (data.linkUrl && !/^https?:\/\//i.test(data.linkUrl)) fieldErrors.linkUrl = "Links must start with http:// or https://";
   if (Object.keys(fieldErrors).length) return Response.json({ success: false, error: "Please check the form.", fieldErrors }, { status: 400 });
 

@@ -2,7 +2,8 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import type { About, Company, ResearchInfo, TitledText } from "@/lib/content-types";
+import { SITE_IMAGE_SLOTS, type About, type Company, type ResearchInfo, type SiteImages, type TitledText } from "@/lib/content-types";
+import { ImageInput } from "./media";
 
 const input = "min-h-11 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-[15px] focus:border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-200 aria-[invalid=true]:border-red-500";
 
@@ -34,15 +35,16 @@ function PairList({ id, label, items, onChange }: { id: string; label: string; i
   );
 }
 
-export function SettingsEditor({ company: c0, about: a0, research: r0 }: { company: Company; about: About; research: ResearchInfo }) {
+export function SettingsEditor({ company: c0, about: a0, research: r0, images: i0 }: { company: Company; about: About; research: ResearchInfo; images: SiteImages }) {
   const router = useRouter();
   const [company, setCompany] = useState(c0);
   const [about, setAbout] = useState(a0);
   const [research, setResearch] = useState(r0);
+  const [images, setImages] = useState(i0);
   const [status, setStatus] = useState<Record<string, { ok: boolean; text: string }>>({});
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  async function save(key: "company" | "about" | "research", value: unknown) {
+  async function save(key: "company" | "about" | "research" | "images", value: unknown) {
     setStatus((s) => ({ ...s, [key]: { ok: true, text: "Saving…" } }));
     const res = await fetch("/api/admin/settings", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ key, value }) });
     const data = await res.json().catch(() => ({}));
@@ -104,6 +106,25 @@ export function SettingsEditor({ company: c0, about: a0, research: r0 }: { compa
         <Field id="r-intro" label="Introduction" value={research.intro} onChange={(v) => setResearch({ ...research, intro: v })} area />
         <PairList id="r-areas" label="Areas" items={research.areas} onChange={(v) => setResearch({ ...research, areas: v })} />
         <div className="flex items-center gap-4"><button className="min-h-11 rounded-lg bg-orange-600 px-5 text-sm font-semibold text-white hover:bg-orange-700">Save research areas</button>{msg("research")}</div>
+      </form>
+
+      <form className="grid gap-5 rounded-2xl border border-slate-200 bg-white p-6" onSubmit={(e) => { e.preventDefault(); save("images", images); }}>
+        <div>
+          <h2 className="text-lg font-semibold">Website photos</h2>
+          <p className="mt-1 text-sm text-slate-500">Use authentic photos you have the right to publish. Don&apos;t present stock photos as your own team or office. Leave a slot empty to use the default.</p>
+        </div>
+        {SITE_IMAGE_SLOTS.map(({ key, label }) => (
+          <fieldset key={key} className="grid gap-3 rounded-lg border border-slate-200 p-4">
+            <legend className="px-1 text-sm font-semibold">{label}</legend>
+            <ImageInput id={`img-${key}`} value={images[key]?.url ?? ""} onChange={(v) => setImages({ ...images, [key]: { ...images[key], url: v } })} invalid={!!errors[`${key}.url`]} />
+            {errors[`${key}.url`] && <p className="text-xs font-semibold text-red-700">{errors[`${key}.url`]}</p>}
+            <div className="grid gap-3 sm:grid-cols-2">
+              <Field id={`img-${key}-alt`} label="Description (alt text)" value={images[key]?.alt ?? ""} onChange={(v) => setImages({ ...images, [key]: { ...images[key], alt: v } })} error={errors[`${key}.alt`]} help="What the photo shows, for screen readers." />
+              <Field id={`img-${key}-cap`} label="Caption" value={images[key]?.caption ?? ""} onChange={(v) => setImages({ ...images, [key]: { ...images[key], caption: v } })} help="Optional, shown under the photo. Be accurate." />
+            </div>
+          </fieldset>
+        ))}
+        <div className="flex items-center gap-4"><button className="min-h-11 rounded-lg bg-orange-600 px-5 text-sm font-semibold text-white hover:bg-orange-700">Save photos</button>{msg("images")}</div>
       </form>
     </div>
   );

@@ -1,16 +1,10 @@
-/* Styles from the original training site, scoped under .kv-legacy.
-   Used by the training (/training) sections and the enrollment admin dashboard. */
-
-/* ═══════════════════════════════════════════════════════════
-   KALULU VISION — Lime + White + Deep Navy + Dark Teal
-   Reference: Lemon template visual language
-   ─────────────────────────────────────────────────────────── */
-
-/* ── Design tokens ────────────────────────────────────────── */
+/* Styles from the original training site. Every rule is scoped under .kv-legacy so
+   nothing leaks into the main website. Colours map onto the site theme tokens, so the
+   training pages and the enrolment dashboard follow light / dark mode. */
 .kv-legacy {
   --font-sans: "Times New Roman", Times, Georgia, serif;
 
-  /* ── Brand palette ── */
+  
   --lime:           #E9FFA3;
   --lime-bright:    #ECFF9C;
   --lime-dark:      #c8e86a;
@@ -24,37 +18,29 @@
   --teal-soft:      #0a5a52;
   --teal-mid:       #0d7068;
 
-  /* ── Surfaces ── */
+  
   --white:          #FFFFFF;
   --gray-soft:      #F5F6F2;
   --gray-mid:       #ECEEE8;
 
-  /* ── Borders ── */
+  
   --border:         #E5E7DF;
   --border-mid:     #D0D3C8;
 
-  /* ── Text ── */
+  
   --text-primary:   #10182B;
   --text-secondary: #4a5568;
   --text-muted:     #7a8394;
 
-  /* ── Nav ── */
+  
   --nav-h:          64px;
 }
-
-/* ── Scrollbar ────────────────────────────────────────────── */
-
-/* ── Focus ────────────────────────────────────────────────── */
-:focus-visible {
+.kv-legacy :focus-visible {
   outline: 2px solid var(--teal-mid);
   outline-offset: 2px;
   border-radius: 6px;
 }
-
-/* ═══════════════════════════════════════════════════════════
-   ANNOUNCEMENT BAR
-   ═══════════════════════════════════════════════════════════ */
-.announce-bar {
+.kv-legacy .announce-bar {
   height: var(--announce-h);
   background: var(--teal);
   color: rgba(255,255,255,0.92);
@@ -67,7 +53,7 @@
   position: relative;
   overflow: hidden;
 }
-.announce-bar::before {
+.kv-legacy .announce-bar::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -76,79 +62,59 @@
   background-size: 20px 20px;
   pointer-events: none;
 }
-
-/* ═══════════════════════════════════════════════════════════
-   NAVIGATION
-   ═══════════════════════════════════════════════════════════ */
-.nav-bar {
+.kv-legacy .nav-bar {
   background: rgba(255,255,255,0.97);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
 }
-.nav-bar-scrolled {
+.kv-legacy .nav-bar-scrolled {
   box-shadow: 0 1px 16px rgba(16,24,43,0.08);
 }
-
-/* ═══════════════════════════════════════════════════════════
-   CARDS
-   ═══════════════════════════════════════════════════════════ */
-.kv-card {
+.kv-legacy .kv-card {
   background: var(--white);
   border: 1px solid var(--border);
   border-radius: 20px;
   transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
 }
-.kv-card:hover {
+.kv-legacy .kv-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 12px 40px rgba(16,24,43,0.09);
   border-color: var(--border-mid);
 }
-.kv-card-lime:hover {
+.kv-legacy .kv-card-lime:hover {
   border-color: var(--lime-dark);
   box-shadow: 0 12px 40px rgba(16,24,43,0.09);
 }
-
-/* ── Dark card (plans) ── */
-.kv-card-dark {
+.kv-legacy .kv-card-dark {
   background: var(--navy);
   border: 1px solid var(--navy-soft);
   border-radius: 20px;
   color: rgba(255,255,255,0.85);
   transition: transform 0.22s ease, box-shadow 0.22s ease;
 }
-.kv-card-dark:hover {
+.kv-legacy .kv-card-dark:hover {
   transform: translateY(-4px);
   box-shadow: 0 12px 40px rgba(16,24,43,0.25);
 }
-
-/* ── Lime card (featured/popular) ── */
-.kv-card-featured {
+.kv-legacy .kv-card-featured {
   background: var(--lime);
   border: 1.5px solid var(--lime-dark);
   border-radius: 20px;
   color: var(--navy);
   transition: transform 0.22s ease, box-shadow 0.22s ease;
 }
-.kv-card-featured:hover {
+.kv-legacy .kv-card-featured:hover {
   transform: translateY(-4px);
   box-shadow: 0 12px 40px rgba(200,232,106,0.35);
 }
-
-/* ── Teal card ── */
-.kv-card-teal {
+.kv-legacy .kv-card-teal {
   background: var(--teal);
   border: 1px solid var(--teal-soft);
   border-radius: 20px;
   color: rgba(255,255,255,0.9);
 }
-
-/* ═══════════════════════════════════════════════════════════
-   BUTTONS
-   ═══════════════════════════════════════════════════════════ */
-
-/* Primary — Lime */
-.btn-lime {
+.kv-legacy .btn-lime {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -167,15 +133,13 @@
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
 }
-.btn-lime:hover {
+.kv-legacy .btn-lime:hover {
   background: var(--lime-hover);
   transform: translateY(-1px);
   box-shadow: 0 4px 18px rgba(200,232,106,0.45);
 }
-.btn-lime:active { transform: translateY(0); }
-
-/* Secondary — Navy outline */
-.btn-navy {
+.kv-legacy .btn-lime:active { transform: translateY(0); }
+.kv-legacy .btn-navy {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -194,14 +158,12 @@
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
 }
-.btn-navy:hover {
+.kv-legacy .btn-navy:hover {
   border-color: var(--navy-muted);
   background: var(--gray-soft);
   transform: translateY(-1px);
 }
-
-/* Teal solid */
-.btn-teal {
+.kv-legacy .btn-teal {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -220,13 +182,11 @@
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
 }
-.btn-teal:hover {
+.kv-legacy .btn-teal:hover {
   background: var(--teal-soft);
   transform: translateY(-1px);
 }
-
-/* Ghost — dark text no bg */
-.btn-ghost {
+.kv-legacy .btn-ghost {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -245,46 +205,36 @@
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
 }
-.btn-ghost:hover {
+.kv-legacy .btn-ghost:hover {
   color: var(--teal);
   background: var(--gray-soft);
 }
-
-/* ═══════════════════════════════════════════════════════════
-   INPUTS (light theme)
-   ═══════════════════════════════════════════════════════════ */
-.input-base {
+.kv-legacy .input-base {
   width: 100%;
   background: var(--white);
   border: 1.5px solid var(--border);
   border-radius: 10px;
   padding: 0.75rem 1rem;
-  font-size: 16px;          /* prevents iOS zoom */
+  font-size: 16px;          
   font-family: var(--font-sans);
   color: var(--text-primary);
   transition: border-color 0.15s, box-shadow 0.15s;
   -webkit-appearance: none;
   appearance: none;
 }
-.input-base::placeholder { color: var(--text-muted); }
-.input-base:hover  { border-color: var(--border-mid); }
-.input-base:focus  {
+.kv-legacy .input-base::placeholder { color: var(--text-muted); }
+.kv-legacy .input-base:hover { border-color: var(--border-mid); }
+.kv-legacy .input-base:focus {
   outline: none;
   border-color: var(--teal-mid);
   box-shadow: 0 0 0 3px rgba(13,112,104,0.12);
 }
-.input-error {
+.kv-legacy .input-error {
   border-color: #e53e3e !important;
   box-shadow: 0 0 0 3px rgba(229,62,62,0.1) !important;
 }
-
-/* ── select arrow color on light bg ── */
-select option { background: #fff; color: var(--text-primary); }
-
-/* ═══════════════════════════════════════════════════════════
-   SECTION LABEL PILL
-   ═══════════════════════════════════════════════════════════ */
-.section-label {
+.kv-legacy select option { background: #fff; color: var(--text-primary); }
+.kv-legacy .section-label {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
@@ -299,7 +249,7 @@ select option { background: #fff; color: var(--text-primary); }
   border-radius: 99px;
   margin-bottom: 1rem;
 }
-.section-label::before {
+.kv-legacy .section-label::before {
   content: "";
   width: 6px;
   height: 6px;
@@ -307,21 +257,14 @@ select option { background: #fff; color: var(--text-primary); }
   background: var(--lime-dark);
   flex-shrink: 0;
 }
-
-/* ═══════════════════════════════════════════════════════════
-   DECORATIVE ELEMENTS
-   ═══════════════════════════════════════════════════════════ */
-/* Lime rectangle block (like reference screenshot) */
-.deco-lime-block {
+.kv-legacy .deco-lime-block {
   background: var(--lime);
   border-radius: 18px;
 }
-
-/* Subtle grid dots on white */
-.dot-bg {
+.kv-legacy .dot-bg {
   position: relative;
 }
-.dot-bg::before {
+.kv-legacy .dot-bg::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -330,43 +273,26 @@ select option { background: #fff; color: var(--text-primary); }
   pointer-events: none;
   z-index: 0;
 }
-
-/* Soft gray section */
-.section-gray {
+.kv-legacy .section-gray {
   background: var(--gray-soft);
 }
-
-/* ═══════════════════════════════════════════════════════════
-   DIVIDER LINE
-   ═══════════════════════════════════════════════════════════ */
-.kv-divider {
+.kv-legacy .kv-divider {
   height: 1px;
   background: var(--border);
 }
-
-/* ═══════════════════════════════════════════════════════════
-   SHIMMER (kept for existing uses but updated palette)
-   ═══════════════════════════════════════════════════════════ */
-.shimmer-line {
+.kv-legacy .shimmer-line {
   height: 1px;
   background: linear-gradient(90deg, transparent, var(--lime-dark), var(--teal-mid), transparent);
   opacity: 0.5;
 }
-
-/* ═══════════════════════════════════════════════════════════
-   FLOAT / ORBIT ANIMATIONS (keep for globe — content frozen)
-   ═══════════════════════════════════════════════════════════ */
 @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
-.float { animation: float 5s ease-in-out infinite; }
-
-@keyframes spin-slow    { from { transform: rotate(0deg); }   to { transform: rotate(360deg); } }
+.kv-legacy .float { animation: float 5s ease-in-out infinite; }
+@keyframes spin-slow { from { transform: rotate(0deg); }   to { transform: rotate(360deg); } }
 @keyframes spin-reverse { from { transform: rotate(0deg); }   to { transform: rotate(-360deg); } }
-.orbit     { animation: spin-slow 12s linear infinite; }
-.orbit-rev { animation: spin-reverse 18s linear infinite; }
-
-/* Typing cursor */
+.kv-legacy .orbit { animation: spin-slow 12s linear infinite; }
+.kv-legacy .orbit-rev { animation: spin-reverse 18s linear infinite; }
 @keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0; } }
-.cursor-blink {
+.kv-legacy .cursor-blink {
   display: inline-block;
   width: 3px;
   height: 0.9em;
@@ -376,75 +302,67 @@ select option { background: #fff; color: var(--text-primary); }
   animation: blink 1s step-end infinite;
   border-radius: 2px;
 }
-
-/* Gradient text (headline accent) */
-.text-gradient {
+.kv-legacy .text-gradient {
   background: linear-gradient(135deg, var(--teal) 0%, var(--teal-mid) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
-
-/* Lime text highlight */
-.text-lime { color: var(--lime-dark); }
-
-/* ═══════════════════════════════════════════════════════════
-   STATUS BADGES (admin — keep functional)
-   ═══════════════════════════════════════════════════════════ */
-.pill-pending  { background: rgba(234,179,8,0.1);   color:#854d0e; border:1px solid rgba(234,179,8,0.3); }
-.pill-verified { background: rgba(6,63,58,0.1);     color:#063F3A; border:1px solid rgba(6,63,58,0.25); }
-.pill-rejected { background: rgba(220,38,38,0.1);   color:#991b1b; border:1px solid rgba(220,38,38,0.2); }
-.pill-active   { background: rgba(6,63,58,0.1);     color:#063F3A; border:1px solid rgba(6,63,58,0.25); }
-.pill-disabled { background: rgba(100,116,139,0.1); color:#475569; border:1px solid rgba(100,116,139,0.2); }
-.pill-expired  { background: rgba(100,116,139,0.1); color:#475569; border:1px solid rgba(100,116,139,0.2); }
-.pill-base     { display:inline-flex; align-items:center; padding:0.2rem 0.65rem; border-radius:99px; font-size:0.7rem; font-weight:700; }
-
-/* ── glass (admin panels) ─────────────────────────────────── */
-.glass {
+.kv-legacy .text-lime { color: var(--lime-dark); }
+.kv-legacy .pill-pending { background: rgba(234,179,8,0.1);   color:#854d0e; border:1px solid rgba(234,179,8,0.3); }
+.kv-legacy .pill-verified { background: rgba(6,63,58,0.1);     color:#063F3A; border:1px solid rgba(6,63,58,0.25); }
+.kv-legacy .pill-rejected { background: rgba(220,38,38,0.1);   color:#991b1b; border:1px solid rgba(220,38,38,0.2); }
+.kv-legacy .pill-active { background: rgba(6,63,58,0.1);     color:#063F3A; border:1px solid rgba(6,63,58,0.25); }
+.kv-legacy .pill-disabled { background: rgba(100,116,139,0.1); color:#475569; border:1px solid rgba(100,116,139,0.2); }
+.kv-legacy .pill-expired { background: rgba(100,116,139,0.1); color:#475569; border:1px solid rgba(100,116,139,0.2); }
+.kv-legacy .pill-base { display:inline-flex; align-items:center; padding:0.2rem 0.65rem; border-radius:99px; font-size:0.7rem; font-weight:700; }
+.kv-legacy .glass {
   background: rgba(255,255,255,0.95);
   border: 1px solid var(--border);
   border-radius: 16px;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
 }
-.glass-hover {
+.kv-legacy .glass-hover {
   transition: transform 0.22s, box-shadow 0.22s, border-color 0.22s;
 }
-.glass-hover:hover {
+.kv-legacy .glass-hover:hover {
   transform: translateY(-3px);
   box-shadow: 0 8px 28px rgba(16,24,43,0.08);
   border-color: var(--border-mid);
 }
+.kv-legacy .card { background: var(--white); border: 1px solid var(--border); border-radius: 16px; }
+.kv-legacy input, .kv-legacy select, .kv-legacy textarea { font-size: 16px !important; }
+.kv-legacy input, .kv-legacy select, .kv-legacy textarea, .kv-legacy button { -webkit-appearance: none; appearance: none; }
+.kv-legacy button, .kv-legacy a, .kv-legacy [role="button"] { -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+.kv-legacy select option { background: #fff; color: var(--text-primary); }
 
-/* ── card alias (enroll section internal) ── */
-.card { background: var(--white); border: 1px solid var(--border); border-radius: 16px; }
 
-/* ═══════════════════════════════════════════════════════════
-   MOBILE FIXES
-   ═══════════════════════════════════════════════════════════ */
-input, select, textarea { font-size: 16px !important; }
-input, select, textarea, button { -webkit-appearance: none; appearance: none; }
-button, a, [role="button"] { -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
-select option { background: #fff; color: var(--text-primary); }
 
-/* ── Dark brand theme for the training pages (/training) ─────── */
-.kv-legacy.kv-dark {
+/* ── Theme mapping (follows <html data-theme>) ───────────────── */
+.kv-legacy.kv-themed {
   --font-sans: var(--font-dm-sans), system-ui, sans-serif;
-  --lime: #FF8A00; --lime-bright: #FFB52E; --lime-dark: #FFB52E; --lime-hover: #FFB52E;
-  --navy: #070B18; --navy-soft: #A7B0C0; --navy-muted: #7D879A;
-  --teal: #1A2440; --teal-soft: #22305A; --teal-mid: #FF8A00;
-  --white: #0F1830; --gray-soft: #0B1224; --gray-mid: #111A31;
-  --border: rgba(255,255,255,0.10); --border-mid: rgba(255,255,255,0.20);
-  --text-primary: #FFFFFF; --text-secondary: #A7B0C0; --text-muted: #A7B0C0;
-  color: #fff;
+  --lime: var(--kv-primary); --lime-bright: var(--kv-primary); --lime-dark: var(--kv-primary); --lime-hover: var(--kv-primary-hover);
+  --navy: var(--kv-fg); --navy-soft: var(--kv-muted); --navy-muted: var(--kv-subtle);
+  --teal: var(--kv-band); --teal-soft: var(--kv-primary); --teal-mid: var(--kv-accent);
+  --white: var(--kv-surface); --gray-soft: var(--kv-soft); --gray-mid: var(--kv-soft-2);
+  --border: var(--kv-line); --border-mid: var(--kv-line-strong);
+  --text-primary: var(--kv-fg); --text-secondary: var(--kv-muted); --text-muted: var(--kv-subtle);
+  color: var(--kv-fg);
   font-family: var(--font-sans);
 }
-.kv-dark .section-label { color: #FFB52E; background: rgba(255,138,0,0.08); border-color: rgba(255,138,0,0.25); }
-.kv-dark .btn-teal { color: #FFB52E; border: 1px solid rgba(255,138,0,0.35); }
-.kv-dark .btn-lime { background: linear-gradient(135deg, #FFB52E, #FF8A00 45%, #FF4D16); color: #070B18; }
-.kv-dark .kv-card:hover, .kv-dark .kv-card-lime:hover { box-shadow: 0 24px 60px -30px rgba(255,98,0,0.45); border-color: rgba(255,138,0,0.5); }
-.kv-dark .input-base { background: #070B18; color: #fff; }
-.kv-dark .input-base::placeholder { color: #7D879A; }
-.kv-dark .input-base:focus { box-shadow: 0 0 0 3px rgba(255,138,0,0.25); }
-.kv-dark select.input-base option { background: #0B1224; }
-.kv-dark .kv-card-featured { background: linear-gradient(180deg, #1A2440, #111A31); border: 1px solid rgba(255,138,0,0.55); box-shadow: 0 30px 70px -30px rgba(255,98,0,0.55); color: #fff; }
+.kv-legacy.kv-themed .section-label { color: var(--kv-accent-ink); background: color-mix(in oklab, var(--kv-accent) 10%, transparent); border-color: color-mix(in oklab, var(--kv-accent) 30%, transparent); }
+.kv-legacy.kv-themed .btn-teal { color: var(--kv-primary); border: 1px solid var(--kv-line-strong); background: var(--kv-surface); }
+.kv-legacy.kv-themed .btn-lime { background: var(--kv-primary); color: var(--kv-on-primary); }
+.kv-legacy.kv-themed .btn-lime:hover { background: var(--kv-primary-hover); }
+.kv-legacy.kv-themed .kv-card { background: var(--kv-surface); border-color: var(--kv-line); box-shadow: var(--kv-shadow); }
+.kv-legacy.kv-themed .kv-card:hover, .kv-legacy.kv-themed .kv-card-lime:hover { box-shadow: var(--kv-shadow-lg); border-color: var(--kv-line-strong); }
+.kv-legacy.kv-themed .input-base { background: var(--kv-surface); color: var(--kv-fg); border-color: var(--kv-line-strong); }
+.kv-legacy.kv-themed .input-base::placeholder { color: var(--kv-subtle); }
+.kv-legacy.kv-themed .input-base:focus { border-color: var(--kv-primary); box-shadow: 0 0 0 3px color-mix(in oklab, var(--kv-primary) 20%, transparent); }
+.kv-legacy.kv-themed select option { background: var(--kv-surface); color: var(--kv-fg); }
+.kv-legacy.kv-themed .kv-card-featured { background: var(--kv-surface); border: 2px solid var(--kv-primary); box-shadow: var(--kv-shadow-lg); color: var(--kv-fg); }
+.kv-legacy.kv-themed .pill-pending { color: var(--kv-brand-ink); background: color-mix(in oklab, #EAB308 14%, transparent); border-color: color-mix(in oklab, #EAB308 40%, transparent); }
+.kv-legacy.kv-themed .pill-verified, .kv-legacy.kv-themed .pill-active { color: var(--kv-success); background: color-mix(in oklab, #22C55E 14%, transparent); border-color: color-mix(in oklab, #22C55E 40%, transparent); }
+.kv-legacy.kv-themed .pill-rejected { color: var(--kv-danger); background: color-mix(in oklab, #EF4444 12%, transparent); border-color: color-mix(in oklab, #EF4444 35%, transparent); }
+.kv-legacy.kv-themed .pill-disabled, .kv-legacy.kv-themed .pill-expired { color: var(--kv-muted); background: var(--kv-soft-2); border-color: var(--kv-line); }

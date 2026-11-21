@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 export default function TrainingPage() {
   return (
     <>
-      <PageHero eyebrow="Kalulu Vision Tech Lessons" title={<>Practical technology skills, <span className="text-gradient-brand">taught hands-on.</span></>}
+      <PageHero eyebrow="Tech Lessons" crumbs={[{ href: "/products", label: "Products" }]} title="Practical technology skills, taught hands-on."
         lead="Learn programming, web development, AI, data analytics, automation and IoT through real projects, online, in person or one-on-one.">
         <div className="flex flex-wrap items-center gap-3">
           <ButtonLink href="#enroll" arrow>Enroll now</ButtonLink>

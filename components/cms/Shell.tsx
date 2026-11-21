@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState, type ReactNode } from "react";
+import { ThemeSwitcher } from "@/components/theme/ThemeSwitcher";
 
 const NAV = [
   { href: "/admin", label: "Overview" },
@@ -13,6 +14,7 @@ const NAV = [
   { href: "/admin/content/services", label: "Services" },
   { href: "/admin/content/posts", label: "Articles & research" },
   { href: "/admin/content/opportunities", label: "Opportunities" },
+  { href: "/admin/media", label: "Media library" },
   { href: "/admin/settings", label: "Company info" },
   { href: "/admin/training", label: "Tech Lessons" },
   { href: "/admin/account", label: "Account" },
@@ -47,7 +49,7 @@ export function Shell({ email, newEnquiries, children }: { email: string; newEnq
   );
 
   return (
-    <div className="min-h-dvh bg-slate-50 text-slate-900 [color-scheme:light]" style={{ fontFamily: "var(--font-dm-sans), system-ui, sans-serif" }}>
+    <div className="kv-admin min-h-dvh bg-slate-50 text-slate-900" style={{ fontFamily: "var(--font-dm-sans), system-ui, sans-serif" }}>
       <header className="sticky top-0 z-30 flex h-14 items-center gap-3 border-b border-slate-200 bg-white px-4 lg:hidden">
         <button type="button" onClick={() => setOpen((v) => !v)} aria-expanded={open} aria-controls="admin-nav" className="min-h-10 rounded-lg border border-slate-300 px-3 text-sm font-medium">Menu</button>
         <span className="font-semibold">Kalulu Vision admin</span>
@@ -60,6 +62,7 @@ export function Shell({ email, newEnquiries, children }: { email: string; newEnq
           </Link>
           {nav}
           <div className="mt-6 grid gap-2 border-t border-slate-200 pt-4 text-sm">
+            <div className="px-1 pb-2"><ThemeSwitcher compact /></div>
             <Link href="/" target="_blank" className="min-h-10 rounded-lg px-3 py-2 text-slate-600 hover:bg-slate-100">View website ↗</Link>
             <p className="truncate px-3 text-xs text-slate-500" title={email}>{email}</p>
             <button type="button" onClick={logout} className="min-h-10 rounded-lg px-3 text-left font-medium text-red-700 hover:bg-red-50">Sign out</button>

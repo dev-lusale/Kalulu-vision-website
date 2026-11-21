@@ -19,10 +19,10 @@ export function ContactSection() {
         {/* Header — content frozen */}
         <div className="text-center mb-14">
           <span className="section-label">Get in Touch</span>
-          <h2 id="contact-heading" className="text-3xl sm:text-4xl font-extrabold tracking-tight mb-4" style={{ color: "#FFFFFF" }}>
+          <h2 id="contact-heading" className="text-3xl sm:text-4xl font-extrabold tracking-tight mb-4" style={{ color: "var(--kv-fg)" }}>
             Have Questions?
           </h2>
-          <p className="max-w-md mx-auto text-[15px] leading-relaxed" style={{ color: "#A7B0C0" }}>
+          <p className="max-w-md mx-auto text-[15px] leading-relaxed" style={{ color: "var(--kv-muted)" }}>
             Reach out on WhatsApp or email and our team gets back to you promptly.
           </p>
         </div>
@@ -32,11 +32,11 @@ export function ContactSection() {
           {/* WhatsApp — content frozen */}
           <div className="kv-card p-6 flex flex-col">
             <div className="w-11 h-11 rounded-xl flex items-center justify-center mb-5 shrink-0"
-              style={{ background: "#DCFCE7", border: "1.5px solid #86EFAC", color: "#15803d" }}>
+              style={{ background: "color-mix(in oklab, #22C55E 14%, var(--kv-surface))", border: "1.5px solid color-mix(in oklab, #22C55E 45%, transparent)", color: "var(--kv-success)" }}>
               {WA_SVG("w-5 h-5")}
             </div>
-            <h3 className="font-bold text-[15px] mb-1.5" style={{ color: "#FFFFFF" }}>WhatsApp</h3>
-            <p className="text-[13px] leading-relaxed mb-5 flex-1" style={{ color: "#A7B0C0" }}>
+            <h3 className="font-bold text-[15px] mb-1.5" style={{ color: "var(--kv-fg)" }}>WhatsApp</h3>
+            <p className="text-[13px] leading-relaxed mb-5 flex-1" style={{ color: "var(--kv-muted)" }}>
               Chat directly for the quickest response. We typically reply within minutes.
             </p>
             <a href={waUrl} target="_blank" rel="noopener noreferrer"
@@ -50,20 +50,20 @@ export function ContactSection() {
           {/* Email — content frozen */}
           <div className="kv-card p-6 flex flex-col">
             <div className="w-11 h-11 rounded-xl flex items-center justify-center mb-5 shrink-0"
-              style={{ background: "#E0F5FF", border: "1.5px solid #BAE3F9", color: "#0369a1" }}>
+              style={{ background: "color-mix(in oklab, #0EA5E9 12%, var(--kv-surface))", border: "1.5px solid color-mix(in oklab, #0EA5E9 40%, transparent)", color: "var(--kv-primary)" }}>
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
               </svg>
             </div>
-            <h3 className="font-bold text-[15px] mb-1.5" style={{ color: "#FFFFFF" }}>Email</h3>
-            <p className="text-[13px] leading-relaxed mb-5 flex-1" style={{ color: "#A7B0C0" }}>
+            <h3 className="font-bold text-[15px] mb-1.5" style={{ color: "var(--kv-fg)" }}>Email</h3>
+            <p className="text-[13px] leading-relaxed mb-5 flex-1" style={{ color: "var(--kv-muted)" }}>
               Send a detailed enquiry and we&apos;ll respond within 24 hours.
             </p>
             <a href={`mailto:${SITE_CONFIG.email}`}
               className="inline-flex items-center gap-2 font-semibold text-[13px] px-5 py-2.5 rounded-xl transition-all w-fit"
-              style={{ background: "#FF8A00", color: "#070B18", border: "none" }}
-              onMouseEnter={e => (e.currentTarget.style.background = "#FF4D16")}
-              onMouseLeave={e => (e.currentTarget.style.background = "#FF8A00")}
+              style={{ background: "var(--kv-primary)", color: "var(--kv-on-primary)", border: "none" }}
+              onMouseEnter={e => (e.currentTarget.style.background = "var(--kv-primary-hover)")}
+              onMouseLeave={e => (e.currentTarget.style.background = "var(--kv-primary)")}
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -76,15 +76,15 @@ export function ContactSection() {
           <div className="kv-card-teal p-6 flex flex-col relative overflow-hidden rounded-[20px]">
             {/* Decorative lime circle */}
             <div className="absolute -top-8 -right-8 w-32 h-32 rounded-full pointer-events-none opacity-20"
-              style={{ background: "#FF8A00" }} />
+              style={{ background: "var(--kv-brand-ink)" }} />
             <div className="w-11 h-11 rounded-xl flex items-center justify-center mb-5 shrink-0 relative"
-              style={{ background: "rgba(255,138,0,0.15)", border: "1px solid rgba(255,138,0,0.25)", color: "#FF8A00" }}>
+              style={{ background: "rgba(255,138,0,0.15)", border: "1px solid rgba(255,138,0,0.25)", color: "var(--kv-brand-ink)" }}>
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
             </div>
             <h3 className="font-bold text-[15px] mb-1.5 relative text-white">Ready to start?</h3>
-            <p className="text-[13px] leading-relaxed mb-5 flex-1 relative" style={{ color: "rgba(255,255,255,0.75)" }}>
+            <p className="text-[13px] leading-relaxed mb-5 flex-1 relative" style={{ color: "var(--kv-muted)" }}>
               Join Kalulu Vision and build practical tech skills that open real career opportunities.
             </p>
             <a href="#enroll" className="btn-lime relative w-fit text-[13px] px-5 py-2.5" style={{ borderRadius: "8px" }}>

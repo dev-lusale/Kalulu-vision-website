@@ -22,7 +22,7 @@ export default async function SiteLayout({ children }: LayoutProps<"/">) {
   };
   return (
     <>
-      <Navbar services={services.map(({ slug, title, summary, icon }) => ({ slug, title, summary, icon }))} />
+      <Navbar services={services.map(({ slug, title, summary, icon }) => ({ slug, title, summary, icon }))} email={company.email} phone={company.phone} />
       <main id="main" tabIndex={-1} className="outline-none">{children}</main>
       <Footer company={company} services={services} />
       <Effects />

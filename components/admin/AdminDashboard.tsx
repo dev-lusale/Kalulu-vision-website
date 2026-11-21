@@ -210,12 +210,12 @@ export function AdminDashboard({ initialRecords, embedded = false }: { initialRe
       return r.subscription?.status === "ACTIVE" && d !== null && d >= 0 && d <= 3;
     }).length;
     return [
-      { label: "Total",        value: records.length,                                                                  icon: I.users,   color: "#10182B" },
-      { label: "Pending",      value: records.filter(r => !r.payment || r.payment.status === "PENDING_VERIFICATION").length, icon: I.clock, color: "#a16207" },
-      { label: "Verified",     value: records.filter(r => r.payment?.status === "VERIFIED").length,                    icon: I.check_c, color: "#063F3A" },
-      { label: "Active Subs",  value: records.filter(r => r.subscription?.status === "ACTIVE").length,                 icon: I.unlock,  color: "#0369a1" },
+      { label: "Total",        value: records.length,                                                                  icon: I.users,   color: "var(--kv-fg)" },
+      { label: "Pending",      value: records.filter(r => !r.payment || r.payment.status === "PENDING_VERIFICATION").length, icon: I.clock, color: "var(--kv-brand-ink)" },
+      { label: "Verified",     value: records.filter(r => r.payment?.status === "VERIFIED").length,                    icon: I.check_c, color: "var(--kv-accent-ink)" },
+      { label: "Active Subs",  value: records.filter(r => r.subscription?.status === "ACTIVE").length,                 icon: I.unlock,  color: "var(--kv-primary)" },
       { label: "Revenue",      value: `K${totalRevenue.toLocaleString()}`,                                             icon: I.money,   color: "#7c3aed" },
-      { label: "Expiring Soon",value: expiring,                                                                        icon: I.alert,   color: "#b91c1c" },
+      { label: "Expiring Soon",value: expiring,                                                                        icon: I.alert,   color: "var(--kv-danger)" },
     ];
   }, [records]);
 
@@ -258,19 +258,19 @@ export function AdminDashboard({ initialRecords, embedded = false }: { initialRe
   ];
 
   return (
-    <div className={embedded ? "kv-legacy" : "kv-legacy min-h-screen"} style={{ background: "#F5F6F2" }}>
+    <div className={embedded ? "kv-legacy kv-themed" : "kv-legacy kv-themed min-h-screen"} style={{ background: "var(--kv-soft)" }}>
 
       {/* ── Navbar (hidden when embedded in the admin shell) ── */}
       {!embedded && (
-      <header className="sticky top-0 z-30" style={{ background: "#10182B", borderBottom: "1px solid rgba(233,255,163,0.15)" }}>
+      <header className="sticky top-0 z-30" style={{ background: "var(--kv-band)", borderBottom: "1px solid color-mix(in oklab, var(--kv-brand) 15%, transparent)" }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="rounded-xl overflow-hidden" style={{ background: "#1a2540", padding: "4px 8px" }}>
+            <div className="rounded-xl overflow-hidden" style={{ background: "var(--kv-fg)", padding: "4px 8px" }}>
               <Image src="/logo.png" alt="Kalulu Vision" width={100} height={34} className="h-9 w-auto object-contain" />
             </div>
             <span className="hidden sm:flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-md"
-              style={{ background: "rgba(233,255,163,0.15)", color: "#E9FFA3", border: "1px solid rgba(233,255,163,0.25)" }}>
-              <Icon d={I.settings} size={12} stroke="#E9FFA3" />
+              style={{ background: "color-mix(in oklab, var(--kv-brand) 15%, transparent)", color: "var(--kv-brand)", border: "1px solid color-mix(in oklab, var(--kv-brand) 25%, transparent)" }}>
+              <Icon d={I.settings} size={12} stroke="var(--kv-brand)" />
               Admin
             </span>
           </div>
@@ -287,16 +287,16 @@ export function AdminDashboard({ initialRecords, embedded = false }: { initialRe
             <button type="button" onClick={() => exportCSV(records)}
               title="Export CSV"
               className="hidden sm:flex items-center gap-1.5 text-[12px] font-semibold px-2.5 py-1.5 rounded-lg cursor-pointer"
-              style={{ color: "#E9FFA3", border: "1px solid rgba(233,255,163,0.25)", background: "transparent" }}>
-              <Icon d={I.download} size={14} stroke="#E9FFA3" />
+              style={{ color: "var(--kv-brand)", border: "1px solid color-mix(in oklab, var(--kv-brand) 25%, transparent)", background: "transparent" }}>
+              <Icon d={I.download} size={14} stroke="var(--kv-brand)" />
               Export
             </button>
             <Link href="/" className="hidden sm:block text-[12px] font-medium px-2.5 py-1.5 rounded-lg"
               style={{ color: "rgba(255,255,255,0.4)" }}>← Site</Link>
             <button type="button" onClick={handleLogout}
               className="flex items-center gap-1.5 text-[12px] font-semibold px-2.5 py-1.5 rounded-lg cursor-pointer"
-              style={{ color: "#E9FFA3", border: "1px solid rgba(233,255,163,0.25)", background: "transparent" }}>
-              <Icon d={I.sign_out} size={14} stroke="#E9FFA3" />
+              style={{ color: "var(--kv-brand)", border: "1px solid color-mix(in oklab, var(--kv-brand) 25%, transparent)", background: "transparent" }}>
+              <Icon d={I.sign_out} size={14} stroke="var(--kv-brand)" />
               <span className="hidden sm:inline">Sign Out</span>
             </button>
           </div>
@@ -309,12 +309,12 @@ export function AdminDashboard({ initialRecords, embedded = false }: { initialRe
         {/* ── Heading ── */}
         <div className="mb-6 flex items-end justify-between flex-wrap gap-2">
           <div>
-            <h1 className="text-2xl font-extrabold tracking-tight" style={{ color: "#10182B" }}>Dashboard</h1>
-            <p className="text-[13px] mt-0.5" style={{ color: "#7a8394" }}>
+            <h1 className="text-2xl font-extrabold tracking-tight" style={{ color: "var(--kv-fg)" }}>Dashboard</h1>
+            <p className="text-[13px] mt-0.5" style={{ color: "var(--kv-subtle)" }}>
               {records.length} enrollments · {studentMap.length} students
             </p>
           </div>
-          <span className="text-[11px] font-medium" style={{ color: "#7a8394" }}>
+          <span className="text-[11px] font-medium" style={{ color: "var(--kv-subtle)" }}>
             {new Date().toLocaleString("en-GB", { day:"2-digit", month:"short", year:"numeric", hour:"2-digit", minute:"2-digit" })}
           </span>
         </div>
@@ -323,12 +323,12 @@ export function AdminDashboard({ initialRecords, embedded = false }: { initialRe
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-7">
           {stats.map(s => (
             <div key={s.label} className="rounded-2xl p-4 transition-all"
-              style={{ background: "#fff", border: "1.5px solid #E5E7DF" }}
-              onMouseEnter={e => (e.currentTarget as HTMLElement).style.borderColor = "#c8e86a"}
-              onMouseLeave={e => (e.currentTarget as HTMLElement).style.borderColor = "#E5E7DF"}
+              style={{ background: "var(--kv-surface)", border: "1.5px solid var(--kv-line)" }}
+              onMouseEnter={e => (e.currentTarget as HTMLElement).style.borderColor = "var(--kv-line-strong)"}
+              onMouseLeave={e => (e.currentTarget as HTMLElement).style.borderColor = "var(--kv-line)"}
             >
               <div className="flex items-center justify-between mb-2">
-                <p className="text-[10px] font-black uppercase tracking-wider" style={{ color: "#7a8394" }}>{s.label}</p>
+                <p className="text-[10px] font-black uppercase tracking-wider" style={{ color: "var(--kv-subtle)" }}>{s.label}</p>
                 <div className="w-7 h-7 rounded-lg flex items-center justify-center"
                   style={{ background: `${s.color}15` }}>
                   <Icon d={s.icon} size={14} stroke={s.color} />
@@ -340,21 +340,21 @@ export function AdminDashboard({ initialRecords, embedded = false }: { initialRe
         </div>
 
         {/* ── Tabs ── */}
-        <div className="flex gap-0.5 mb-5 border-b" style={{ borderColor: "#E5E7DF" }}>
+        <div className="flex gap-0.5 mb-5 border-b" style={{ borderColor: "var(--kv-line)" }}>
           {TABS.map(t => (
             <button key={t.key} type="button" onClick={() => setTab(t.key)}
               className="flex items-center gap-2 px-4 py-2.5 text-[13px] font-semibold cursor-pointer rounded-t-lg transition-all"
               style={{
-                color:        tab === t.key ? "#10182B" : "#7a8394",
-                borderBottom: tab === t.key ? "2.5px solid #10182B" : "2.5px solid transparent",
-                background:   tab === t.key ? "#fff" : "transparent",
+                color:        tab === t.key ? "var(--kv-fg)" : "var(--kv-subtle)",
+                borderBottom: tab === t.key ? "2.5px solid var(--kv-fg)" : "2.5px solid transparent",
+                background:   tab === t.key ? "var(--kv-surface)" : "transparent",
                 marginBottom: "-1px",
               }}>
               <Icon d={t.iconPath} size={15} stroke="currentColor" />
               {t.label}
               {t.key === "enrollments" && records.length > 0 && (
                 <span className="text-[10px] font-black px-1.5 py-0.5 rounded-full"
-                  style={{ background: "#10182B", color: "#E9FFA3" }}>{records.length}</span>
+                  style={{ background: "var(--kv-primary)", color: "var(--kv-on-primary)" }}>{records.length}</span>
               )}
             </button>
           ))}
@@ -365,52 +365,52 @@ export function AdminDashboard({ initialRecords, embedded = false }: { initialRe
           <>
             {/* Toolbar */}
             <div className="rounded-2xl p-4 mb-4 flex flex-col sm:flex-row gap-3"
-              style={{ background: "#fff", border: "1.5px solid #E5E7DF" }}>
+              style={{ background: "var(--kv-surface)", border: "1.5px solid var(--kv-line)" }}>
               <div className="relative flex-1">
-                <Icon d={I.search} size={16} stroke="#7a8394"
+                <Icon d={I.search} size={16} stroke="var(--kv-subtle)"
                   className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                 <input type="search" placeholder="Search name, ID, email, course…"
                   value={search} onChange={e => setSearch(e.target.value)}
                   className="input-base"
-                  style={{ paddingLeft: "2.25rem", background: "#F5F6F2", border: "1.5px solid #E5E7DF", color: "#10182B", fontSize: "14px" }} />
+                  style={{ paddingLeft: "2.25rem", background: "var(--kv-soft)", border: "1.5px solid var(--kv-line)", color: "var(--kv-fg)", fontSize: "14px" }} />
               </div>
               <div className="flex gap-1.5 flex-wrap shrink-0">
                 {FILTERS.map(f => (
                   <button key={f.key} type="button" onClick={() => setFilter(f.key)}
                     className="px-3.5 py-1.5 rounded-xl text-[12px] font-bold cursor-pointer"
                     style={filter === f.key
-                      ? { background: "#10182B", color: "#E9FFA3", border: "1px solid #10182B" }
-                      : { background: "#F5F6F2", color: "#4a5568", border: "1px solid #E5E7DF" }}>
+                      ? { background: "var(--kv-primary)", color: "var(--kv-on-primary)", border: "1px solid var(--kv-primary)" }
+                      : { background: "var(--kv-soft)", color: "var(--kv-muted)", border: "1px solid var(--kv-line)" }}>
                     {f.label}
                   </button>
                 ))}
                 <button type="button" onClick={() => exportCSV(filtered)}
                   className="flex items-center gap-1 px-3 py-1.5 rounded-xl text-[12px] font-bold cursor-pointer"
-                  style={{ background: "#E9FFA3", color: "#063F3A", border: "1px solid #c8e86a" }}>
-                  <Icon d={I.download} size={13} stroke="#063F3A" />
+                  style={{ background: "var(--kv-primary)", color: "var(--kv-on-primary)", border: "1px solid var(--kv-primary)" }}>
+                  <Icon d={I.download} size={13} stroke="var(--kv-accent-ink)" />
                   CSV
                 </button>
               </div>
             </div>
-            <p className="text-[12px] mb-3" style={{ color: "#7a8394" }}>
+            <p className="text-[12px] mb-3" style={{ color: "var(--kv-subtle)" }}>
               Showing {filtered.length} of {records.length}
             </p>
 
             {/* Table */}
-            <div className="rounded-2xl overflow-hidden" style={{ background: "#fff", border: "1.5px solid #E5E7DF" }}>
+            <div className="rounded-2xl overflow-hidden" style={{ background: "var(--kv-surface)", border: "1.5px solid var(--kv-line)" }}>
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
-                    <tr style={{ background: "#F5F6F2", borderBottom: "1.5px solid #E5E7DF" }}>
+                    <tr style={{ background: "var(--kv-soft)", borderBottom: "1.5px solid var(--kv-line)" }}>
                       {["Enrollment ID","Student","Course","Plan","Amount","Payment","Subscription","Enrolled","Expires",""].map(h => (
                         <th key={h} className="text-left text-[10.5px] font-black uppercase tracking-wider px-4 py-3 whitespace-nowrap"
-                          style={{ color: "#7a8394" }}>{h}</th>
+                          style={{ color: "var(--kv-subtle)" }}>{h}</th>
                       ))}
                     </tr>
                   </thead>
                   <tbody>
                     {filtered.length === 0 ? (
-                      <tr><td colSpan={10} className="text-center py-16 text-[13px]" style={{ color: "#7a8394" }}>
+                      <tr><td colSpan={10} className="text-center py-16 text-[13px]" style={{ color: "var(--kv-subtle)" }}>
                         No enrollments found.
                       </td></tr>
                     ) : filtered.map(record => {
@@ -419,51 +419,51 @@ export function AdminDashboard({ initialRecords, embedded = false }: { initialRe
                       const d    = daysLeft(subscription?.expiryDate);
                       const expiringSoon = subscription?.status === "ACTIVE" && d !== null && d >= 0 && d <= 3;
                       return (
-                        <tr key={enrollment.id} style={{ borderBottom: "1px solid #F5F6F2" }}
-                          onMouseEnter={e => (e.currentTarget as HTMLElement).style.background = "#FAFAF8"}
+                        <tr key={enrollment.id} style={{ borderBottom: "1px solid var(--kv-soft)" }}
+                          onMouseEnter={e => (e.currentTarget as HTMLElement).style.background = "var(--kv-soft)"}
                           onMouseLeave={e => (e.currentTarget as HTMLElement).style.background = "transparent"}>
                           <td className="px-4 py-3.5 whitespace-nowrap">
-                            <span className="font-mono text-[12px] font-bold" style={{ color: "#063F3A" }}>
+                            <span className="font-mono text-[12px] font-bold" style={{ color: "var(--kv-accent-ink)" }}>
                               {enrollment.enrollmentId}
                             </span>
                           </td>
                           <td className="px-4 py-3.5 min-w-[160px]">
-                            <p className="font-semibold text-[13px]" style={{ color: "#10182B" }}>{enrollment.fullName}</p>
-                            <p className="text-[11px]" style={{ color: "#7a8394" }}>{enrollment.whatsapp}</p>
-                            <p className="text-[11px]" style={{ color: "#7a8394" }}>{enrollment.email}</p>
+                            <p className="font-semibold text-[13px]" style={{ color: "var(--kv-fg)" }}>{enrollment.fullName}</p>
+                            <p className="text-[11px]" style={{ color: "var(--kv-subtle)" }}>{enrollment.whatsapp}</p>
+                            <p className="text-[11px]" style={{ color: "var(--kv-subtle)" }}>{enrollment.email}</p>
                           </td>
                           <td className="px-4 py-3.5 whitespace-nowrap">
-                            <span className="text-[12.5px] font-medium" style={{ color: "#10182B" }}>
+                            <span className="text-[12.5px] font-medium" style={{ color: "var(--kv-fg)" }}>
                               {courseIcon(enrollment.course)} {courseLabel(enrollment.course)}
                             </span>
-                            <p className="text-[10.5px] capitalize mt-0.5" style={{ color: "#7a8394" }}>{enrollment.learningMode}</p>
+                            <p className="text-[10.5px] capitalize mt-0.5" style={{ color: "var(--kv-subtle)" }}>{enrollment.learningMode}</p>
                           </td>
-                          <td className="px-4 py-3.5 whitespace-nowrap text-[13px]" style={{ color: "#4a5568" }}>
+                          <td className="px-4 py-3.5 whitespace-nowrap text-[13px]" style={{ color: "var(--kv-muted)" }}>
                             {planLabel(enrollment.plan)}
                           </td>
-                          <td className="px-4 py-3.5 whitespace-nowrap text-[13px] font-bold" style={{ color: "#10182B" }}>
+                          <td className="px-4 py-3.5 whitespace-nowrap text-[13px] font-bold" style={{ color: "var(--kv-fg)" }}>
                             K{payment?.amount ?? plan?.price ?? 0}
                           </td>
                           <td className="px-4 py-3.5 whitespace-nowrap"><PayPill status={payment?.status} /></td>
                           <td className="px-4 py-3.5 whitespace-nowrap">
                             <SubPill status={subscription?.status} expiryDate={subscription?.expiryDate} />
                           </td>
-                          <td className="px-4 py-3.5 whitespace-nowrap text-[12px]" style={{ color: "#7a8394" }}>
+                          <td className="px-4 py-3.5 whitespace-nowrap text-[12px]" style={{ color: "var(--kv-subtle)" }}>
                             {fmtDate(enrollment.createdAt)}
                           </td>
                           <td className="px-4 py-3.5 whitespace-nowrap">
                             {subscription?.expiryDate ? (
                               <span className="text-[12px] font-medium"
-                                style={{ color: expiringSoon ? "#b91c1c" : "#7a8394" }}>
+                                style={{ color: expiringSoon ? "var(--kv-danger)" : "var(--kv-subtle)" }}>
                                 {expiringSoon ? `⚠ ${d}d` : fmtDate(subscription.expiryDate)}
                               </span>
-                            ) : <span style={{ color: "#7a8394" }}>—</span>}
+                            ) : <span style={{ color: "var(--kv-subtle)" }}>—</span>}
                           </td>
                           <td className="px-4 py-3.5 whitespace-nowrap">
                             <button type="button" onClick={() => setSelected(record)}
                               className="flex items-center gap-1 text-[12px] font-bold cursor-pointer px-3 py-1.5 rounded-lg"
-                              style={{ background: "#E9FFA3", color: "#063F3A", border: "1px solid #c8e86a" }}>
-                              <Icon d={I.settings} size={13} stroke="#063F3A" />
+                              style={{ background: "var(--kv-primary)", color: "var(--kv-on-primary)", border: "1px solid var(--kv-primary)" }}>
+                              <Icon d={I.settings} size={13} stroke="var(--kv-accent-ink)" />
                               Manage
                             </button>
                           </td>
@@ -480,56 +480,56 @@ export function AdminDashboard({ initialRecords, embedded = false }: { initialRe
         {/* ══════════ TAB: COURSES ══════════ */}
         {tab === "courses" && (
           <div className="space-y-4">
-            <p className="text-[13px]" style={{ color: "#7a8394" }}>
+            <p className="text-[13px]" style={{ color: "var(--kv-subtle)" }}>
               Enrollment breakdown across {COURSES.length} courses
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
               {courseStats.map(({ course, total, active, pending, revenue }) => (
                 <div key={course.id} className="rounded-2xl p-5"
-                  style={{ background: "#fff", border: "1.5px solid #E5E7DF" }}>
+                  style={{ background: "var(--kv-surface)", border: "1.5px solid var(--kv-line)" }}>
                   <div className="flex items-center gap-3 mb-4">
                     <div className="w-10 h-10 rounded-xl flex items-center justify-center text-xl shrink-0"
-                      style={{ background: "#F5F6F2", border: "1.5px solid #E5E7DF" }}>
+                      style={{ background: "var(--kv-soft)", border: "1.5px solid var(--kv-line)" }}>
                       {course.icon}
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="font-bold text-[14px] truncate" style={{ color: "#10182B" }}>{course.title}</p>
-                      <p className="text-[11px] truncate" style={{ color: "#7a8394" }}>{course.subtitle}</p>
+                      <p className="font-bold text-[14px] truncate" style={{ color: "var(--kv-fg)" }}>{course.title}</p>
+                      <p className="text-[11px] truncate" style={{ color: "var(--kv-subtle)" }}>{course.subtitle}</p>
                     </div>
-                    <span className="text-2xl font-extrabold shrink-0" style={{ color: "#10182B" }}>{total}</span>
+                    <span className="text-2xl font-extrabold shrink-0" style={{ color: "var(--kv-fg)" }}>{total}</span>
                   </div>
                   {/* Progress bar */}
-                  <div className="w-full h-2 rounded-full mb-4" style={{ background: "#F5F6F2" }}>
+                  <div className="w-full h-2 rounded-full mb-4" style={{ background: "var(--kv-soft)" }}>
                     <div className="h-2 rounded-full"
-                      style={{ width: records.length ? `${(total / records.length) * 100}%` : "0%", background: "#E9FFA3", border: "1px solid #c8e86a" }} />
+                      style={{ width: records.length ? `${(total / records.length) * 100}%` : "0%", background: "var(--kv-accent)", border: "1px solid var(--kv-accent)" }} />
                   </div>
                   <div className="grid grid-cols-3 gap-2 text-center mb-4">
                     {[
-                      { label: "Active",  value: active,        color: "#063F3A" },
-                      { label: "Pending", value: pending,       color: "#a16207" },
+                      { label: "Active",  value: active,        color: "var(--kv-accent-ink)" },
+                      { label: "Pending", value: pending,       color: "var(--kv-brand-ink)" },
                       { label: "Revenue", value: `K${revenue}`, color: "#7c3aed" },
                     ].map(s => (
-                      <div key={s.label} className="rounded-xl p-2.5" style={{ background: "#F5F6F2" }}>
+                      <div key={s.label} className="rounded-xl p-2.5" style={{ background: "var(--kv-soft)" }}>
                         <p className="text-[15px] font-extrabold" style={{ color: s.color }}>{s.value}</p>
-                        <p className="text-[9.5px] font-bold uppercase tracking-wider mt-0.5" style={{ color: "#7a8394" }}>{s.label}</p>
+                        <p className="text-[9.5px] font-bold uppercase tracking-wider mt-0.5" style={{ color: "var(--kv-subtle)" }}>{s.label}</p>
                       </div>
                     ))}
                   </div>
                   {/* Recent */}
                   {total > 0 && (
-                    <div className="pt-3" style={{ borderTop: "1px solid #F5F6F2" }}>
-                      <p className="text-[10px] font-black uppercase tracking-wider mb-2" style={{ color: "#7a8394" }}>Recent</p>
+                    <div className="pt-3" style={{ borderTop: "1px solid var(--kv-soft)" }}>
+                      <p className="text-[10px] font-black uppercase tracking-wider mb-2" style={{ color: "var(--kv-subtle)" }}>Recent</p>
                       {records.filter(r => r.enrollment.course === course.id).slice(0, 3).map(r => (
                         <div key={r.enrollment.id} className="flex items-center justify-between py-1.5 gap-2">
                           <div className="min-w-0">
-                            <p className="text-[12px] font-semibold truncate" style={{ color: "#10182B" }}>{r.enrollment.fullName}</p>
-                            <p className="text-[10px]" style={{ color: "#7a8394" }}>{fmtDate(r.enrollment.createdAt)}</p>
+                            <p className="text-[12px] font-semibold truncate" style={{ color: "var(--kv-fg)" }}>{r.enrollment.fullName}</p>
+                            <p className="text-[10px]" style={{ color: "var(--kv-subtle)" }}>{fmtDate(r.enrollment.createdAt)}</p>
                           </div>
                           <div className="flex items-center gap-1.5 shrink-0">
                             <PayPill status={r.payment?.status} />
                             <button type="button" onClick={() => { setSelected(r); setTab("enrollments"); }}
                               className="text-[11px] font-bold cursor-pointer px-2 py-0.5 rounded-lg"
-                              style={{ background: "#E9FFA3", color: "#063F3A", border: "1px solid #c8e86a" }}>
+                              style={{ background: "var(--kv-primary)", color: "var(--kv-on-primary)", border: "1px solid var(--kv-primary)" }}>
                               View
                             </button>
                           </div>
@@ -539,8 +539,8 @@ export function AdminDashboard({ initialRecords, embedded = false }: { initialRe
                         <button type="button"
                           onClick={() => { setSearch(courseLabel(course.id)); setTab("enrollments"); }}
                           className="mt-1 flex items-center gap-1 text-[11.5px] font-bold cursor-pointer"
-                          style={{ color: "#063F3A" }}>
-                          View all {total} <Icon d={I.arrow_r} size={13} stroke="#063F3A" />
+                          style={{ color: "var(--kv-accent-ink)" }}>
+                          View all {total} <Icon d={I.arrow_r} size={13} stroke="currentColor" />
                         </button>
                       )}
                     </div>
@@ -554,41 +554,41 @@ export function AdminDashboard({ initialRecords, embedded = false }: { initialRe
         {/* ══════════ TAB: STUDENTS ══════════ */}
         {tab === "students" && (
           <div>
-            <p className="text-[13px] mb-4" style={{ color: "#7a8394" }}>
+            <p className="text-[13px] mb-4" style={{ color: "var(--kv-subtle)" }}>
               {studentMap.length} unique students · sorted by revenue
             </p>
-            <div className="rounded-2xl overflow-hidden" style={{ background: "#fff", border: "1.5px solid #E5E7DF" }}>
+            <div className="rounded-2xl overflow-hidden" style={{ background: "var(--kv-surface)", border: "1.5px solid var(--kv-line)" }}>
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
-                    <tr style={{ background: "#F5F6F2", borderBottom: "1.5px solid #E5E7DF" }}>
+                    <tr style={{ background: "var(--kv-soft)", borderBottom: "1.5px solid var(--kv-line)" }}>
                       {["Student","Email","WhatsApp","Courses","Total Paid","Last Enrolled"].map(h => (
                         <th key={h} className="text-left text-[10.5px] font-black uppercase tracking-wider px-4 py-3 whitespace-nowrap"
-                          style={{ color: "#7a8394" }}>{h}</th>
+                          style={{ color: "var(--kv-subtle)" }}>{h}</th>
                       ))}
                     </tr>
                   </thead>
                   <tbody>
                     {studentMap.map(s => (
-                      <tr key={s.email} style={{ borderBottom: "1px solid #F5F6F2" }}
-                        onMouseEnter={e => (e.currentTarget as HTMLElement).style.background = "#FAFAF8"}
+                      <tr key={s.email} style={{ borderBottom: "1px solid var(--kv-soft)" }}
+                        onMouseEnter={e => (e.currentTarget as HTMLElement).style.background = "var(--kv-soft)"}
                         onMouseLeave={e => (e.currentTarget as HTMLElement).style.background = "transparent"}>
                         <td className="px-4 py-3.5">
                           <div className="flex items-center gap-2">
                             <div className="w-7 h-7 rounded-full flex items-center justify-center shrink-0"
-                              style={{ background: "#F0FDF4", border: "1px solid #86EFAC" }}>
-                              <Icon d={I.user} size={13} stroke="#063F3A" />
+                              style={{ background: "color-mix(in oklab, #22C55E 10%, var(--kv-surface))", border: "1px solid color-mix(in oklab, #22C55E 45%, transparent)" }}>
+                              <Icon d={I.user} size={13} stroke="currentColor" />
                             </div>
-                            <p className="font-semibold text-[13px]" style={{ color: "#10182B" }}>{s.name}</p>
+                            <p className="font-semibold text-[13px]" style={{ color: "var(--kv-fg)" }}>{s.name}</p>
                           </div>
                         </td>
-                        <td className="px-4 py-3.5 text-[12.5px]" style={{ color: "#4a5568" }}>{s.email}</td>
+                        <td className="px-4 py-3.5 text-[12.5px]" style={{ color: "var(--kv-muted)" }}>{s.email}</td>
                         <td className="px-4 py-3.5">
                           <a href={`https://wa.me/${s.whatsapp.replace(/\D/g,"")}`}
                             target="_blank" rel="noopener noreferrer"
                             className="flex items-center gap-1 text-[12.5px] font-medium hover:underline"
-                            style={{ color: "#15803d" }}>
-                            <Icon d={I.whatsapp} size={13} stroke="none" fill="#15803d" />
+                            style={{ color: "var(--kv-success)" }}>
+                            <Icon d={I.whatsapp} size={13} stroke="none" fill="var(--kv-success)" />
                             {s.whatsapp}
                           </a>
                         </td>
@@ -596,19 +596,19 @@ export function AdminDashboard({ initialRecords, embedded = false }: { initialRe
                           <div className="flex flex-wrap gap-1">
                             {s.courses.map(c => (
                               <span key={c} className="text-[11px] font-semibold px-2 py-0.5 rounded-md"
-                                style={{ background: "#F0FDF4", color: "#063F3A", border: "1px solid #86EFAC" }}>
+                                style={{ background: "color-mix(in oklab, #22C55E 10%, var(--kv-surface))", color: "var(--kv-accent-ink)", border: "1px solid color-mix(in oklab, #22C55E 45%, transparent)" }}>
                                 {courseIcon(c)} {courseLabel(c)}
                               </span>
                             ))}
                           </div>
-                          <p className="text-[10px] mt-1" style={{ color: "#7a8394" }}>{s.courses.length} course{s.courses.length !== 1 ? "s" : ""}</p>
+                          <p className="text-[10px] mt-1" style={{ color: "var(--kv-subtle)" }}>{s.courses.length} course{s.courses.length !== 1 ? "s" : ""}</p>
                         </td>
                         <td className="px-4 py-3.5 whitespace-nowrap">
-                          <p className="text-[14px] font-extrabold" style={{ color: s.totalPaid > 0 ? "#063F3A" : "#7a8394" }}>
+                          <p className="text-[14px] font-extrabold" style={{ color: s.totalPaid > 0 ? "var(--kv-accent-ink)" : "var(--kv-subtle)" }}>
                             K{s.totalPaid.toLocaleString()}
                           </p>
                         </td>
-                        <td className="px-4 py-3.5 whitespace-nowrap text-[12px]" style={{ color: "#7a8394" }}>
+                        <td className="px-4 py-3.5 whitespace-nowrap text-[12px]" style={{ color: "var(--kv-subtle)" }}>
                           {fmtDate(s.lastEnrolled)}
                         </td>
                       </tr>
@@ -667,21 +667,21 @@ function StudentPanel({ record, isLoading, onVerify, onReject, onEnable, onDisab
 
   return (
     <div className="fixed inset-0 z-50 flex">
-      <div className="flex-1 cursor-pointer" style={{ background: "rgba(16,24,43,0.5)", backdropFilter: "blur(4px)" }} onClick={onClose} />
+      <div className="flex-1 cursor-pointer" style={{ background: "rgba(0,0,0,0.5)", backdropFilter: "blur(4px)" }} onClick={onClose} />
       <div className="relative w-full max-w-md flex flex-col h-full overflow-hidden"
-        style={{ background: "#fff", borderLeft: "2px solid #E5E7DF", boxShadow: "-20px 0 60px rgba(16,24,43,0.15)" }}>
+        style={{ background: "var(--kv-surface)", borderLeft: "2px solid var(--kv-line)", boxShadow: "-20px 0 60px rgba(0,0,0,0.18)" }}>
 
         {/* Header */}
         <div className="flex items-start justify-between px-6 py-5 shrink-0"
-          style={{ background: "#10182B", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
+          style={{ background: "var(--kv-band)", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
           <div>
             <h2 className="font-black text-white text-[16px]">{enrollment.fullName}</h2>
             <div className="flex items-center gap-2 mt-1.5">
-              <code className="font-mono text-[12px]" style={{ color: "#E9FFA3" }}>{enrollment.enrollmentId}</code>
+              <code className="font-mono text-[12px]" style={{ color: "var(--kv-brand)" }}>{enrollment.enrollmentId}</code>
               <button type="button" onClick={copyId}
                 className="flex items-center gap-1 text-[10px] px-2 py-0.5 rounded cursor-pointer font-bold"
-                style={{ background: "rgba(233,255,163,0.15)", color: "#E9FFA3", border: "1px solid rgba(233,255,163,0.3)" }}>
-                <Icon d={I.copy} size={10} stroke="#E9FFA3" />
+                style={{ background: "color-mix(in oklab, var(--kv-brand) 15%, transparent)", color: "var(--kv-brand)", border: "1px solid color-mix(in oklab, var(--kv-brand) 30%, transparent)" }}>
+                <Icon d={I.copy} size={10} stroke="var(--kv-brand)" />
                 {copied ? "Copied!" : "Copy"}
               </button>
             </div>
@@ -706,8 +706,8 @@ function StudentPanel({ record, isLoading, onVerify, onReject, onEnable, onDisab
             </a>
             <a href={`mailto:${enrollment.email}`}
               className="flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-[12.5px] font-bold"
-              style={{ background: "#F5F6F2", color: "#10182B", border: "1.5px solid #E5E7DF" }}>
-              <Icon d={I.mail} size={15} stroke="#10182B" />
+              style={{ background: "var(--kv-soft)", color: "var(--kv-fg)", border: "1.5px solid var(--kv-line)" }}>
+              <Icon d={I.mail} size={15} stroke="var(--kv-fg)" />
               Email
             </a>
           </div>
@@ -738,7 +738,7 @@ function StudentPanel({ record, isLoading, onVerify, onReject, onEnable, onDisab
                 <LRow label="Submitted" value={fmtDateTime(payment.submittedAt)} />
                 {payment.verifiedAt && <LRow label="Verified" value={fmtDateTime(payment.verifiedAt)} />}
               </>
-            ) : <p className="text-[13px]" style={{ color: "#7a8394" }}>No payment submitted yet.</p>}
+            ) : <p className="text-[13px]" style={{ color: "var(--kv-subtle)" }}>No payment submitted yet.</p>}
           </LightBlock>
 
           {/* Subscription */}
@@ -751,22 +751,22 @@ function StudentPanel({ record, isLoading, onVerify, onReject, onEnable, onDisab
                 <LRow label="Expires" value={subscription.expiryDate ? fmtDateTime(subscription.expiryDate) : "—"} />
                 {d !== null && subscription.status === "ACTIVE" && (
                   <div className="mt-2 px-3 py-2 rounded-xl"
-                    style={{ background: d <= 3 ? "#FEF2F2" : "#F0FDF4", border: `1px solid ${d <= 3 ? "#FCA5A5" : "#86EFAC"}` }}>
+                    style={{ background: d <= 3 ? "color-mix(in oklab, #EF4444 10%, var(--kv-surface))" : "color-mix(in oklab, #22C55E 10%, var(--kv-surface))", border: `1px solid ${d <= 3 ? "color-mix(in oklab, #EF4444 45%, transparent)" : "color-mix(in oklab, #22C55E 45%, transparent)"}` }}>
                     <p className="text-[12px] font-bold flex items-center gap-1.5"
-                      style={{ color: d <= 3 ? "#b91c1c" : "#15803d" }}>
-                      <Icon d={d <= 3 ? I.alert : I.check} size={13} stroke={d <= 3 ? "#b91c1c" : "#15803d"} />
+                      style={{ color: d <= 3 ? "var(--kv-danger)" : "var(--kv-success)" }}>
+                      <Icon d={d <= 3 ? I.alert : I.check} size={13} stroke={d <= 3 ? "var(--kv-danger)" : "var(--kv-success)"} />
                       {d <= 0 ? "Subscription expired" : d <= 3 ? `Expires in ${d} day${d !== 1 ? "s" : ""}` : `${d} days remaining`}
                     </p>
                   </div>
                 )}
               </>
-            ) : <p className="text-[13px]" style={{ color: "#7a8394" }}>No subscription yet.</p>}
+            ) : <p className="text-[13px]" style={{ color: "var(--kv-subtle)" }}>No subscription yet.</p>}
           </LightBlock>
         </div>
 
         {/* Actions footer */}
-        <div className="px-6 py-4 space-y-2 shrink-0" style={{ borderTop: "1.5px solid #E5E7DF", background: "#FAFAF8" }}>
-          <p className="text-[10px] font-black uppercase tracking-wider mb-3" style={{ color: "#7a8394" }}>Admin Actions</p>
+        <div className="px-6 py-4 space-y-2 shrink-0" style={{ borderTop: "1.5px solid var(--kv-line)", background: "var(--kv-soft)" }}>
+          <p className="text-[10px] font-black uppercase tracking-wider mb-3" style={{ color: "var(--kv-subtle)" }}>Admin Actions</p>
 
           {/* Payment actions */}
           {payStatus === "PENDING_VERIFICATION" && (
@@ -795,31 +795,31 @@ function StudentPanel({ record, isLoading, onVerify, onReject, onEnable, onDisab
             </LightBtn>
           )}
           {!payStatus && !subStatus && (
-            <p className="text-center text-[13px] py-1" style={{ color: "#7a8394" }}>No actions available yet.</p>
+            <p className="text-center text-[13px] py-1" style={{ color: "var(--kv-subtle)" }}>No actions available yet.</p>
           )}
 
           {/* ── DELETE SECTION ── */}
-          <div className="pt-2" style={{ borderTop: "1px solid #E5E7DF" }}>
+          <div className="pt-2" style={{ borderTop: "1px solid var(--kv-line)" }}>
             {!confirmDelete ? (
               <button type="button" onClick={() => setConfirmDelete(true)}
                 disabled={isLoading}
                 className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-[13px] font-bold cursor-pointer disabled:opacity-50 transition-all"
-                style={{ background: "#FEF2F2", color: "#b91c1c", border: "1.5px solid #FCA5A5" }}
-                onMouseEnter={e => (e.currentTarget as HTMLButtonElement).style.background = "#FEE2E2"}
-                onMouseLeave={e => (e.currentTarget as HTMLButtonElement).style.background = "#FEF2F2"}
+                style={{ background: "color-mix(in oklab, #EF4444 10%, var(--kv-surface))", color: "var(--kv-danger)", border: "1.5px solid color-mix(in oklab, #EF4444 45%, transparent)" }}
+                onMouseEnter={e => (e.currentTarget as HTMLButtonElement).style.background = "color-mix(in oklab, #EF4444 14%, var(--kv-surface))"}
+                onMouseLeave={e => (e.currentTarget as HTMLButtonElement).style.background = "color-mix(in oklab, #EF4444 10%, var(--kv-surface))"}
               >
-                <Icon d={I.trash} size={15} stroke="#b91c1c" />
+                <Icon d={I.trash} size={15} stroke="var(--kv-danger)" />
                 Delete Enrollment
               </button>
             ) : (
-              <div className="rounded-xl p-4" style={{ background: "#FEF2F2", border: "1.5px solid #FCA5A5" }}>
+              <div className="rounded-xl p-4" style={{ background: "color-mix(in oklab, #EF4444 10%, var(--kv-surface))", border: "1.5px solid color-mix(in oklab, #EF4444 45%, transparent)" }}>
                 <div className="flex items-start gap-2 mb-3">
-                  <Icon d={I.alert} size={18} stroke="#b91c1c" className="shrink-0 mt-0.5" />
+                  <Icon d={I.alert} size={18} stroke="var(--kv-danger)" className="shrink-0 mt-0.5" />
                   <div>
-                    <p className="text-[13px] font-bold" style={{ color: "#b91c1c" }}>
+                    <p className="text-[13px] font-bold" style={{ color: "var(--kv-danger)" }}>
                       Delete this enrollment?
                     </p>
-                    <p className="text-[11.5px] mt-0.5 leading-relaxed" style={{ color: "#7f1d1d" }}>
+                    <p className="text-[11.5px] mt-0.5 leading-relaxed" style={{ color: "var(--kv-danger)" }}>
                       This will permanently delete <strong>{enrollment.enrollmentId}</strong> and all associated payment and subscription records. This cannot be undone.
                     </p>
                   </div>
@@ -827,13 +827,13 @@ function StudentPanel({ record, isLoading, onVerify, onReject, onEnable, onDisab
                 <div className="grid grid-cols-2 gap-2">
                   <button type="button" onClick={() => setConfirmDelete(false)}
                     className="py-2 rounded-xl text-[12.5px] font-bold cursor-pointer"
-                    style={{ background: "#fff", color: "#4a5568", border: "1.5px solid #E5E7DF" }}>
+                    style={{ background: "var(--kv-surface)", color: "var(--kv-muted)", border: "1.5px solid var(--kv-line)" }}>
                     Cancel
                   </button>
                   <button type="button" onClick={() => { setConfirmDelete(false); onDelete(); }}
                     disabled={isLoading}
                     className="flex items-center justify-center gap-1.5 py-2 rounded-xl text-[12.5px] font-bold cursor-pointer disabled:opacity-50"
-                    style={{ background: "#b91c1c", color: "#fff", border: "none" }}>
+                    style={{ background: "#B42318", color: "#fff", border: "none" }}>
                     <Icon d={I.trash} size={13} stroke="white" />
                     Yes, Delete
                   </button>
@@ -851,8 +851,8 @@ function StudentPanel({ record, isLoading, onVerify, onReject, onEnable, onDisab
 function LightBlock({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div>
-      <p className="text-[10.5px] font-black uppercase tracking-wider mb-2" style={{ color: "#7a8394" }}>{title}</p>
-      <div className="rounded-xl p-4 space-y-2" style={{ background: "#F5F6F2", border: "1.5px solid #E5E7DF" }}>
+      <p className="text-[10.5px] font-black uppercase tracking-wider mb-2" style={{ color: "var(--kv-subtle)" }}>{title}</p>
+      <div className="rounded-xl p-4 space-y-2" style={{ background: "var(--kv-soft)", border: "1.5px solid var(--kv-line)" }}>
         {children}
       </div>
     </div>
@@ -861,8 +861,8 @@ function LightBlock({ title, children }: { title: string; children: React.ReactN
 function LRow({ label, value, bold }: { label: string; value: string; bold?: boolean }) {
   return (
     <div className="flex gap-3 text-[12.5px]">
-      <dt className="w-20 shrink-0 font-medium" style={{ color: "#7a8394" }}>{label}</dt>
-      <dd className={`break-all ${bold ? "font-extrabold" : "font-medium"}`} style={{ color: "#10182B" }}>{value}</dd>
+      <dt className="w-20 shrink-0 font-medium" style={{ color: "var(--kv-subtle)" }}>{label}</dt>
+      <dd className={`break-all ${bold ? "font-extrabold" : "font-medium"}`} style={{ color: "var(--kv-fg)" }}>{value}</dd>
     </div>
   );
 }
@@ -874,10 +874,10 @@ function LightBtn({ children, onClick, disabled, color, icon, full }: {
   icon?: string | string[]; full?: boolean;
 }) {
   const cfg: Record<BtnColor, { bg: string; text: string; border: string; hover: string }> = {
-    green:  { bg: "#F0FDF4", text: "#15803d", border: "#86EFAC", hover: "#DCFCE7" },
-    red:    { bg: "#FEF2F2", text: "#b91c1c", border: "#FCA5A5", hover: "#FEE2E2" },
-    blue:   { bg: "#EFF6FF", text: "#1d4ed8", border: "#93C5FD", hover: "#DBEAFE" },
-    orange: { bg: "#FFFBEB", text: "#a16207", border: "#FDE68A", hover: "#FEF3C7" },
+    green:  { bg: "color-mix(in oklab, #22C55E 10%, var(--kv-surface))", text: "var(--kv-success)", border: "color-mix(in oklab, #22C55E 45%, transparent)", hover: "color-mix(in oklab, #22C55E 14%, var(--kv-surface))" },
+    red:    { bg: "color-mix(in oklab, #EF4444 10%, var(--kv-surface))", text: "var(--kv-danger)", border: "color-mix(in oklab, #EF4444 45%, transparent)", hover: "color-mix(in oklab, #EF4444 14%, var(--kv-surface))" },
+    blue:   { bg: "color-mix(in oklab, #3B82F6 10%, var(--kv-surface))", text: "var(--kv-primary)", border: "color-mix(in oklab, #3B82F6 45%, transparent)", hover: "color-mix(in oklab, #3B82F6 16%, var(--kv-surface))" },
+    orange: { bg: "color-mix(in oklab, #EAB308 12%, var(--kv-surface))", text: "var(--kv-brand-ink)", border: "color-mix(in oklab, #EAB308 45%, transparent)", hover: "color-mix(in oklab, #EAB308 16%, var(--kv-surface))" },
   };
   const c = cfg[color];
   return (

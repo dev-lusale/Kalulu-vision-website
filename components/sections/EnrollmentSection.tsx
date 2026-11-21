@@ -156,10 +156,10 @@ export function EnrollmentSection({ selectedCourse, selectedPlan, selectedSubTop
             <div className="mb-10">
               <span className="section-label">Get Started</span>
               {/* Content frozen: */}
-              <h2 id="enroll-heading" className="text-3xl sm:text-4xl font-extrabold tracking-tight mb-3" style={{ color: "#FFFFFF" }}>
+              <h2 id="enroll-heading" className="text-3xl sm:text-4xl font-extrabold tracking-tight mb-3" style={{ color: "var(--kv-fg)" }}>
                 Enroll Today
               </h2>
-              <p className="text-[15px] leading-relaxed" style={{ color: "#A7B0C0" }}>
+              <p className="text-[15px] leading-relaxed" style={{ color: "var(--kv-muted)" }}>
                 Fill in your details to receive your unique Enrollment ID,
                 then complete payment via MoMo or bank.
               </p>
@@ -167,7 +167,7 @@ export function EnrollmentSection({ selectedCourse, selectedPlan, selectedSubTop
 
             <div className="kv-card p-6 sm:p-8">
               {errors._general && (
-                <div className="mb-4 px-4 py-3 rounded-xl text-sm" style={{ background: "#FEE2E2", border: "1px solid #FCA5A5", color: "#991b1b" }}>
+                <div className="mb-4 px-4 py-3 rounded-xl text-sm" style={{ background: "color-mix(in oklab, #EF4444 12%, var(--kv-surface))", border: "1px solid color-mix(in oklab, #EF4444 45%, transparent)", color: "var(--kv-danger)" }}>
                   {errors._general}
                 </div>
               )}
@@ -204,18 +204,18 @@ export function EnrollmentSection({ selectedCourse, selectedPlan, selectedSubTop
                 {/* Language badge — content frozen */}
                 {subTopicLabel && values.course === "programming" && (
                   <div className="flex items-center gap-2 px-4 py-3 rounded-xl"
-                    style={{ background: "#DCFCE7", border: "1.5px solid #86EFAC" }}>
+                    style={{ background: "color-mix(in oklab, #22C55E 14%, var(--kv-surface))", border: "1.5px solid color-mix(in oklab, #22C55E 45%, transparent)" }}>
                     <div className="w-4 h-4 rounded-full flex items-center justify-center shrink-0"
-                      style={{ background: "#FF4D16" }}>
+                      style={{ background: "var(--kv-primary)", color: "var(--kv-on-primary)" }}>
                       <svg className="w-2.5 h-2.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                       </svg>
                     </div>
-                    <span className="text-[13px] flex-1 font-medium" style={{ color: "#FFB52E" }}>
+                    <span className="text-[13px] flex-1 font-medium" style={{ color: "var(--kv-brand-ink)" }}>
                       Language: <strong>{subTopicLabel}</strong>
                     </span>
                     <button type="button" onClick={() => { setSubTopicLabel(null); setSubTopicId(null); }}
-                      className="text-[12px] underline cursor-pointer font-medium" style={{ color: "#0a5a52" }}>
+                      className="text-[12px] underline cursor-pointer font-medium" style={{ color: "var(--kv-accent-ink)" }}>
                       Change
                     </button>
                   </div>
@@ -281,12 +281,12 @@ function LField({ label, required, error, children }: {
 }) {
   return (
     <div className="space-y-1.5">
-      <label className="block text-[13.5px] font-semibold" style={{ color: "#FFFFFF" }}>
-        {label}{required && <span className="ml-1" style={{ color: "#FFB52E" }}>*</span>}
+      <label className="block text-[13.5px] font-semibold" style={{ color: "var(--kv-fg)" }}>
+        {label}{required && <span className="ml-1" style={{ color: "var(--kv-brand-ink)" }}>*</span>}
       </label>
       {children}
       {error && (
-        <p className="flex items-center gap-1.5 text-[12px]" role="alert" style={{ color: "#b91c1c" }}>
+        <p className="flex items-center gap-1.5 text-[12px]" role="alert" style={{ color: "var(--kv-danger)" }}>
           <svg className="w-3.5 h-3.5 shrink-0" fill="currentColor" viewBox="0 0 20 20">
             <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
           </svg>
@@ -310,27 +310,27 @@ function PaymentStage({ enrollment, planObj, courseObj, loading, onSubmitPayment
       {/* Enrollment confirmation — content frozen */}
       <div className="kv-card p-6 text-center">
         <div className="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4"
-          style={{ background: "#DCFCE7", border: "1.5px solid #86EFAC" }}>
-          <svg className="w-6 h-6" style={{ color: "#15803d" }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+          style={{ background: "color-mix(in oklab, #22C55E 14%, var(--kv-surface))", border: "1.5px solid color-mix(in oklab, #22C55E 45%, transparent)" }}>
+          <svg className="w-6 h-6" style={{ color: "var(--kv-success)" }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
           </svg>
         </div>
-        <h2 className="text-[17px] font-bold mb-1" style={{ color: "#FFFFFF" }}>Enrollment Confirmed!</h2>
-        <p className="text-[13px] mb-4" style={{ color: "#A7B0C0" }}>
+        <h2 className="text-[17px] font-bold mb-1" style={{ color: "var(--kv-fg)" }}>Enrollment Confirmed!</h2>
+        <p className="text-[13px] mb-4" style={{ color: "var(--kv-muted)" }}>
           Save your Enrollment ID you&apos;ll need it for payment.
         </p>
         <div className="inline-block px-6 py-3 rounded-2xl mb-5"
-          style={{ background: "#FF8A00", border: "1.5px solid #c8e86a" }}>
-          <p className="text-[9.5px] uppercase tracking-[0.18em] font-bold mb-0.5" style={{ color: "#FFB52E" }}>Enrollment ID</p>
-          <p className="text-xl font-black font-mono tracking-widest" style={{ color: "#FFFFFF" }}>
+          style={{ background: "var(--kv-soft-2)", border: "1.5px solid var(--kv-line-strong)" }}>
+          <p className="text-[9.5px] uppercase tracking-[0.18em] font-bold mb-0.5" style={{ color: "var(--kv-brand-ink)" }}>Enrollment ID</p>
+          <p className="text-xl font-black font-mono tracking-widest" style={{ color: "var(--kv-fg)" }}>
             {enrollment.enrollmentId}
           </p>
         </div>
         <div className="grid grid-cols-2 gap-2.5 text-left">
           {[{ label: "Course", value: courseObj.title }, { label: "Plan & Amount", value: `${planObj.label} · K${planObj.price}` }].map(({ label, value }) => (
-            <div key={label} className="rounded-xl p-3" style={{ background: "#0B1224", border: "1px solid #E5E7DF" }}>
-              <p className="text-[10px] mb-0.5 font-semibold uppercase tracking-wider" style={{ color: "#A7B0C0" }}>{label}</p>
-              <p className="text-[13px] font-semibold truncate" style={{ color: "#FFFFFF" }}>{value}</p>
+            <div key={label} className="rounded-xl p-3" style={{ background: "var(--kv-surface)", border: "1px solid var(--kv-line)" }}>
+              <p className="text-[10px] mb-0.5 font-semibold uppercase tracking-wider" style={{ color: "var(--kv-muted)" }}>{label}</p>
+              <p className="text-[13px] font-semibold truncate" style={{ color: "var(--kv-fg)" }}>{value}</p>
             </div>
           ))}
         </div>
@@ -338,9 +338,9 @@ function PaymentStage({ enrollment, planObj, courseObj, loading, onSubmitPayment
 
       {/* Payment method card — content frozen */}
       <div className="kv-card p-6">
-        <h3 className="font-bold text-[15px] mb-1" style={{ color: "#FFFFFF" }}>Complete Your Payment</h3>
-        <p className="text-[13px] mb-4" style={{ color: "#A7B0C0" }}>
-          Send <span className="font-bold" style={{ color: "#FFB52E" }}>K{planObj.price}</span> using your preferred method, then tap &ldquo;I&apos;ve Paid&rdquo;.
+        <h3 className="font-bold text-[15px] mb-1" style={{ color: "var(--kv-fg)" }}>Complete Your Payment</h3>
+        <p className="text-[13px] mb-4" style={{ color: "var(--kv-muted)" }}>
+          Send <span className="font-bold" style={{ color: "var(--kv-brand-ink)" }}>K{planObj.price}</span> using your preferred method, then tap &ldquo;I&apos;ve Paid&rdquo;.
         </p>
 
         {/* Method tabs — logo images */}
@@ -349,9 +349,9 @@ function PaymentStage({ enrollment, planObj, courseObj, loading, onSubmitPayment
           <button type="button" onClick={() => setActiveTab("momo")}
             className="flex items-center justify-center gap-2 py-2.5 rounded-xl text-[13px] font-semibold transition-all cursor-pointer"
             style={{
-              background:   activeTab === "momo" ? "#FF8A00" : "#0B1224",
-              border:       activeTab === "momo" ? "1.5px solid #c8e86a" : "1.5px solid #E5E7DF",
-              color:        activeTab === "momo" ? "#FFB52E" : "#A7B0C0",
+              background:   activeTab === "momo" ? "var(--kv-primary)" : "var(--kv-surface)",
+              border:       activeTab === "momo" ? "1.5px solid var(--kv-primary)" : "1.5px solid var(--kv-line)",
+              color:        activeTab === "momo" ? "var(--kv-brand-ink)" : "var(--kv-muted)",
               touchAction:  "manipulation",
               WebkitTapHighlightColor: "transparent",
             } as React.CSSProperties}>
@@ -364,9 +364,9 @@ function PaymentStage({ enrollment, planObj, courseObj, loading, onSubmitPayment
           <button type="button" onClick={() => setActiveTab("bank")}
             className="flex items-center justify-center gap-2 py-2.5 rounded-xl text-[13px] font-semibold transition-all cursor-pointer"
             style={{
-              background:   activeTab === "bank" ? "#FF8A00" : "#0B1224",
-              border:       activeTab === "bank" ? "1.5px solid #c8e86a" : "1.5px solid #E5E7DF",
-              color:        activeTab === "bank" ? "#FFB52E" : "#A7B0C0",
+              background:   activeTab === "bank" ? "var(--kv-primary)" : "var(--kv-surface)",
+              border:       activeTab === "bank" ? "1.5px solid var(--kv-primary)" : "1.5px solid var(--kv-line)",
+              color:        activeTab === "bank" ? "var(--kv-brand-ink)" : "var(--kv-muted)",
               touchAction:  "manipulation",
               WebkitTapHighlightColor: "transparent",
             } as React.CSSProperties}>
@@ -378,8 +378,8 @@ function PaymentStage({ enrollment, planObj, courseObj, loading, onSubmitPayment
 
         {/* MTN MoMo details — all values from config, frozen */}
         {activeTab === "momo" && (
-          <div className="rounded-xl p-4 mb-4" style={{ background: "#FEFCE8", border: "1.5px solid #FDE047" }}>
-            <p className="font-bold text-[13.5px] mb-3 flex items-center gap-2" style={{ color: "#FFFFFF" }}>
+          <div className="rounded-xl p-4 mb-4" style={{ background: "color-mix(in oklab, #EAB308 14%, var(--kv-surface))", border: "1.5px solid color-mix(in oklab, #EAB308 45%, transparent)" }}>
+            <p className="font-bold text-[13.5px] mb-3 flex items-center gap-2" style={{ color: "var(--kv-fg)" }}>
               <img src="/mtn.png" alt="MTN" style={{ height: "18px", width: "auto", objectFit: "contain" }}
                 onError={e => { (e.currentTarget as HTMLImageElement).style.display = "none"; }} />
               MTN Mobile Money
@@ -389,7 +389,7 @@ function PaymentStage({ enrollment, planObj, courseObj, loading, onSubmitPayment
               <DR label="Name"      value={PAYMENT_DETAILS.momo.name} />
               <DR label="Reference" value="Kalulu Vision — Enroll" />
             </dl>
-            <p className="mt-3 text-[11.5px] font-medium" style={{ color: "#a16207" }}>
+            <p className="mt-3 text-[11.5px] font-medium" style={{ color: "var(--kv-brand-ink)" }}>
               Dial *115# → Send Money → Enter number above → Amount: K{planObj.price}
             </p>
           </div>
@@ -397,8 +397,8 @@ function PaymentStage({ enrollment, planObj, courseObj, loading, onSubmitPayment
 
         {/* Bank details — all values from config, frozen */}
         {activeTab === "bank" && (
-          <div className="rounded-xl p-4 mb-4" style={{ background: "#F0FDF4", border: "1.5px solid #86EFAC" }}>
-            <p className="font-bold text-[13.5px] mb-3 flex items-center gap-2" style={{ color: "#FFFFFF" }}>
+          <div className="rounded-xl p-4 mb-4" style={{ background: "color-mix(in oklab, #22C55E 10%, var(--kv-surface))", border: "1.5px solid color-mix(in oklab, #22C55E 45%, transparent)" }}>
+            <p className="font-bold text-[13.5px] mb-3 flex items-center gap-2" style={{ color: "var(--kv-fg)" }}>
               <img src="/zanaco.png" alt="Zanaco" style={{ height: "18px", width: "auto", objectFit: "contain" }}
                 onError={e => { (e.currentTarget as HTMLImageElement).style.display = "none"; }} />
               Zanaco Bank Transfer
@@ -415,9 +415,9 @@ function PaymentStage({ enrollment, planObj, courseObj, loading, onSubmitPayment
         )}
 
         {/* Warning — content frozen */}
-        <div className="flex gap-2.5 p-3.5 rounded-xl mb-4" style={{ background: "#FFFBEB", border: "1px solid #FDE68A" }}>
+        <div className="flex gap-2.5 p-3.5 rounded-xl mb-4" style={{ background: "color-mix(in oklab, #EAB308 12%, var(--kv-surface))", border: "1px solid color-mix(in oklab, #EAB308 45%, transparent)" }}>
           <span className="text-base shrink-0">⚠️</span>
-          <p className="text-[12.5px] leading-relaxed" style={{ color: "#92400e" }}>
+          <p className="text-[12.5px] leading-relaxed" style={{ color: "var(--kv-brand-ink)" }}>
             After paying, <strong>take a screenshot</strong> of your confirmation and send it to us on WhatsApp for verification.
           </p>
         </div>
@@ -456,8 +456,8 @@ function DR({ label, value, highlight, copyable }: {
 
   return (
     <div className="flex items-center gap-2 text-[12.5px]">
-      <dt className="w-28 shrink-0 font-medium" style={{ color: "#A7B0C0" }}>{label}</dt>
-      <dd className="font-bold font-mono break-all flex-1" style={{ color: highlight ? "#FFB52E" : "#FFFFFF" }}>
+      <dt className="w-28 shrink-0 font-medium" style={{ color: "var(--kv-muted)" }}>{label}</dt>
+      <dd className="font-bold font-mono break-all flex-1" style={{ color: highlight ? "var(--kv-brand-ink)" : "var(--kv-fg)" }}>
         {value}
       </dd>
       {copyable && (
@@ -466,9 +466,9 @@ function DR({ label, value, highlight, copyable }: {
           onClick={handleCopy}
           className="shrink-0 flex items-center gap-1 text-[10.5px] font-bold px-2 py-0.5 rounded-lg cursor-pointer transition-all"
           style={{
-            background: copied ? "#DCFCE7" : "#FF8A00",
-            color:      copied ? "#15803d" : "#FFB52E",
-            border:     `1px solid ${copied ? "#86EFAC" : "#FFB52E"}`,
+            background: copied ? "color-mix(in oklab, #22C55E 14%, var(--kv-surface))" : "var(--kv-primary)",
+            color:      copied ? "var(--kv-success)" : "var(--kv-on-primary)",
+            border:     `1px solid ${copied ? "color-mix(in oklab, #22C55E 45%, transparent)" : "var(--kv-primary)"}`,
             whiteSpace: "nowrap",
             touchAction: "manipulation",
             WebkitTapHighlightColor: "transparent",
@@ -502,26 +502,26 @@ function SubmittedStage({ enrollment, waUrl }: { enrollment: Enrollment; waUrl: 
     <div className="space-y-4">
       <div className="kv-card p-8 text-center">
         <div className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-5"
-          style={{ background: "#FEFCE8", border: "1.5px solid #FDE047" }}>
-          <svg className="w-7 h-7" style={{ color: "#a16207" }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          style={{ background: "color-mix(in oklab, #EAB308 14%, var(--kv-surface))", border: "1.5px solid color-mix(in oklab, #EAB308 45%, transparent)" }}>
+          <svg className="w-7 h-7" style={{ color: "var(--kv-brand-ink)" }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
         </div>
-        <h2 className="text-[17px] font-bold mb-1" style={{ color: "#FFFFFF" }}>⏳ Awaiting Verification</h2>
-        <p className="text-[13px] leading-relaxed max-w-sm mx-auto mb-5" style={{ color: "#A7B0C0" }}>
+        <h2 className="text-[17px] font-bold mb-1" style={{ color: "var(--kv-fg)" }}>⏳ Awaiting Verification</h2>
+        <p className="text-[13px] leading-relaxed max-w-sm mx-auto mb-5" style={{ color: "var(--kv-muted)" }}>
           Payment submitted. Send your screenshot on WhatsApp so we can verify and activate your subscription.
         </p>
-        <div className="inline-block px-5 py-2.5 rounded-2xl" style={{ background: "#FF8A00", border: "1.5px solid #c8e86a" }}>
-          <p className="text-[9.5px] uppercase tracking-[0.18em] font-bold mb-0.5" style={{ color: "#FFB52E" }}>Enrollment ID</p>
-          <p className="text-[17px] font-black font-mono tracking-widest" style={{ color: "#FFFFFF" }}>
+        <div className="inline-block px-5 py-2.5 rounded-2xl" style={{ background: "var(--kv-soft-2)", border: "1.5px solid var(--kv-line-strong)" }}>
+          <p className="text-[9.5px] uppercase tracking-[0.18em] font-bold mb-0.5" style={{ color: "var(--kv-brand-ink)" }}>Enrollment ID</p>
+          <p className="text-[17px] font-black font-mono tracking-widest" style={{ color: "var(--kv-fg)" }}>
             {enrollment.enrollmentId}
           </p>
         </div>
       </div>
 
       <div className="kv-card p-6">
-        <h3 className="font-bold text-[15px] mb-1" style={{ color: "#FFFFFF" }}>Send Screenshot on WhatsApp</h3>
-        <p className="text-[13px] mb-4" style={{ color: "#A7B0C0" }}>
+        <h3 className="font-bold text-[15px] mb-1" style={{ color: "var(--kv-fg)" }}>Send Screenshot on WhatsApp</h3>
+        <p className="text-[13px] mb-4" style={{ color: "var(--kv-muted)" }}>
           Tap the button below to open a pre-filled WhatsApp message, then attach your payment screenshot.
         </p>
         <a href={waUrl} target="_blank" rel="noopener noreferrer"
@@ -534,8 +534,8 @@ function SubmittedStage({ enrollment, waUrl }: { enrollment: Enrollment; waUrl: 
           Send Screenshot on WhatsApp
         </a>
         {/* "What happens next?" — content frozen */}
-        <div className="mt-4 rounded-xl p-4 space-y-2.5" style={{ background: "#0B1224", border: "1px solid #E5E7DF" }}>
-          <p className="text-[12px] font-bold" style={{ color: "#FFFFFF" }}>What happens next?</p>
+        <div className="mt-4 rounded-xl p-4 space-y-2.5" style={{ background: "var(--kv-surface)", border: "1px solid var(--kv-line)" }}>
+          <p className="text-[12px] font-bold" style={{ color: "var(--kv-fg)" }}>What happens next?</p>
           {[
             "Send your payment screenshot in the WhatsApp chat.",
             "Our team reviews and verifies your payment.",
@@ -543,10 +543,10 @@ function SubmittedStage({ enrollment, waUrl }: { enrollment: Enrollment; waUrl: 
           ].map((step, i) => (
             <div key={i} className="flex items-start gap-2.5">
               <span className="w-5 h-5 rounded-full text-[10px] font-bold flex items-center justify-center shrink-0 mt-0.5"
-                style={{ background: "#FF4D16", color: "#070B18" }}>
+                style={{ background: "var(--kv-primary)", color: "var(--kv-on-primary)" }}>
                 {i + 1}
               </span>
-              <p className="text-[12.5px]" style={{ color: "#A7B0C0" }}>{step}</p>
+              <p className="text-[12.5px]" style={{ color: "var(--kv-muted)" }}>{step}</p>
             </div>
           ))}
         </div>

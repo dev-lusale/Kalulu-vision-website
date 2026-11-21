@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { emptyRecord, SCHEMAS, type FieldDef } from "@/lib/admin-schema";
+import { ImageInput, ImageListInput } from "./media";
 import { slugify } from "@/lib/content-types";
 import { renderMarkdown } from "@/lib/markdown";
 
@@ -162,6 +163,12 @@ export function ContentManager({ entity, rows: initial }: { entity: string; rows
         break;
       case "datetime":
         control = <input {...common} type="datetime-local" className={`${input} max-w-64`} value={v ? new Date(String(v)).toISOString().slice(0, 16) : ""} onChange={(e) => set(f.key, e.target.value ? new Date(e.target.value).toISOString() : null)} />;
+        break;
+      case "image":
+        control = <ImageInput id={id} value={String(v ?? "")} onChange={(x) => set(f.key, x)} describedBy={common["aria-describedby"]} invalid={!!err} />;
+        break;
+      case "images":
+        control = <ImageListInput id={id} value={Array.isArray(v) ? (v as string[]) : []} onChange={(x) => set(f.key, x)} />;
         break;
       case "slug":
         control = <input {...common} className={`${input} font-mono text-sm`} value={String(v ?? "")} onChange={(e) => { setSlugTouched(true); set(f.key, e.target.value); }} />;
