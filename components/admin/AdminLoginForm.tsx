@@ -36,7 +36,6 @@ export function AdminLoginForm({ configError }: { configError?: string | null })
       <Image src="/brand/logo-256.webp" alt="" width={64} height={64} className="mx-auto size-16" />
       <h1 className="mt-5 text-center text-2xl font-bold text-fg" style={{ fontFamily: "var(--font-space-grotesk)" }}>Admin sign in</h1>
       <p className="mt-1 text-center text-sm text-muted">Kalulu Vision content and enrollments</p>
-      <p className="mt-4 rounded-lg bg-soft px-3 py-2 text-center text-xs text-muted">Owner: use the company email shown on the Contact page and the admin password set in Vercel.</p>
       <div className="mt-8 grid gap-4">
         <div className="grid gap-1.5">
           <label htmlFor="email" className="text-sm font-semibold text-fg">Email</label>
