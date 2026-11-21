@@ -37,7 +37,7 @@ export default async function AboutPage() {
             <SectionHeading id="story-title" eyebrow="Our story" title="Named after the clever hare." />
             <p className="mt-8 text-lg leading-relaxed text-muted first-letter:float-left first-letter:mr-3 first-letter:font-display first-letter:text-6xl first-letter:font-bold first-letter:leading-[0.9] first-letter:text-primary dark:first-letter:text-fg" data-reveal>{a.story}</p>
           </div>
-          <Figure image={images.overview} ratio="aspect-[4/5]" className="mx-auto w-full max-w-sm lg:max-w-none" sizes="(min-width: 1024px) 35vw, 90vw" />
+          <Figure image={images.overview} ratio="aspect-square" className="mx-auto w-full max-w-sm lg:max-w-none" sizes="(min-width: 1024px) 35vw, 90vw" />
         </div>
       </section>
 

@@ -98,8 +98,8 @@ export default async function HomePage() {
       <section className="section-y" aria-labelledby="overview-title">
         <div className="container-kv grid gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:items-center lg:gap-16">
           <div className="relative mx-auto w-full max-w-md lg:max-w-none" data-reveal>
-            <Figure image={images.overview} ratio="aspect-[4/5]" sizes="(min-width: 1024px) 40vw, 90vw" />
-            <div className="absolute -right-3 top-8 hidden rounded-xl bg-band px-5 py-4 text-band-fg shadow-lift sm:block">
+            <Figure image={images.overview} ratio="aspect-square" sizes="(min-width: 1024px) 40vw, 90vw" />
+            <div className="absolute -right-3 bottom-16 hidden rounded-xl bg-band px-5 py-4 text-band-fg shadow-lift sm:block">
               <p className="font-display text-xs font-semibold tracking-[0.14em] text-band-muted uppercase">Kalulu · /ka-lu-lu/</p>
               <p className="mt-1 max-w-[15rem] font-display font-semibold leading-snug">The clever hare of Zambian folklore</p>
             </div>
