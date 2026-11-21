@@ -54,7 +54,7 @@ export function createHeroScene(canvas: HTMLCanvasElement, opts: Options): HeroS
   const logo = new THREE.Group();
   scene.add(logo);
   const loader = new THREE.TextureLoader();
-  const tex = loader.load("/brand/logo-1024.png", () => { opts.onReady?.(); });
+  const tex = loader.load("/brand/logo-512.png", () => { opts.onReady?.(); });
   tex.colorSpace = THREE.SRGBColorSpace;
   tex.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
   const size = 3.2;

@@ -4,7 +4,7 @@ import { PartnerCTA } from "@/components/kv/cards";
 import { ButtonLink, Icon, IconTile, PageHero } from "@/components/kv/ui";
 import { getServices } from "@/lib/content";
 
-export const revalidate = 60;
+export const revalidate = 86400; // admin edits refresh pages instantly via revalidatePath
 export const metadata: Metadata = {
   title: "Our Services",
   description: "AI and machine learning, software, web and mobile development, data science, IoT, digital transformation and technology consulting from Kalulu Vision.",

@@ -5,7 +5,7 @@ import { PageHero } from "@/components/kv/ui";
 import { getProjects } from "@/lib/content";
 import { STATUS_LABELS } from "@/lib/content-types";
 
-export const revalidate = 60;
+export const revalidate = 86400; // admin edits refresh pages instantly via revalidatePath
 export const metadata: Metadata = {
   title: "Projects & Case Studies",
   description: "Kalulu Vision projects in AI, software, data science, IoT, mobile and research, each labelled with its real development stage.",

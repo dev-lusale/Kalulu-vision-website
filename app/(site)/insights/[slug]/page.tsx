@@ -1,9 +1,14 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Article } from "@/components/kv/Article";
-import { getPost } from "@/lib/content";
+import { getPost, getPosts } from "@/lib/content";
 
-export const revalidate = 60;
+export const revalidate = 86400; // admin edits refresh pages instantly via revalidatePath
+
+/** Pre-build published articles; new ones are built on first visit and then cached. */
+export async function generateStaticParams() {
+  return (await getPosts("insights")).map((p) => ({ slug: p.slug }));
+}
 
 export async function generateMetadata({ params }: PageProps<"/insights/[slug]">): Promise<Metadata> {
   const { slug } = await params;

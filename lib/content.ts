@@ -6,6 +6,7 @@
  * public site never breaks. Admin writes go through the entity helpers at the bottom.
  */
 import "server-only";
+import { cache } from "react";
 import crypto from "node:crypto";
 import seed from "@/db/seed/content.json";
 import { hasDatabase, query, queryOne } from "./server/pool";
@@ -118,13 +119,13 @@ async function safe<T>(label: string, fn: () => Promise<T>, fb: T): Promise<T> {
 // ─────────────────────────────────────────────────────────────
 //  Public reads
 // ─────────────────────────────────────────────────────────────
-async function getSetting<T>(key: string): Promise<T> {
+const getSetting = cache(async function getSetting<T>(key: string): Promise<T> {
   const fb = S.settings[key] as T;
   return safe(`setting ${key}`, async () => {
     const r = await queryOne<{ value: T }>(`SELECT value FROM kv_settings WHERE key = $1`, [key]);
     return r ? { ...(fb as any), ...(r.value as any) } : fb;
   }, fb);
-}
+}) as <T>(key: string) => Promise<T>;
 export const getCompany = () => getSetting<Company>("company");
 export const getAbout = () => getSetting<About>("about");
 export const getResearchInfo = () => getSetting<ResearchInfo>("research");
@@ -137,26 +138,26 @@ export async function getSiteImages(): Promise<SiteImages> {
   return out;
 }
 
-export async function getServices(): Promise<Service[]> {
+export const getServices = cache(async function getServices(): Promise<Service[]> {
   return safe("services", async () =>
     (await query(`SELECT * FROM kv_services WHERE published ORDER BY ${ENTITIES.services.order}`)).map((r) => fromRow(ENTITIES.services, r)),
   fallback.services);
-}
+});
 export async function getService(slug: string): Promise<Service | undefined> {
   return (await getServices()).find((s) => s.slug === slug);
 }
 
-export async function getProducts(): Promise<Product[]> {
+export const getProducts = cache(async function getProducts(): Promise<Product[]> {
   return safe("products", async () =>
     (await query(`SELECT * FROM kv_products WHERE published ORDER BY ${ENTITIES.products.order}`)).map((r) => fromRow(ENTITIES.products, r)),
   fallback.products);
-}
+});
 
-export async function getProjects(): Promise<Project[]> {
+export const getProjects = cache(async function getProjects(): Promise<Project[]> {
   return safe("projects", async () =>
     (await query(`SELECT * FROM kv_projects WHERE published ORDER BY ${ENTITIES.projects.order}`)).map((r) => fromRow(ENTITIES.projects, r)),
   fallback.projects);
-}
+});
 export async function getProject(slug: string): Promise<Project | undefined> {
   return (await getProjects()).find((p) => p.slug === slug);
 }
@@ -170,13 +171,13 @@ export function serviceCategories(slug: string): ProjectCategory[] {
 function withReading(p: any): Post {
   return { ...p, readingMinutes: readingMinutes(p.body || "") };
 }
-export async function getPosts(kind?: "insights" | "research"): Promise<Post[]> {
+export const getPosts = cache(async function getPosts(kind?: "insights" | "research"): Promise<Post[]> {
   return safe("posts", async () => {
     const where = kind === "research" ? `AND kind = 'research'` : kind === "insights" ? `AND kind <> 'research'` : "";
     const rows = await query(`SELECT * FROM kv_posts WHERE published ${where} ORDER BY ${ENTITIES.posts.order}`);
     return rows.map((r) => withReading(fromRow(ENTITIES.posts, r)));
   }, []);
-}
+});
 export async function getPost(slug: string): Promise<Post | undefined> {
   return safe("post", async () => {
     const r = await queryOne(`SELECT * FROM kv_posts WHERE published AND slug = $1`, [slug]);
@@ -184,13 +185,13 @@ export async function getPost(slug: string): Promise<Post | undefined> {
   }, undefined);
 }
 
-export async function getOpportunities(): Promise<Opportunity[]> {
+export const getOpportunities = cache(async function getOpportunities(): Promise<Opportunity[]> {
   return safe("opportunities", async () =>
     (await query(`SELECT * FROM kv_opportunities ORDER BY ${ENTITIES.opportunities.order}`))
       .map((r) => fromRow(ENTITIES.opportunities, r))
       .filter((o: Opportunity) => o.isOpen && (!o.deadline || o.deadline >= new Date().toISOString().slice(0, 10))),
   []);
-}
+});
 
 // ─────────────────────────────────────────────────────────────
 //  Enquiries

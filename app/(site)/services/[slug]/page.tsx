@@ -5,7 +5,7 @@ import { PartnerCTA, ProjectCard } from "@/components/kv/cards";
 import { ButtonLink, CheckList, Chips, Icon, IconTile, PageHero } from "@/components/kv/ui";
 import { getProjects, getService, getServices, serviceCategories } from "@/lib/content";
 
-export const revalidate = 60;
+export const revalidate = 86400; // admin edits refresh pages instantly via revalidatePath
 
 export async function generateStaticParams() {
   return (await getServices()).map((s) => ({ slug: s.slug }));

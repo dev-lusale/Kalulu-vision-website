@@ -25,14 +25,23 @@ export function Hero3D({ className = "" }: { className?: string }) {
     } catch { gl = false; }
 
     if (!gl || weak || reduced || !canvasRef.current) return; // keep the static fallback
+    // Hidden (e.g. on phones the 3D card is not shown): never download the 3D engine.
+    if (canvasRef.current.getClientRects().length === 0 || canvasRef.current.offsetParent === null) return;
     let disposed = false;
     let handle: { dispose(): void } | null = null;
-    import("./hero-scene")
-      .then(({ createHeroScene }) => {
-        if (disposed || !canvasRef.current) return;
-        handle = createHeroScene(canvasRef.current, { mobile, reducedMotion: reduced, onReady: () => !disposed && setMode("webgl") });
-      })
-      .catch((e) => console.warn("[hero] 3D unavailable, using fallback", e));
+    // Load the 3D engine only after the page has finished loading, so it never delays first paint.
+    const start = () => {
+      if (disposed) return;
+      import("./hero-scene")
+        .then(({ createHeroScene }) => {
+          if (disposed || !canvasRef.current) return;
+          handle = createHeroScene(canvasRef.current, { mobile, reducedMotion: reduced, onReady: () => !disposed && setMode("webgl") });
+        })
+        .catch((e) => console.warn("[hero] 3D unavailable, using fallback", e));
+    };
+    const idle = (cb: () => void) => (typeof window.requestIdleCallback === "function" ? window.requestIdleCallback(cb, { timeout: 2500 }) : setTimeout(cb, 1200));
+    if (document.readyState === "complete") idle(start);
+    else window.addEventListener("load", () => idle(start), { once: true });
     return () => { disposed = true; handle?.dispose(); };
   }, []);
 
@@ -59,10 +68,10 @@ export function Hero3D({ className = "" }: { className?: string }) {
       >
         <div className="absolute inset-[12%] rounded-full bg-brand/20 blur-[50px]" />
         {[0.08, 0.04].map((z, i) => (
-          <Image key={z} src="/brand/logo-640.webp" alt="" width={640} height={640} className="absolute inset-0 h-full w-full brightness-[0.45] saturate-150"
+          <Image key={z} src="/brand/logo-640.webp" alt="" width={640} height={640} sizes="208px" className="absolute inset-0 h-full w-full brightness-[0.45] saturate-150"
             style={{ transform: `translateZ(-${z * 300}px) translate(${(i + 1) * 3}px, ${(i + 1) * 3}px)` }} />
         ))}
-        <Image src="/brand/logo-640.webp" alt="" width={640} height={640} priority className="absolute inset-0 h-full w-full drop-shadow-[0_24px_40px_rgb(200_90_0/0.3)]" />
+        <Image src="/brand/logo-640.webp" alt="" width={640} height={640} sizes="208px" className="absolute inset-0 h-full w-full drop-shadow-[0_24px_40px_rgb(200_90_0/0.3)]" />
       </div>
     </div>
   );

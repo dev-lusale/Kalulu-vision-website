@@ -4,7 +4,7 @@ import { ButtonLink, Figure, Icon, IconTile, PageHero, SectionHeading } from "@/
 import { getCompany, getOpportunities, getSiteImages } from "@/lib/content";
 import { OPPORTUNITY_TYPES } from "@/lib/content-types";
 
-export const revalidate = 60;
+export const revalidate = 86400; // admin edits refresh pages instantly via revalidatePath
 export const metadata: Metadata = {
   title: "Careers & Opportunities",
   description: "Careers, internships, student opportunities, research collaborations, technology partnerships and innovation programmes at Kalulu Vision.",

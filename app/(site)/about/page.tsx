@@ -4,7 +4,7 @@ import { PartnerCTA } from "@/components/kv/cards";
 import { ButtonLink, Figure, Icon, PageHero, SectionHeading } from "@/components/kv/ui";
 import { getAbout, getSiteImages } from "@/lib/content";
 
-export const revalidate = 60;
+export const revalidate = 86400; // admin edits refresh pages instantly via revalidatePath
 export const metadata: Metadata = {
   title: "About Us",
   description: "Kalulu Vision's story, mission, vision, values and approach to building technology for real-world challenges in Africa.",

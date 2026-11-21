@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import { Icon } from "./ui";
 
 interface Props {
@@ -8,6 +8,8 @@ interface Props {
   services?: string[];
   partnerTypes?: string[];
   defaultPartnerType?: string;
+  /** Preselect the service / partner type from a URL query parameter (read in the browser so the page can stay static). */
+  presetFromQuery?: { param: string; values: Record<string, string> };
   /** Visual container: "card" (default) or "plain" when the parent already provides one. */
   frame?: "card" | "plain";
   opportunities?: { slug: string; title: string }[];
@@ -22,7 +24,17 @@ const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 const field = "min-h-12 w-full rounded-lg border border-line-strong bg-surface px-4 py-3 text-fg placeholder:text-subtle transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 dark:focus:border-white dark:focus:ring-white/20 aria-[invalid=true]:border-danger";
 
-export function EnquiryForm({ kind, services = [], partnerTypes = [], defaultPartnerType = "", frame = "card", opportunities = [], defaultService = "", defaultOpportunity = "", email, whatsapp }: Props) {
+export function EnquiryForm({ kind, services = [], partnerTypes = [], defaultPartnerType = "", frame = "card", opportunities = [], defaultService = "", defaultOpportunity = "", presetFromQuery, email, whatsapp }: Props) {
+  const presetRef = useRef<HTMLSelectElement>(null);
+  const presetDone = useRef(false);
+  useEffect(() => {
+    // apply once on first load only, never overriding the visitor's own choice afterwards
+    if (presetDone.current || !presetFromQuery || !presetRef.current) return;
+    presetDone.current = true;
+    const q = new URLSearchParams(window.location.search).get(presetFromQuery.param);
+    const v = q ? presetFromQuery.values[q] : undefined;
+    if (v) presetRef.current.value = v;
+  }, [presetFromQuery]);
   const box = frame === "card" ? "kv-card p-6 sm:p-9" : "";
   const [errors, setErrors] = useState<Errors>({});
   const [state, setState] = useState<"idle" | "sending" | "sent" | "error">("idle");
@@ -130,7 +142,7 @@ export function EnquiryForm({ kind, services = [], partnerTypes = [], defaultPar
         {kind === "partnership" ? (
           <div className="grid gap-2">
             <label htmlFor="partnership-service" className="text-sm font-semibold">Type of organisation</label>
-            <select id="partnership-service" name="service" defaultValue={defaultPartnerType} className={field} aria-invalid={invalid("service")} aria-describedby={describe("service")}>
+            <select ref={presetRef} id="partnership-service" name="service" defaultValue={defaultPartnerType} className={field} aria-invalid={invalid("service")} aria-describedby={describe("service")}>
               <option value="">Choose one</option>
               {partnerTypes.map((s) => <option key={s}>{s}</option>)}
             </select>
@@ -139,7 +151,7 @@ export function EnquiryForm({ kind, services = [], partnerTypes = [], defaultPar
         ) : kind === "contact" ? (
           <div className="grid gap-2">
             <label htmlFor="contact-service" className="text-sm font-semibold">Service of interest <span className="font-normal text-subtle">(optional)</span></label>
-            <select id="contact-service" name="service" defaultValue={defaultService} className={field}>
+            <select ref={presetRef} id="contact-service" name="service" defaultValue={defaultService} className={field}>
               <option value="">Not sure yet</option>
               {services.map((s) => <option key={s}>{s}</option>)}
             </select>

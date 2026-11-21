@@ -12,9 +12,10 @@ export const metadata: Metadata = {
 
 const SOCIAL_LABELS: Record<string, string> = { linkedin: "LinkedIn", youtube: "YouTube", github: "GitHub", x: "X", facebook: "Facebook", tiktok: "TikTok" };
 
-export default async function ContactPage({ searchParams }: PageProps<"/contact">) {
-  const [company, services, sp] = await Promise.all([getCompany(), getServices(), searchParams]);
-  const pre = typeof sp.service === "string" ? sp.service : "";
+export const revalidate = 86400; // static; admin edits refresh it instantly
+
+export default async function ContactPage() {
+  const [company, services] = await Promise.all([getCompany(), getServices()]);
   const titles = services.map((s) => s.title);
   const socials = Object.entries(company.socials ?? {}).filter(([, u]) => u);
   const channels = [
@@ -49,7 +50,7 @@ export default async function ContactPage({ searchParams }: PageProps<"/contact"
         <div className="container-kv grid gap-10 lg:grid-cols-[1.4fr_0.8fr] lg:gap-14">
           <div>
             <h2 className="mb-6 text-2xl font-bold">Send us a message</h2>
-            <EnquiryForm kind="contact" services={titles} defaultService={titles.includes(pre) ? pre : ""} email={company.email} whatsapp={company.whatsapp.replace(/\D/g, "")} />
+            <EnquiryForm kind="contact" services={titles} presetFromQuery={{ param: "service", values: Object.fromEntries(titles.map((t) => [t, t])) }} email={company.email} whatsapp={company.whatsapp.replace(/\D/g, "")} />
           </div>
           <aside className="grid content-start gap-5">
             {company.location && (

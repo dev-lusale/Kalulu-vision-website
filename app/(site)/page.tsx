@@ -7,7 +7,7 @@ import { ArrowLink, ButtonLink, Figure, Icon, IconTile, Photo, SectionHeading } 
 import { getAbout, getCompany, getPosts, getProducts, getProjects, getResearchInfo, getServices, getSiteImages } from "@/lib/content";
 import { PARTNER_TYPES } from "@/lib/content-types";
 
-export const revalidate = 60;
+export const revalidate = 86400; // admin edits refresh pages instantly via revalidatePath
 
 const CAPABILITIES = [
   { icon: "brain", title: "Artificial Intelligence & Machine Learning", text: "Computer vision, language technology and predictive models applied to specific, real problems.", href: "/services/artificial-intelligence-machine-learning" },

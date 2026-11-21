@@ -3,7 +3,7 @@ import { PartnerCTA, ProductCard } from "@/components/kv/cards";
 import { PageHero, StatusBadge } from "@/components/kv/ui";
 import { getProducts } from "@/lib/content";
 
-export const revalidate = 60;
+export const revalidate = 86400; // admin edits refresh pages instantly via revalidatePath
 export const metadata: Metadata = {
   title: "Products & Solutions",
   description: "Products built by Kalulu Vision, including the Tech Lessons training platform and Educom AI.",

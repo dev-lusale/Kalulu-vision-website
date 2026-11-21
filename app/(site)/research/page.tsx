@@ -4,7 +4,7 @@ import { InsightsBrowser } from "@/components/kv/InsightsBrowser";
 import { ButtonLink, Figure, PageHero, SectionHeading } from "@/components/kv/ui";
 import { getPosts, getProjects, getResearchInfo, getSiteImages } from "@/lib/content";
 
-export const revalidate = 60;
+export const revalidate = 86400; // admin edits refresh pages instantly via revalidatePath
 export const metadata: Metadata = {
   title: "Research & Innovation",
   description: "Kalulu Vision's applied research in AI, African language technology, accessibility, intelligent automation and emerging technologies.",

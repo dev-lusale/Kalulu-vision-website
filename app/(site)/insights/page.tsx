@@ -6,7 +6,7 @@ import { Subscribe } from "@/components/kv/Subscribe";
 import { ButtonLink, Icon, PageHero, Photo } from "@/components/kv/ui";
 import { getPosts } from "@/lib/content";
 
-export const revalidate = 60;
+export const revalidate = 86400; // admin edits refresh pages instantly via revalidatePath
 export const metadata: Metadata = {
   title: "Insights & Publications",
   description: "Articles, tutorials and programming guides on AI research, software development, data science and African innovation from Kalulu Vision.",

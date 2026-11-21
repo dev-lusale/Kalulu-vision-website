@@ -23,9 +23,10 @@ const STEPS = [
   { title: "A clear proposal", text: "We agree scope, responsibilities and how we will measure success, in writing." },
 ];
 
-export default async function PartnershipsPage({ searchParams }: PageProps<"/partnerships">) {
-  const [company, images, sp] = await Promise.all([getCompany(), getSiteImages(), searchParams]);
-  const pre = PARTNER_TYPES.find((p) => p.id === sp.type)?.label ?? "";
+export const revalidate = 86400; // static; admin edits refresh it instantly
+
+export default async function PartnershipsPage() {
+  const [company, images] = await Promise.all([getCompany(), getSiteImages()]);
   return (
     <>
       <PageHero eyebrow="Partnerships" crumbs={[{ href: "/about", label: "About Us" }]} title="Partner with Kalulu Vision."
@@ -82,7 +83,7 @@ export default async function PartnershipsPage({ searchParams }: PageProps<"/par
       <section id="enquiry" className="section-y scroll-mt-24" aria-labelledby="enq-title">
         <div className="container-kv grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
           <SectionHeading id="enq-title" eyebrow="Partnership enquiry" title="Start the conversation" lead="We reply to every partnership enquiry by email." />
-          <EnquiryForm key={pre} kind="partnership" partnerTypes={PARTNER_TYPES.map((p) => p.label)} defaultPartnerType={pre} email={company.email} whatsapp={company.whatsapp.replace(/\D/g, "")} />
+          <EnquiryForm kind="partnership" partnerTypes={PARTNER_TYPES.map((p) => p.label)} presetFromQuery={{ param: "type", values: Object.fromEntries(PARTNER_TYPES.map((p) => [p.id, p.label])) }} email={company.email} whatsapp={company.whatsapp.replace(/\D/g, "")} />
         </div>
       </section>
     </>
